@@ -1,0 +1,8 @@
+Package: nixplot
+Version: 1.1
+Architecture: i386
+Maintainer: <xhermitone@gmail.com>
+Depends: libcairo2
+Section: contrib/otherosfs
+Priority: optional
+Description: The Linux PNG/PDF command-line driven graphing utility 
