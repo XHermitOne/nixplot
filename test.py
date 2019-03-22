@@ -1,4 +1,4 @@
-# !/usr/bin/env python
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 import os
@@ -22,10 +22,10 @@ commands=(
           #'./nixplot --debug --PNG --out=./tst/output.png --width=1280 --height=960 --xtype=T --ytype=N --pen0=00:00:00/0.11,00:01:00/0.4,00:02:00/0.25,00:03:00/0.3,00:04:00/0.77',
           #'./nixplot --debug --PNG --out=./tst/output.png --width=1280 --height=480 --xtype=T --ytype=N --pen0=00:00:00/0.11,00:01:00/0.4,00:02:00/0.25,00:03:00/0.3,00:04:00/0.77',
           #'./nixplot --debug --PNG --out=./tst/output.png --width=1210 --height=300 --xtype=T --ytype=N --pen0=00:00:00/0.11,00:01:00/0.4,00:02:00/0.25,00:03:00/0.3,00:04:00/0.77',
-          # './nixplot --debug --PNG --out=./tst/output.png --width=1210 --height=300 --xtype=T --ytype=N --pen0=00:00:00/0.11,00:01:00/0.4,00:02:00/0.25,00:03:00/0.3,00:04:00/0.77 --scene=00:01:00/0.2,00:05:00/0.8',
+          './nixplot --debug --PNG --out=./tst/output.png --width=1210 --height=300 --xtype=T --ytype=N --pen0=00:00:00/0.11,00:01:00/0.4,00:02:00/0.25,00:03:00/0.3,00:04:00/0.77 --scene=00:01:00/0.2,00:05:00/0.8',
           #'./nixplot --debug --PDF --out=./tst/output.pdf --width=1210 --height=300 --xtype=T --ytype=N --pen0=00:00:00/0.11,00:01:00/0.4,00:02:00/0.25,00:03:00/0.3,00:04:00/0.77 --scene=00:01:00/0.2,00:05:00/0.8',
           #'./nixplot --PNG --out=./tst/output.png --width=1210 --height=300 --xtype=T --ytype=N --pen0=00:00:00/0.11,00:01:00/0.4,00:02:00/0.25,00:03:00/0.3,00:04:00/0.77 --scene=00:01:00/0.2,00:05:00/0.8',
-          './nixplot --debug --out=./tst/output.png --xtype=T --ytype=N --width=640 --height=480',
+          #'./nixplot --debug --out=./tst/output.png --xtype=T --ytype=N --width=640 --height=480',
           )
 
 

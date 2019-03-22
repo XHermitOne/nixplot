@@ -4,6 +4,7 @@
 */
 
 #include "main.h"
+#include "strfunc.h"
 
 /**
 * Режим отладки
@@ -16,7 +17,7 @@ BOOL DBG_MODE = TRUE;
 *   png_filename - Полное имя PNG файла
 */
 BOOL draw_png(char *png_filename, GRAPH_DATA *graph_data, int x_type, int y_type,
-              unsigned int width, unsigned int height, 
+              unsigned int width, unsigned int height,
               double scene_x1, double scene_y1, double scene_x2, double scene_y2)
 {
     cairo_surface_t *surface;
@@ -27,19 +28,19 @@ BOOL draw_png(char *png_filename, GRAPH_DATA *graph_data, int x_type, int y_type
 
     if (width == 0)
         width = DEFAULT_WIDTH;
-        
+
     if (height == 0)
         height = DEFAULT_HEIGHT;
-    
+
     if (DBG_MODE) logAddLine("Draw PNG file: %s [%d x %d]", png_filename, width, height);
 
     surface = cairo_image_surface_create(CAIRO_FORMAT_ARGB32, width, height);
     //cairo_surface_set_device_offset(surface, 0.0, 1.0);
     cr = cairo_create(surface);
-    
+
     GRAPH graphic;
     initGraph(&graphic, graph_data, surface, cr, width, height);
-    
+
     if (graph_data != NULL)
     {
         // Размер картинки
@@ -59,18 +60,18 @@ BOOL draw_png(char *png_filename, GRAPH_DATA *graph_data, int x_type, int y_type
             if (DBG_MODE) logAddLine("Graph data scene (%f, %f) - (%f, %f)", scene_x1, scene_y1, scene_x2, scene_y2);
         }
     }
-        
+
     Draw(&graphic, graph_data, FALSE);
-    
+
     cairo_fill(cr);
-    
+
     cairo_surface_write_to_png(surface, png_filename);
-    
+
     cairo_surface_destroy(surface);
     graphic.Surface = NULL;
     cairo_destroy(cr);
     graphic.CR = NULL;
-    
+
     return TRUE;
 }
 
@@ -91,25 +92,25 @@ BOOL draw_pdf(char *pdf_filename, GRAPH_DATA * graph_data, int x_type, int y_typ
 
     if (width == 0)
         width = DEFAULT_WIDTH;
-        
+
     if (height == 0)
         height = DEFAULT_HEIGHT;
-        
+
     if (DBG_MODE) logAddLine("Draw PDF file: %s [%d x %d]", pdf_filename, width, height);
 
     surface = cairo_pdf_surface_create(pdf_filename, width, height);
     cairo_surface_set_device_offset(surface, 0.0, 1.0);
     cr = cairo_create(surface);
-    
+
     GRAPH graphic;
     initGraph(&graphic, graph_data, surface, cr, width, height);
-    
+
     if (graph_data != NULL)
     {
         // Размер картинки
         graph_data->X2 = width - 1;
         graph_data->Y2 = height - 1;
-    
+
         // Параметры сцены графика
         if ((scene_x1 != scene_x2) && (scene_y1 != scene_y2))
         {
@@ -124,16 +125,16 @@ BOOL draw_pdf(char *pdf_filename, GRAPH_DATA * graph_data, int x_type, int y_typ
             if (DBG_MODE) logAddLine("Graph data scene (%f, %f) - (%f, %f)", scene_x1, scene_y1, scene_x2, scene_y2);
         }
     }
-    
+
     Draw(&graphic, graph_data, TRUE);
-    
+
     cairo_fill(cr);
-    
+
     cairo_surface_destroy(surface);
     graphic.Surface = NULL;
     cairo_destroy(cr);
     graphic.CR = NULL;
-    
+
     return TRUE;
 }
 
@@ -148,7 +149,7 @@ int getAxisType(char *axis_type)
     if (strequal(axis_type, "T"))
         return GM_TIME;
     // По умолчанию
-    return GM_OPTIMAL;        
+    return GM_OPTIMAL;
 }
 
 
@@ -163,47 +164,47 @@ GRAPH_DATA *getPenData(char *str_pen_data)
     {
         if (DBG_MODE) logWarning("Not define pen data");
         return NULL;
-    }        
-    
+    }
+
     char **str_points = strsplit(str_pen_data, ",");
     int i = 0;
     char *str_point = NULL;
     unsigned int str_count = get_string_count(str_points);
-    
+
     long prev_time = 0;
     double prev_data = 0.0;
     long i_time = 0;
     double y_data = 0.0;
-    
+
     long min_time = 0;
     double min_data = 0.0;
     long max_time = 0;
     double max_data = 0.0;
-    
+
     GRAPH_DATA *pen_data = (GRAPH_DATA *) calloc(1, sizeof(GRAPH_DATA));
     initGraphData(pen_data, prev_time, prev_data, i_time, y_data);
     pen_data->Points = (GRAPH_POINT *) calloc(str_count, sizeof(GRAPH_POINT));
     pen_data->NPoints = str_count;
-    
+
     do
     {
         str_point = str_points[i];
         if (!str_point)
             break;
-        
+
         char **point = strsplit(str_point, "/");
         i_time = time_to_long(point[0]);
         y_data = str2double(point[1]);
-        
+
         GRAPH_POINT *point_data = (GRAPH_POINT *) calloc(1, sizeof(GRAPH_POINT));
         point_data->x = i_time;
         point_data->y = y_data;
-        
+
         memcpy(&pen_data->Points[i], point_data, sizeof(GRAPH_POINT));
-        
+
         if (DBG_MODE) logAddLine("\tPoint data: [%d : %f] - [%d : %f]", prev_time, prev_data, i_time, y_data);
         free(point_data);
-        
+
         prev_time = i_time;
         prev_data = y_data;
 
@@ -216,7 +217,7 @@ GRAPH_DATA *getPenData(char *str_pen_data)
             max_time = prev_time;
         if (prev_data > max_data)
             max_data = prev_data;
-        
+
         i++;
     } while (str_point);
 
@@ -225,8 +226,8 @@ GRAPH_DATA *getPenData(char *str_pen_data)
     pen_data->y1 = min_data;
     pen_data->x2 = max_time;
     pen_data->y2 = max_data;
-    if (DBG_MODE) logAddLine("Graphic range: [%d : %f] - [%d : %f]", min_time, min_data, max_time, max_data);    
-   
+    if (DBG_MODE) logAddLine("Graphic range: [%d : %f] - [%d : %f]", min_time, min_data, max_time, max_data);
+
     return pen_data;
 }
 
@@ -242,26 +243,26 @@ BOOL getSceneData(char *str_scene_data, double *x1, double *y1, double *x2, doub
     {
         if (DBG_MODE) logWarning("Not define scene data");
         return FALSE;
-    }        
-    
+    }
+
     char **str_points = strsplit(str_scene_data, ",");
     int i = 0;
     char *str_point = NULL;
     unsigned int str_count = get_string_count(str_points);
-    
+
     long prev_time = 0;
     double prev_data = 0.0;
     long i_time = 0;
     double y_data = 0.0;
-    
+
     if (str_count != 2)
     {
         if (DBG_MODE) logWarning("Not valid scene coordinates");
         return FALSE;
     }
-    
+
     char **point = NULL;
-    
+
     // Определяем первую точку сцены
     str_point = str_points[0];
     if (str_point)
@@ -270,7 +271,7 @@ BOOL getSceneData(char *str_scene_data, double *x1, double *y1, double *x2, doub
         prev_time = time_to_long(point[0]);
         prev_data = str2double(point[1]);
     }
-        
+
     // Определяем вторую точку сцены
     str_point = str_points[1];
     if (str_point)
@@ -279,13 +280,13 @@ BOOL getSceneData(char *str_scene_data, double *x1, double *y1, double *x2, doub
         i_time = time_to_long(point[0]);
         y_data = str2double(point[1]);
     }
-        
+
     if (DBG_MODE) logAddLine("\tScene data: [%d : %f] - [%d : %f]", prev_time, prev_data, i_time, y_data);
     *x1 = prev_time;
     *y1 = prev_data;
     *x2 = i_time;
     *y2 = y_data;
-    
+
     return TRUE;
 }
 
@@ -297,10 +298,11 @@ int run(int argc, char *argv[])
     // Разбор коммандной строки
     int opt = 0;
     BOOL bPNG = TRUE;   // По умолчанию вывод графиков в PNG
-    BOOL bPDF = FALSE;   
+    BOOL bPDF = FALSE;
     char *output_filename = NULL;   // Имя результирующего файла
     int x_type = GM_OPTIMAL;
     int y_type = GM_OPTIMAL;     // Тип оси X и Y
+
     GRAPH_DATA *pen_0 = NULL;   // Данные пера 1
     GRAPH_DATA *pen_1 = NULL;   // Данные пера 2
     GRAPH_DATA *pen_2 = NULL;   // Данные пера 3
@@ -311,16 +313,16 @@ int run(int argc, char *argv[])
     GRAPH_DATA *pen_7 = NULL;   // Данные пера 8
     GRAPH_DATA *pen_8 = NULL;   // Данные пера 9
     GRAPH_DATA *pen_9 = NULL;   // Данные пера 10
-    
+
     unsigned int img_width = 0;
     unsigned int img_height = 0;
-    
+
     // Сцена
     double scene_x1 = 0.0;
     double scene_y1 = 0.0;
     double scene_x2 = 0.0;
     double scene_y2 = 0.0;
-    
+
     const struct option long_opts[] = {
               { "debug", no_argument, NULL, 'd' },
               { "log", no_argument, NULL, 'l' },
@@ -328,7 +330,7 @@ int run(int argc, char *argv[])
               { "help", no_argument, NULL, 'h' },
               { "out", required_argument, NULL, 'O' },
               { "PNG", no_argument, NULL, 'I' },
-              { "PDF", no_argument, NULL, 'P' },              
+              { "PDF", no_argument, NULL, 'P' },
               { "xtype", required_argument, NULL, 'X' },
               { "ytype", required_argument, NULL, 'Y' },
               { "pen0", required_argument, NULL, '0' },
@@ -337,11 +339,11 @@ int run(int argc, char *argv[])
               { "scene", required_argument, NULL, 's' },
               { NULL, 0, NULL, 0 }
        };
-  
+
     if (DBG_MODE) logAddLine("OPTIONS:");
     while ((opt = getopt_long(argc, argv, "dlvhOIPXY0WHs:", long_opts, NULL)) != -1)
     {
-        switch (opt) 
+        switch (opt)
         {
             case 'd':
                 DBG_MODE = TRUE;
@@ -352,17 +354,17 @@ int run(int argc, char *argv[])
                 DBG_MODE = TRUE;
                 if (DBG_MODE) logAddLine("\t--log");
                 break;
-                
+
             case 'h':
                 printHelp();
                 if (DBG_MODE) logAddLine("\t--help");
                 break;
-                
+
             case 'v':
                 printVersion();
                 if (DBG_MODE) logAddLine("\t--version");
                 break;
-                
+
             case '?':
                 printHelp();
                 return TRUE;
@@ -377,7 +379,7 @@ int run(int argc, char *argv[])
                 bPDF = FALSE;
                 if (DBG_MODE) logAddLine("\t--PNG");
                 break;
-                
+
             case 'P':
                 bPNG = FALSE;
                 bPDF = TRUE;
@@ -388,7 +390,7 @@ int run(int argc, char *argv[])
                 x_type = getAxisType(optarg);
                 if (DBG_MODE) logAddLine("\t--xtype = %s", optarg);
                 break;
-                
+
             case 'Y':
                 y_type = getAxisType(optarg);
                 if (DBG_MODE) logAddLine("\t--ytype = %s", optarg);
@@ -398,7 +400,7 @@ int run(int argc, char *argv[])
                 pen_0 = getPenData(optarg);
                 if (DBG_MODE) logAddLine("\t--pen0 = %s", optarg);
                 break;
-                                                                
+
             case 'W':
                 if (isnumeric(optarg))
                 {
@@ -423,19 +425,19 @@ int run(int argc, char *argv[])
                 getSceneData(optarg, &scene_x1, &scene_y1, &scene_x2, &scene_y2);
                 if (DBG_MODE) logAddLine("\t--scene = %s", optarg);
                 break;
-                
+
             default:
                 fprintf(stderr, "Unknown parameter: \'%c\'", opt);
                 return FALSE;
         }
     }
 
-    if (bPNG == TRUE)    
-        draw_png(output_filename, pen_0, x_type, y_type, img_width, img_height, 
+    if (bPNG == TRUE)
+        draw_png(output_filename, pen_0, x_type, y_type, img_width, img_height,
                  scene_x1, scene_y1, scene_x2, scene_y2);
-    else if (bPDF == TRUE)    
+    else if (bPDF == TRUE)
         draw_pdf(output_filename, pen_0, x_type, y_type, img_width, img_height,
                  scene_x1, scene_y1, scene_x2, scene_y2);
-                
+
     return 1;
 }

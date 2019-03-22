@@ -14,17 +14,17 @@ libdir = $(prefix)/lib
 mandir = $(prefix)/man/man1
 includedir = $(prefix)/include
 
-CC = gcc
-# CC = g++
+# CC = gcc
+CC = g++
 DEFS = -DHAVE_CONFIG_H
 #CFLAGS = -g -O2 -Wall
 CFLAGS =
-#Флаг -g необходим для отладки!!!
-#Флаг -w отключает warning!!!
-#CPPFLAGS = -g
-CPPFLAGS = -g -w
+# Флаг -g необходим для отладки!!!
+# Флаг -w отключает warning!!!
+# CPPFLAGS = -g
+CPPFLAGS = -g -w -m64
 # Флаг линковщика -lm подключает математические функции
-LDFLAGS = -v -lm
+LDFLAGS = -v -lm -L/usr/lib
 LIBS = -lm 
 BASELIBS = -lm 
 X11_INC = 

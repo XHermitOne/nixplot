@@ -12,6 +12,7 @@
 #include "tools.h"
 #include "log.h"
 #include "strfunc.h"
+#include "config.h"
 
 
 static LogInit Log;
@@ -40,23 +41,27 @@ char *getTimeDate()
 *       LogName - Имя файла лога
 *           Если NULL, то берется имя по умолчанию
 */
-struct LogInit* log_open(char *LogName)
+LogInit* log_open(char *LogName)
 {
     if (LogName == NULL)
         LogName = DefaultLogFileName;
-        
+
     Log.out = NULL;
     Log.isNew = FALSE;
     char *cfg_path = getCfgPath();
-    
-    char *full_log_filename = (char*) calloc(strlen(cfg_path) + strlen(LogName)+1, sizeof(char));
+
+    char *full_log_filename = (char*) calloc(strlen(cfg_path) + strlen(LogName) + 1, sizeof(char));
     strcpy(full_log_filename, cfg_path);
     strcat(full_log_filename, LogName);
-        
+
     Log.out = fopen(full_log_filename, "a");
     fprintf(Log.out, "[START LOG] %s - - - - - - - - - - - - - - - - - - - - -\n", getTimeDate());
 
     full_log_filename = strfree(full_log_filename);
+
+    // Освобождаем память
+    free(cfg_path);
+
     return &Log;
 }
 
@@ -83,8 +88,10 @@ void logAddLine(char *S, ...)
 
     va_start(ap, S);
     vsprintf(buffer, S, ap);
-	
+
     log_color_line(IC_CYAN_COLOR_TEXT, buffer);
+
+    va_end(ap);
 }
 
 
@@ -98,8 +105,10 @@ void logErr(char *S, ...)
 
     va_start(ap, S);
     vsprintf(buffer, S, ap);
-	
+
     log_color_line(IC_RED_COLOR_TEXT, buffer);
+
+    va_end(ap);
 }
 
 
@@ -113,8 +122,10 @@ void logWarning(char *S, ...)
 
     va_start(ap, S);
     vsprintf(buffer, S, ap);
-	
+
     log_color_line(IC_YELLOW_COLOR_TEXT, buffer);
+
+    va_end(ap);
 }
 
 
@@ -135,11 +146,11 @@ void log_color_line(unsigned int iColor, char *S, ...)
             strcpy(signature, "DEBUG:");
         else if (iColor == IC_RED_COLOR_TEXT)
             strcpy(signature, "ERROR:");
-        else if (iColor == IC_RED_COLOR_TEXT)
+        else if (iColor == IC_YELLOW_COLOR_TEXT)
             strcpy(signature, "WARNING:");
         else
             strcpy(signature, "");
-            
+
         fprintf(Log.out, "    %s %s %s\n", getTimeDate(), signature, msg);
         print_color_txt(iColor, "%s %s %s\n", getTimeDate(), signature, msg);
         fflush(Log.out);

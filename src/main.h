@@ -17,10 +17,16 @@
 #include "ictypes.h"
 #include "tools.h"
 #include "graph.h"
+#include "version.h"
 
 /**
 * Режим отладки
 */
 extern BOOL DBG_MODE;
+
+/**
+* Функция запуска основного алгоритма
+*/
+int run(int argc, char *argv[]);
 
 #endif //__MAIN_H

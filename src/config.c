@@ -16,55 +16,55 @@ static char FullCfgFileName[MAX_PATH];
 
 Config_t config_strings[] =
 {
-	{ "TEST",                     ""},
+    { "TEST",                     ""},
 };
 
 
 BOOL saveConfig (char *CFGFileName, Config_t *Strings, int Count)
 {
-	int	i = 0;
-	FILE *f;
+    int i = 0;
+    FILE *f;
 
-	if(DBG_MODE) logAddLine("Saving config settings %s %i strings.\n", CFGFileName, Count);
-    
-	f = fopen (CFGFileName, "wt");
-	if (!f)
+    if(DBG_MODE) logAddLine("Saving config settings %s %i strings.\n", CFGFileName, Count);
+
+    f = fopen (CFGFileName, "wt");
+    if (!f)
     {
         if(DBG_MODE) logAddLine("ERROR: Can't write the file %s \n", FullCfgFileName);
-		return FALSE;	// can't write the file, but don't complain
+        return FALSE;   // can't write the file, but don't complain
     }
 
-	for (i = 0; i < Count; i++)
-	{
-		fprintf(f, "%s\t\t\"%s\"\n", Strings[i].name, Strings[i].location);
-	}
+    for (i = 0; i < Count; i++)
+    {
+        fprintf(f, "%s\t\t\"%s\"\n", Strings[i].name, Strings[i].location);
+    }
 
-	fclose (f);
+    fclose (f);
     return TRUE;
 }
 
 
 BOOL loadConfig(const char *CFGFileName, Config_t *Strings, int Count)
 {
-	int i = 0; 
-	int len = 0;
-	FILE *f = NULL;
-	char def[STD_STR_LEN];
-	char strparm[100];
-	int parm = 0;
+    int i = 0;
+    int len = 0;
+    FILE *f = NULL;
+    char def[STD_STR_LEN];
+    char strparm[100];
+    int parm = 0;
 
-	if(DBG_MODE) logAddLine("Loading config settings %s %i strings.\n", CFGFileName, Count);
+    if(DBG_MODE) logAddLine("Loading config settings %s %i strings.\n", CFGFileName, Count);
 
     f = fopen(CFGFileName, "rt");
-	if (f)
-	{
-		while (!feof(f))
-		{
-			if (fscanf(f, "%79s %[^\n]\n", def, strparm) == 2)
-			{
-                if(DBG_MODE) logAddLine("Line: %s %s.\n", def, strparm);                
-				if (strparm[0] == '"') /* string values */
-				{
+    if (f)
+    {
+        while (!feof(f))
+        {
+            if (fscanf(f, "%79s %[^\n]\n", def, strparm) == 2)
+            {
+                if(DBG_MODE) logAddLine("Line: %s %s.\n", def, strparm);
+                if (strparm[0] == '"') /* string values */
+                {
                     for (i=0; i<Count; i++)
                     {
                         if (!strcmp(def, Strings[i].name))
@@ -78,17 +78,17 @@ BOOL loadConfig(const char *CFGFileName, Config_t *Strings, int Count)
                             if (len > 79)  len = 79;
                             strncpy(Strings[i].location, strparm + 1, len);
                             Strings[i].location[len] = '\0';
-                            if(DBG_MODE) logAddLine("Name: %s Value: %s.\n", Strings[i].name, Strings[i].location);                
+                            if(DBG_MODE) logAddLine("Name: %s Value: %s.\n", Strings[i].name, Strings[i].location);
                             break;
                         }
                     }
                 continue;
-				}
+                }
 
-			}
-		}
+            }
+        }
         fclose (f);
-	}
+    }
     else
     {
         if(DBG_MODE) logAddLine("ERROR: Cant read file %s \n", CFGFileName);
@@ -103,17 +103,17 @@ char *getCfgPath(void)
 {
     char *result = NULL;
     char *home_path = getHomePath();
-    
-    result = (char*)calloc(strlen(home_path)+1+strlen(CfgPath)+1, sizeof(char));
+
+    result = (char*) calloc(strlen(home_path)+1+strlen(CfgPath)+1, sizeof(char));
     strcpy(result, home_path);
     strcat(result, "/");
     strcat(result, CfgPath);
 
-    if (!dir_exists(result)) 
+    if (!dir_exists(result))
         createCfgPath(result);
 
     if(DBG_MODE) logAddLine("GetCfgPath: %s\n", result);
-    
+
     return result;
 }
 
@@ -131,13 +131,13 @@ static BOOL createCfgPath(char *Path)
         conf_path = getCfgPath();
         do_free = 1;
     }
-        
+
     BOOL result = (BOOL) mkpath(conf_path, S_IRWXU | S_IRGRP | S_IXGRP | S_IROTH | S_IXOTH);
     if(DBG_MODE) logAddLine("Create path: %s\n", conf_path);
 
     if (do_free)
-        free(conf_path);    
-        
+        free(conf_path);
+
     return result;
 }
 
@@ -161,7 +161,7 @@ static char *getCfgFileName(char *FileName)
     }
 
     free(conf_path);
-    
+
     if(DBG_MODE) logAddLine("GetCfgFileName: %s\n", filename);
     return filename;
 }

@@ -9,18 +9,19 @@
 #include "ictypes.h"
 
 
+
 #define MAX_STR     1024
 #define STR_NULL    ((char) 0)
 
-#define		SLOSH		'\\'
-#define		SLASH		'/'
-#define		DEFQUOTES	"\"'"	/**< default quote characters */
+#define     SLOSH       '\\'
+#define     SLASH       '/'
+#define     DEFQUOTES   "\"'"   /**< default quote characters */
 #define     CNULL       0
 #define     CPNULL      0
-#define		vnew(object,n)  ((object *)malloc((size_t)((n)*sizeof(object))))
+#define     vnew(object,n)  ((object *)malloc((size_t)((n)*sizeof(object))))
 
 static  const char * skip(const char *str, const char *white);
-static  void copy(char	ch);
+static  void copy(char  ch);
 static  void newword(char *cp);
 static  void subsplit(const char *str, const char *delim,const char *quotes);
 
@@ -31,11 +32,11 @@ char **strsplit(char *str, char *delim);
 */
 unsigned int get_string_count(char **strings);
 
-                                  
+
 typedef struct
 {
-	char *search;
-	char *replace;
+    char *search;
+    char *replace;
 } sr;
 
 char *strreplace(char *src, const char *from, const char *to, BOOL bFree);
@@ -60,8 +61,8 @@ BOOL strempty(char *str);
 BOOL find_word(char *source, char *search);
 
 /**
-*   C substring function: It returns a pointer to the substring 
-*/ 
+*   C substring function: It returns a pointer to the substring
+*/
 char *substr(char *str, unsigned int position, unsigned int length);
 
 char *strright_pos(char *str, int position);
@@ -77,17 +78,17 @@ char *strleft(char *str, int length, BOOL bFree);
 */
 char *strright(char *str, int length, BOOL bFree);
 
-/** 
+/**
 *   detecting whether base is starts with str
 */
 BOOL startswith(char* base, char* str);
 
-/** 
+/**
 *   detecting whether base is ends with str
 */
 BOOL endswith(char* base, char* str);
 
-/** 
+/**
 *   getting the first index of str in base
 */
 int strfind(char* base, char* str);
@@ -99,7 +100,7 @@ int strfind_offset(char* base, char* str, int startIndex);
 */
 int strfind_char(char *str, char c, int startIndex);
 
-/** 
+/**
 *   use two index to search in two part to prevent the worst case
  *  (assume search 'aaa' in 'aaaaaaaa', you cannot skip three char each time)
  */

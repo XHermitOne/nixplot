@@ -27,6 +27,7 @@
 
 #include "ictypes.h"
 #include "log.h"
+#include "strfunc.h"
 #include "main.h"
 
 #define MAX_NUM_LEN 20
@@ -39,7 +40,7 @@ char sayError(char *msg);
 
 char sayMessage(char *Msg, int aOptions);
 
-char *getHomePath(void);       
+char *getHomePath(void);
 
 BOOL dir_exists(char *path);
 int mkpath(const char *path, mode_t mode);
@@ -50,7 +51,6 @@ int mkpath(const char *path, mode_t mode);
 //char *getCfgPath(void);
 
 BOOL file_exists(char *FileName);
-int copy_file(char *to, char *from);
 BOOL del_file(char *FileName);
 
 /**

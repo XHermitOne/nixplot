@@ -37,15 +37,17 @@ void errBox(char *Fmt,...)
 
     va_start(ap, Fmt);
     vsprintf(buffer, Fmt, ap);
-	
+
     log_color_line(IC_RED_COLOR_TEXT, "Error: ");
     log_color_line(IC_RED_COLOR_TEXT, buffer);
+
+    va_end(ap);
 }
 
 
 
-char sayError(char *msg) 
-{ 
+char sayError(char *msg)
+{
     errBox(msg);
     return 0;
 }
@@ -72,7 +74,7 @@ BOOL dir_exists(char *path)
 {
     BOOL result = FALSE;
     struct stat st;
-    
+
     if (!strempty(path))
         result = (BOOL) (stat(path, &st) == 0);
     return result;
@@ -142,199 +144,14 @@ BOOL file_exists(char *FileName)
     BOOL bExist = FALSE;
     if (!strempty(FileName))
     {
-		FILE *in = fopen(FileName, "rb");
-		if (in != NULL)
+        FILE *in = fopen(FileName, "rb");
+        if (in != NULL)
         {
             bExist = TRUE;
-			fclose( in );
+            fclose( in );
         }
     }
     return bExist;
-}
-
-
-/**
-* Копирование файла
-* @return: 
-*/
-int copy_file(char *to, char *from)
-{
-    char newname[MAXPATHLEN+1];
-    char answer[20];
-    struct stat stf, stt;
-    int  fdin = 0;
-    int  fdout = 0;
-    int  n = 0;
-    int  code = 0;
-    char iobuf[64 * 1024];
-    char *dirname = NULL;
-    char *s = NULL;
-    
-    if((fdin = open(from, O_RDONLY)) < 0)
-    {
-        if (DBG_MODE) logAddLine("Cannot read %s", from);
-        return (-1);
-    }
-    fstat(fdin, &stf);
-    if ((stf.st_mode & S_IFMT) == S_IFDIR)
-    {
-        close(fdin);
-        if (DBG_MODE) logAddLine("%s is a directory", from);
-        return (-2);
-    }
-
-    if(stat(to, &stt) >= 0)
-    {
-        /* Файл уже существует */
-        if ((stt.st_mode & S_IFMT) == S_IFDIR)
-        {
-            /* И это каталог */
-
-            /* Выделить последнюю компоненту пути from */
-            if ((s = strrchr(from, '/')) && s[1])
-                s++;
-            else    
-                s = from;
-
-            dirname = to;
-
-            /* Целевой файл - файл в этом каталоге */
-            sprintf(newname, "%s/%s", to, s);
-            to = newname;
-
-            if (stat(to, &stt) < 0)
-                goto not_exist;
-        }
-
-        if (stt.st_dev == stf.st_dev && stt.st_ino == stf.st_ino)
-        {
-            if (DBG_MODE) logAddLine("%s: cannot copy file to itself", from);
-            return (-3);
-        }
-        switch (stt.st_mode & S_IFMT)
-        {
-            case S_IFBLK:
-            case S_IFCHR:
-            case S_IFIFO:
-                break;
-
-            default:
-                if (DBG_MODE) logAddLine("%s already exists, overwrite ? ", to);
-                fflush(stdout);
-
-                *answer = '\0';
-                char* input_answer = gets(answer);
-
-                if (*answer != 'y')
-                {     /* NO */
-                    close(fdin);
-                    return (-4);
-                }
-                break;
-        }
-    }
-
-not_exist:
-
-    if (DBG_MODE) logAddLine("COPY %s TO %s\n", from, to);
-
-    if ((stf.st_mode & S_IFMT) == S_IFREG)
-    {
-        /* Проверка наличия свободного места в каталоге dirname */
-        struct statvfs fs;
-        char tmpbuf[MAXPATHLEN+1];
-
-        if(dirname == NULL)
-        {
-            /* То 'to' - это имя файла, а не каталога */
-            strcpy(tmpbuf, to);
-            if (s = strrchr(tmpbuf, '/'))
-            {
-                if (*tmpbuf != '/' || s != tmpbuf)
-                {
-                    /* Имена "../xxx"
-                    * и второй случай:
-                    * абсолютные имена не в корне,
-                    * то есть не "/" и не "/xxx"
-                    */
-                    *s = '\0';
-                }
-                else
-                {
-                    /* "/" или "/xxx" */
-                    if(s[1]) s[1] = '\0';
-                }
-                dirname = tmpbuf;
-            }
-            else
-                dirname = ".";
-        }
-
-        if (statvfs(dirname, &fs) >= 0)
-        {
-            size_t size = (geteuid() == 0 ) ?
-                /* Доступно суперпользователю: байт */
-                fs.f_frsize * fs.f_bfree :
-                /* Доступно обычному пользователю: байт */
-                fs.f_frsize * fs.f_bavail;
-
-            if (size < stf.st_size)
-            {
-                if (DBG_MODE) logAddLine("Not enough free space on %s: have %lu, need %lu", dirname, size, stf.st_size);
-                close(fdin);
-                return (-5);
-            }
-        }
-    }
-
-    if ((fdout = creat(to, stf.st_mode)) < 0)
-    {
-        if (DBG_MODE) logAddLine("Can't create %s", to);
-        close(fdin);
-        return (-6);
-    }
-    else
-    {
-        fchmod(fdout, stf.st_mode);
-        fchown(fdout, stf.st_uid, stf.st_gid);
-    }
-
-    while (n = read (fdin, iobuf, sizeof iobuf))
-    {
-        if (n < 0)
-        {
-            if (DBG_MODE) logAddLine("read error");
-            code = (-7);
-            goto done;
-        }
-        if (write(fdout, iobuf, n) != n)
-        {
-            if (DBG_MODE) logAddLine("write error");
-            code = (-8);
-            goto done;
-        }
-    }
-
-done:
-    close (fdin);
-    close (fdout);
-
-    /* Проверить: соответствует ли результат ожиданиям */
-    if (stat(to, &stt) >= 0 && (stt.st_mode & S_IFMT) == S_IFREG)
-    {
-        if (stf.st_size < stt.st_size)
-        {
-            if (DBG_MODE) logAddLine("File has grown at the time of copying");
-        }
-        else
-            if (stf.st_size > stt.st_size)
-            {
-                if (DBG_MODE) logAddLine("File too short, target %s removed", to);
-                unlink(to);
-                code = (-9);
-            }
-    }
-    return code;
 }
 
 
@@ -361,65 +178,65 @@ BOOL del_file(char *FileName)
 */
 unsigned int load_txt_file_size(char *FileName, char *result)
 {
-	unsigned int size = 0;
-	FILE *f = fopen(FileName, "rb");
-	if (f == NULL) 
-	{ 
-		result = NULL;
+    unsigned int size = 0;
+    FILE *f = fopen(FileName, "rb");
+    if (f == NULL)
+    {
+        result = NULL;
         if (DBG_MODE) logAddLine("ERROR. load_txt_file_size. Open file <%s>", FileName);
-		return -1; // -1 means file opening fail 
-	} 
-	fseek(f, 0, SEEK_END);
-	size = ftell(f);
-	fseek(f, 0, SEEK_SET);
-	result = (char *) malloc(size+1);
-	if (size != fread(result, sizeof(char), size, f)) 
-	{ 
-		result = strfree(result);
+        return -1; // -1 means file opening fail
+    }
+    fseek(f, 0, SEEK_END);
+    size = ftell(f);
+    fseek(f, 0, SEEK_SET);
+    result = (char *) malloc(size+1);
+    if (size != fread(result, sizeof(char), size, f))
+    {
+        result = strfree(result);
         if (DBG_MODE) logAddLine("ERROR. load_txt_file_size. Read file <%s>", FileName);
-		return -2; // -2 means file reading fail 
-	} 
-	fclose(f);
-	result[size] = 0;
+        return -2; // -2 means file reading fail
+    }
+    fclose(f);
+    result[size] = 0;
     if (DBG_MODE) logAddLine("INFO. load_txt_file_size. File <%s>\tSize <%d>", FileName, size);
-	return size;
+    return size;
 }
 
 
 char *load_txt_file(char *FileName)
 {
     char *result = NULL;
-	unsigned int size = 0;
-	FILE *f = fopen(FileName, "rb");
+    unsigned int size = 0;
+    FILE *f = fopen(FileName, "rb");
     unsigned int i = 0;
-    
-	if (f == NULL) 
-	{ 
+
+    if (f == NULL)
+    {
         if (DBG_MODE) print_color_txt(IC_RED_COLOR_TEXT, "ERROR. load_txt_file. Open file <%s>\n", FileName);
-		return NULL;
-	} 
-    
-	fseek(f, 0, SEEK_END);
-	size = ftell(f);
-	fseek(f, 0, SEEK_SET);
-	result = (char *) calloc(size + 1, sizeof(char));
-    
-	if (size != fread(result, sizeof(char), size, f)) 
-	{ 
-		result= strfree(result);
+        return NULL;
+    }
+
+    fseek(f, 0, SEEK_END);
+    size = ftell(f);
+    fseek(f, 0, SEEK_SET);
+    result = (char *) calloc(size + 1, sizeof(char));
+
+    if (size != fread(result, sizeof(char), size, f))
+    {
+        result= strfree(result);
         if (DBG_MODE) print_color_txt(IC_RED_COLOR_TEXT, "ERROR. load_txt_file. Read file <%s>\n", FileName);
-		return NULL;
-	} 
-	fclose(f);
-    
+        return NULL;
+    }
+    fclose(f);
+
     //Удалить все 0 и заменить их на пробелы
     for (i = 0; i < size; i++)
         if (result[i] == '\0')
             result[i] = ' ';
-	result[size] = '\0';
-    
+    result[size] = '\0';
+
     if (DBG_MODE) print_color_txt(IC_WHITE_COLOR_TEXT, "INFO. load_txt_file. File <%s>\tSize <%d>\n", FileName, size);
-	return result;
+    return result;
 }
 
 
@@ -445,29 +262,29 @@ double min(double a, double b)
 */
 char *itoa(int value, int base)
 {
-    char *result = (char *) calloc(MAX_NUM_LEN + 1, sizeof(char)); 
-    
-	// check that the base if valid
-	if (base < 2 || base > 16) 
-		 return NULL;
+    char *result = (char *) calloc(MAX_NUM_LEN + 1, sizeof(char));
 
-	char *out = result;
-	int quotient = value;
+    // check that the base if valid
+    if (base < 2 || base > 16)
+         return NULL;
 
-	do 
+    char *out = result;
+    int quotient = value;
+
+    do
     {
-		*out = "0123456789abcdef"[ abs( quotient % base ) ];
-		++out;
-		quotient /= base;
-	} while (quotient);
+        *out = "0123456789abcdef"[ abs( quotient % base ) ];
+        ++out;
+        quotient /= base;
+    } while (quotient);
 
-	// Only apply negative sign for base 10
-	if (value < 0 && base == 10) 
+    // Only apply negative sign for base 10
+    if (value < 0 && base == 10)
         *out++ = '-';
 
-	*out = 0;
+    *out = 0;
 
-	return result;
+    return result;
 }
 
 
@@ -477,17 +294,17 @@ char *itoa(int value, int base)
 static double PRECISION = 0.00000000000001;
 static int MAX_NUMBER_STRING_SIZE = 32;
 
-char* dtoa(double n) 
+char* dtoa(double n)
 {
     char *s = (char *) calloc(80, sizeof(char));
-    
-    if (isnan(n)) 
+
+    if (isnan(n))
         strcpy(s, "nan");
     else if (isinf(n))
         strcpy(s, "inf");
     else if (n == 0.0)
         strcpy(s, "0");
-    else 
+    else
     {
         int digit = 0;
         int m = 0;
@@ -496,13 +313,13 @@ char* dtoa(double n)
         int neg = (n < 0);
         if (neg)
             n = -n;
-            
+
         m = log10(n);
         int useExp = (m >= 14 || (neg && m >= 9) || m <= -9);
         if (neg)
             *(c++) = '-';
-            
-        if (useExp) 
+
+        if (useExp)
         {
             if (m < 0)
                 m -= 1.0;
@@ -510,13 +327,13 @@ char* dtoa(double n)
             m1 = m;
             m = 0;
         }
-        if (m < 1.0) 
+        if (m < 1.0)
             m = 0;
-            
-        while (n > PRECISION || m >= 0) 
+
+        while (n > PRECISION || m >= 0)
         {
             double weight = pow(10.0, m);
-            if (weight > 0 && !isinf(weight)) 
+            if (weight > 0 && !isinf(weight))
             {
                 digit = floor(n / weight);
                 n -= (digit * weight);
@@ -526,27 +343,27 @@ char* dtoa(double n)
                 *(c++) = '.';
             m--;
         }
-        if (useExp) 
+        if (useExp)
         {
             int i = 0;
             int j = 0;
             *(c++) = 'e';
-            if (m1 > 0) 
+            if (m1 > 0)
                 *(c++) = '+';
-            else 
+            else
             {
                 *(c++) = '-';
                 m1 = -m1;
             }
             m = 0;
-            while (m1 > 0) 
+            while (m1 > 0)
             {
                 *(c++) = '0' + m1 % 10;
                 m1 /= 10;
                 m++;
             }
             c -= m;
-            for (i = 0, j = m-1; i<j; i++, j--) 
+            for (i = 0, j = m-1; i<j; i++, j--)
             {
                 c[i] ^= c[j];
                 c[j] ^= c[i];
@@ -571,7 +388,7 @@ int bytes_to_int(BYTE *bytes)
 {
     if (bytes == NULL)
         return 0;
-        
+
     int result = (bytes[1] << 8) | bytes[0];
     return result;
 }
@@ -583,7 +400,7 @@ double bytes_to_double(BYTE *bytes)
         return 0.0;
 
     double result = 0.0;
-    memcpy(&result, bytes, sizeof(double));   
+    memcpy(&result, bytes, sizeof(double));
     return result;
 }
 
@@ -594,15 +411,15 @@ long time_to_long(char *buffer)
     int i = 0;
     int j = 0;
     int k = 0;
-    
+
     for(Time = i = j = 0; i < 3; i++)
     {
         sscanf(&buffer[j], "%d", &k);
         Time = Time * 60 + k;
         for(; buffer[j] != ':' && buffer[j]; j++);
-        if (!buffer[j]) 
-            break; 
-        else 
+        if (!buffer[j])
+            break;
+        else
             j++;
     }
     return Time;
@@ -612,11 +429,11 @@ long time_to_long(char *buffer)
 char *long_to_time(long ltime)
 {
     char *buffer = (char *) calloc(9, sizeof(char));
-    if (ltime >= 0 && ltime != 1000000000) 
+    if (ltime >= 0 && ltime != 1000000000)
         sprintf(buffer, "%02ld:%02ld:%02ld", (ltime/3600)%24, (ltime/60)%60, ltime%60);
-    else 
+    else
         strcpy(buffer,"##:##:##");
-    if (ltime != 1000000000 && ltime >= 86400) 
+    if (ltime != 1000000000 && ltime >= 86400)
         sprintf(&buffer[9], "%06ld", ltime/86400);
     return buffer;
 }
@@ -635,26 +452,26 @@ long get_now_time(void)
 *       src_len=-1
 *       bFree=FALSE
 */
-char *norm_path(char *src, size_t src_len, BOOL bFree) 
+char *norm_path(char *src, size_t src_len, BOOL bFree)
 {
     char * res = NULL;
     size_t res_len;
 
     if (src_len < 0)
         src_len = strlen(src)-1;
-        
+
     const char *ptr = src;
     const char *end = &src[src_len];
     const char *next = NULL;
 
-    if (src_len == 0 || src[0] != '/') 
+    if (src_len == 0 || src[0] != '/')
     {
         // relative path
 
         char pwd[PATH_MAX];
         size_t pwd_len;
 
-        if (getcwd(pwd, sizeof(pwd)) == NULL) 
+        if (getcwd(pwd, sizeof(pwd)) == NULL)
         {
             return NULL;
         }
@@ -663,29 +480,29 @@ char *norm_path(char *src, size_t src_len, BOOL bFree)
         res = (char *) malloc(pwd_len + 1 + src_len + 1);
         memcpy(res, pwd, pwd_len);
         res_len = pwd_len;
-    } 
-    else 
+    }
+    else
     {
         res = (char *) malloc((src_len > 0 ? src_len : 1) + 1);
         res_len = 0;
     }
 
-    for (ptr = src; ptr < end; ptr=next+1) 
+    for (ptr = src; ptr < end; ptr=next+1)
     {
         size_t len;
         next = (char *) memchr(ptr, '/', end-ptr);
-        if (next == NULL) 
+        if (next == NULL)
         {
             next = end;
         }
         len = next-ptr;
-        switch(len) 
+        switch(len)
         {
             case 2:
-                if (ptr[0] == '.' && ptr[1] == '.') 
+                if (ptr[0] == '.' && ptr[1] == '.')
                 {
                     const char * slash = (char *) memrchr(res, '/', res_len);
-                    if (slash != NULL) 
+                    if (slash != NULL)
                     {
                         res_len = slash - res;
                     }
@@ -693,7 +510,7 @@ char *norm_path(char *src, size_t src_len, BOOL bFree)
                 }
                 break;
             case 1:
-                if (ptr[0] == '.') 
+                if (ptr[0] == '.')
                 {
                     continue;
 
@@ -707,15 +524,16 @@ char *norm_path(char *src, size_t src_len, BOOL bFree)
         res_len += len;
     }
 
-    if (res_len == 0) 
+    if (res_len == 0)
     {
         res[res_len++] = '/';
     }
     res[res_len] = '\0';
-    
+
     if (bFree)
-        src = strfree(src);
-        
+        // src = strfree(src);
+        strfree(src);
+
     return res;
 }
 
@@ -741,18 +559,19 @@ char *change_filename_ext(char *filename, const char *new_ext, BOOL bFree)
 {
     char *ext_filename = strrchr(filename, '.');
     char *result_filename = NULL;
-    
+
     if (ext_filename != NULL)
     {
-        char *base = strleft(filename, ext_filename - filename);
+        char *base = strleft(filename, ext_filename - filename, FALSE);
         result_filename = strprintf(NULL, "%s%s", base, new_ext);
         base = strfree(base);
     }
     else
         result_filename = strprintf(NULL, "%s%s", filename, new_ext);
-    
+
     if (bFree)
-        filename = strfree(filename);
+        // filename = strfree(filename);
+        strfree(filename);
     return result_filename;
 }
 
@@ -768,7 +587,7 @@ BOOL is_samefile(const char *filename1, const char *filename2)
 
     if (st1.st_dev != st2.st_dev || st1.st_ino != st2.st_ino)
         return FALSE;
-        
+
     return TRUE;
 }
 
@@ -801,6 +620,6 @@ void print_color_txt(unsigned int iColor, char *str, ...)
         strcpy(color, "\x1b[37m");
     else if (iColor ==  IC_NORMAL_COLOR_TEXT)
         strcpy(color, "\x1b[0m");
-    
+
     printf("%s %s\x1b[0m", color, msg);
 }

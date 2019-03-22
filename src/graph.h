@@ -12,21 +12,22 @@
 #include <cairo.h>
 
 #include "ictypes.h"
+#include "log.h"
 #include "main.h"
 
 /**
 *   Цвета CGA
 */
-#define BLACK 	        0 	
-#define BLUE 	        1 	
-#define GREEN 	        2 	
-#define CYAN 	        3 	
-#define RED 	        4 	
-#define MAGENTA 	    5 	
-#define BROWN 	        6 	
-#define LIGHTGRAY 	    7 	
+#define BLACK           0
+#define BLUE            1
+#define GREEN           2
+#define CYAN            3
+#define RED             4
+#define MAGENTA         5
+#define BROWN           6
+#define LIGHTGRAY       7
 #define DARKGRAY        8
-#define LIGHTBLUE       9   
+#define LIGHTBLUE       9
 #define LIGHTGREEN      10
 #define LIGTHCYAN       11
 #define LIGHTRED        12
@@ -100,21 +101,21 @@ typedef struct
 {
     unsigned AxisX:     1;  /** */
     unsigned AxisY:     1;  /** */
-    
+
     unsigned GridX:     1;  /** */
     unsigned GridY:     1;  /** */
-    
+
     unsigned NumberX:   1;  /** */
     unsigned NumberY:   1;  /** */
-    
+
     unsigned Clear:     1;  /** */
-    
+
     unsigned XType:     2;  /** */
     unsigned YType:     2;  /** */
-    
+
     unsigned Origin:    1;  /** */
     unsigned DType:     1;  /** */
-    
+
     unsigned Line:      2;  /** */
 } GRAPH_STATUS;
 
@@ -131,20 +132,21 @@ typedef struct
 /**
 *   Данные графика
 */
-typedef struct
+struct GRAPH_DATA
 {
     GRAPH_STATUS *Status;
     GRAPH_COLOR  *Color;
-    
+
     void (*GetPoint)(struct GRAPH_DATA *graph_data, double*, double*, long);   /** Функция получения координат точки по ее индексу */
-    
+
     long   NPoints;     /** Количество точек */
-    
+
     GRAPH_POINT *Points; /** Точки графика */
-    
+
     double x1, y1, x2, y2;      /** Диапазон данных графика (Сцена) */
-    int    X1, Y1, X2,  Y2;     /** Графическая граница области графика */ 
-} GRAPH_DATA;
+    int    X1, Y1, X2,  Y2;     /** Графическая граница области графика */
+};
+//} GRAPH_DATA;
 
 
 /**
@@ -155,11 +157,11 @@ typedef struct
     double dX;
     double dY;
     int    X1, Y1, X2, Y2;  /** Размеры самого графика */
-    GRAPH_DATA *G;  
-    
+    GRAPH_DATA *G;
+
     cairo_surface_t *Surface;
     cairo_t *CR;
-    
+
 } GRAPH;
 
 /**

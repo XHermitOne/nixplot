@@ -13,14 +13,14 @@
 /**
 * Менеджер лога
 */
-typedef struct 
+typedef struct
 {
     FILE *out;
     BOOL isNew;
 } LogInit;
 
 
-struct LogInit* log_open(char *LogName);
+LogInit* log_open(char *LogName);
 BOOL log_close();
 
 void logAddLine(char *S, ...);
