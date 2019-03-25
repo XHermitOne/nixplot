@@ -180,6 +180,12 @@ int Draw(GRAPH *graph, GRAPH_DATA *Grp, BOOL isPrintMode)
     if (DBG_MODE) logAddLine("\tX2: %d Y2: %d", graph->X2, graph->Y2);
     if (DBG_MODE) logAddLine("\tdX: %f dY: %f", graph->dX, graph->dY);
 
+    // Переносим настройки на данные графика
+    graph->G->X1 = graph->X1;
+    graph->G->Y1 = graph->Y1;
+    graph->G->X2 = graph->X2;
+    graph->G->Y2 = graph->Y2;
+
     CheckGraph(graph);
     DrawGrid(graph);
     DrawAxis(graph);
@@ -203,6 +209,9 @@ void CheckGraph(GRAPH *graph)
     if (graph->G->y1 > graph->G->y2)
         swap(&graph->G->y1, &graph->G->y2, sizeof(double));
 
+    if (DBG_MODE) logAddLine("Check coord graph options:");
+    if (DBG_MODE) logAddLine("\tX1: %d Y1: %d", graph->G->X1, graph->G->Y1);
+    if (DBG_MODE) logAddLine("\tX2: %d Y2: %d", graph->G->X2, graph->G->Y2);
     CheckCoords(&graph->G->X1, &graph->G->X2, MINX, MAXX, 200);
     CheckCoords(&graph->G->Y1, &graph->G->Y2, MINY, MAXY, 200);
 
@@ -294,6 +303,54 @@ void swap(void *Src, void *Dst, int Size)
 
 
 /**
+*   Отрисовка области под надписи
+*/
+static void drawLabelArea(GRAPH *graph)
+{
+    // Отрисовка области под надписи
+    setCGAColor(graph, graph->G->Color->Ground);
+    // Косяк с заливкой------------------------------------------------v
+    cairo_rectangle(graph->CR, graph->G->X1, graph->Y2, graph->G->X2 + 1, graph->G->Y2);
+    // Операция cairo_fill() используется вместо контура как шаблон закрашивания.
+    cairo_fill(graph->CR);
+
+    setCGAColor(graph, graph->G->Color->Ground);
+    cairo_rectangle(graph->CR, graph->G->X1, graph->G->Y1, graph->X1, graph->Y2);
+    // Операция cairo_fill() используется вместо контура как шаблон закрашивания.
+    cairo_fill(graph->CR);
+}
+
+/**
+*   Область поля графика
+*/
+static void drawGraphArea(GRAPH *graph)
+{
+    // Область поля графика
+    setCGAColor(graph, graph->G->Color->Ground);
+    cairo_rectangle(graph->CR, graph->X1, graph->G->Y1, graph->G->X2, graph->Y2);
+    // Операция cairo_fill() используется вместо контура как шаблон закрашивания.
+    cairo_fill(graph->CR);
+}
+
+
+/**
+*   Бордер
+*/
+static void drawBorder(GRAPH *graph)
+{
+    // Бордер
+    setCGAColor(graph, graph->G->Color->Border);
+
+    cairo_rectangle(graph->CR, graph->X1, graph->Y1, graph->X2, graph->Y2);
+    // Дополнительная вертикальная линия (какой то косяк с cairo_rectangle)
+    cairo_move_to(graph->CR, graph->X2, graph->Y1);
+    cairo_line_to(graph->CR, graph->X2, graph->Y2);
+    // Операция cairo_stroke() применяет виртуальный карандаш вдоль контура.
+    cairo_stroke(graph->CR);
+}
+
+
+/**
 *   Отрисовка сетки
 */
 void DrawGrid(GRAPH *graph)
@@ -332,32 +389,13 @@ void DrawGrid(GRAPH *graph)
     TMP0Y = graph->Y2 - (tmpy - graph->G->y1) * graph->dY;
 
     // Отрисовка области под надписи
-    setCGAColor(graph, graph->G->Color->Ground);
-    // Косяк с заливкой------------------------------------------------v
-    cairo_rectangle(graph->CR, graph->G->X1, graph->Y2, graph->G->X2 + 1, graph->G->Y2);
-    // Операция cairo_fill() используется вместо контура как шаблон закрашивания.
-    cairo_fill(graph->CR);
-
-    setCGAColor(graph, graph->G->Color->Ground);
-    cairo_rectangle(graph->CR, graph->G->X1, graph->G->Y1, graph->X1, graph->Y2);
-    // Операция cairo_fill() используется вместо контура как шаблон закрашивания.
-    cairo_fill(graph->CR);
+    drawLabelArea(graph);
 
     // Область поля графика
-    setCGAColor(graph, graph->G->Color->Ground);
-    cairo_rectangle(graph->CR, graph->X1, graph->G->Y1, graph->G->X2, graph->Y2);
-    // Операция cairo_fill() используется вместо контура как шаблон закрашивания.
-    cairo_fill(graph->CR);
+    drawGraphArea(graph);
 
     // Бордер
-    setCGAColor(graph, graph->G->Color->Border);
-
-    cairo_rectangle(graph->CR, graph->X1, graph->Y1, graph->X2, graph->Y2);
-    // Дополнительная вертикальная линия (какой то косяк с cairo_rectangle)
-    cairo_move_to(graph->CR, graph->X2, graph->Y1);
-    cairo_line_to(graph->CR, graph->X2, graph->Y2);
-    // Операция cairo_stroke() применяет виртуальный карандаш вдоль контура.
-    cairo_stroke(graph->CR);
+    drawBorder(graph);
 
     // Сетка
     setCGAColor(graph, graph->G->Color->Grid);
