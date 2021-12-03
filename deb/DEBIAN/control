@@ -1,6 +1,6 @@
 Package: nixplot
-Version: 1.1
-Architecture: i386
+Version: 2.1
+Architecture: x86_64
 Maintainer: <xhermitone@gmail.com>
 Depends: libcairo2
 Section: contrib/otherosfs

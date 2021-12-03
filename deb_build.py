@@ -1,4 +1,4 @@
-# !/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 """
@@ -7,14 +7,76 @@
 
 import os
 import os.path
+import platform
 
-__version__ = (0, 0, 2, 1)
+__version__ = (0, 0, 3, 1)
 __author__ = 'xhermit'
 
+def getPlatform():
+    """
+    Get platform name.
+    """
+    return platform.uname()[0].lower()
+
+def isWindowsPlatform():
+    return getPlatform() == 'windows'
+
+
+def isLinuxPlatform():
+    return getPlatform() == 'linux'
+
+def getOSVersion():
+    """
+    Get OS version.
+    """
+    try:
+        if isLinuxPlatform():
+            import distro
+            return distro.linux_distribution()
+        elif isWindowsPlatform():
+            try:
+                cmd = 'wmic os get Caption'
+                p = subprocess.Popen(cmd.split(' '), stdout=subprocess.PIPE)
+            except FileNotFoundError:
+                log_func.error('WMIC.exe was not found. Make sure \'C:\Windows\System32\wbem\' is added to PATH')
+                return None
+
+            stdout, stderror = p.communicate()
+
+            output = stdout.decode('UTF-8', 'ignore')
+            lines = output.split('\r\r')
+            lines = [line.replace('\n', '').replace('  ', '') for line in lines if len(line) > 2]
+            return lines[-1]
+    except:
+        log_func.fatal(u'Error get OS version')
+    return None
+
+def getPlatformKernel():
+    """
+    Get kernel.
+    """
+    try:
+        return platform.release()
+    except:
+        log_func.fatal(u'Error get platform kernel')
+    return None
+
+
+def getCPUSpec():
+    """
+    Get CPU specification.
+    """
+    try:
+        return platform.processor()
+    except:
+        log_func.fatal(u'Error get CPU specification')
+    return None
+
+
 PACKAGENAME='nixplot'
-PACKAGE_VERSION='1.1'
-LINUX_VERSION='ubuntu14.04'
-LINUX_PLATFORM='i386'
+PACKAGE_VERSION='2.1'
+LINUX_VERSION='-'.join([str(x).lower() for x in getOSVersion()[:-1]])
+LINUX_PLATFORM=getCPUSpec()
 COPYRIGHT='<xhermitone@gmail.com>'
 DESCRIPTION='The Linux PNG/PDF command-line driven graphing utility'
 
@@ -43,8 +105,6 @@ Description: %s
 
 
 def print_color_txt(sTxt, sColor=NORMAL_COLOR_TEXT):
-    if type(sTxt) == unicode:
-        sTxt = sTxt.encode('DEFAULT_ENCODING')
     txt = sColor + sTxt + NORMAL_COLOR_TEXT
     print(txt)
 
@@ -82,6 +142,8 @@ def build_deb():
         raise
         
     if os.path.exists('nixplot'):
+        if not os.path.exists('./deb/usr/bin'):
+            os.makedirs('./deb/usr/bin')
         # Копировать в папку сборки файл программы
         sys_cmd('cp ./nixplot ./deb/usr/bin')
 
@@ -104,6 +166,7 @@ def build():
 
     start_time = time.time()
     # print_color_txt(__doc__,CYAN_COLOR_TEXT)
+    sys_cmd('rm *.deb')
     compile_and_link()
     build_deb()
     sys_cmd('ls *.deb')
