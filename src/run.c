@@ -18,7 +18,8 @@ BOOL DBG_MODE = TRUE;
 */
 BOOL draw_png(char *png_filename, GRAPH_DATA *graph_data, int x_type, int y_type,
               unsigned int width, unsigned int height,
-              double scene_x1, double scene_y1, double scene_x2, double scene_y2)
+              double scene_x1, double scene_y1, double scene_x2, double scene_y2,
+              double dx, double dy)
 {
     cairo_surface_t *surface;
     cairo_t *cr;
@@ -38,8 +39,14 @@ BOOL draw_png(char *png_filename, GRAPH_DATA *graph_data, int x_type, int y_type
     //cairo_surface_set_device_offset(surface, 0.0, 1.0);
     cr = cairo_create(surface);
 
+    // Значения по умолчанию
+    if (dx <= 0)
+        dx = 20;
+    if (dy <= 0)
+        dy = 2;
+
     GRAPH graphic;
-    initGraph(&graphic, graph_data, surface, cr, width, height);
+    initGraph(&graphic, graph_data, surface, cr, width, height, dx, dy);
 
     if (graph_data != NULL)
     {
@@ -82,7 +89,8 @@ BOOL draw_png(char *png_filename, GRAPH_DATA *graph_data, int x_type, int y_type
 */
 BOOL draw_pdf(char *pdf_filename, GRAPH_DATA * graph_data, int x_type, int y_type,
               unsigned int width, unsigned int height,
-              double scene_x1, double scene_y1, double scene_x2, double scene_y2)
+              double scene_x1, double scene_y1, double scene_x2, double scene_y2,
+              double dx, double dy)
 {
     cairo_surface_t *surface;
     cairo_t *cr;
@@ -102,8 +110,14 @@ BOOL draw_pdf(char *pdf_filename, GRAPH_DATA * graph_data, int x_type, int y_typ
     cairo_surface_set_device_offset(surface, 0.0, 1.0);
     cr = cairo_create(surface);
 
+    // Значения по умолчанию
+    if (dx <= 0)
+        dx = 20;
+    if (dy <= 0)
+        dy = 2;
+
     GRAPH graphic;
-    initGraph(&graphic, graph_data, surface, cr, width, height);
+    initGraph(&graphic, graph_data, surface, cr, width, height, dx, dy);
 
     if (graph_data != NULL)
     {
@@ -291,6 +305,51 @@ BOOL getSceneData(char *str_scene_data, double *x1, double *y1, double *x2, doub
 }
 
 /**
+* Функция определения кода цвета по его имени
+*/
+char getColorByName(char *color_name)
+{
+    color_name = strupr_lat(color_name);
+    if (strequal(color_name, "BLACK"))
+        return BLACK;
+    else if (strequal(color_name, "BLUE"))
+        return BLUE;
+    else if (strequal(color_name, "GREEN"))
+        return GREEN;
+    else if (strequal(color_name, "CYAN"))
+        return CYAN;
+    else if (strequal(color_name, "RED"))
+        return RED;
+    else if (strequal(color_name, "MAGENTA"))
+        return MAGENTA;
+    else if (strequal(color_name, "BROWN"))
+        return BROWN;
+    else if (strequal(color_name, "LIGHTGRAY"))
+        return LIGHTGRAY;
+    else if (strequal(color_name, "DARKGRAY"))
+        return DARKGRAY;
+    else if (strequal(color_name, "LIGHTBLUE"))
+        return LIGHTBLUE;
+    else if (strequal(color_name, "LIGHTGREEN"))
+        return LIGHTGREEN;
+    else if (strequal(color_name, "LIGTHCYAN"))
+        return LIGTHCYAN;
+    else if (strequal(color_name, "LIGHTRED"))
+        return LIGHTRED;
+    else if (strequal(color_name, "LIGHTMAGENTA"))
+        return LIGHTMAGENTA;
+    else if (strequal(color_name, "YELLOW"))
+        return YELLOW;
+    else if (strequal(color_name, "WHITE"))
+        return WHITE;
+
+    if (DBG_MODE)
+        logAddLine("Not define color <%s>", color_name);
+    // По умолчанию белый цвет
+    return WHITE;
+}
+
+/**
 * Функция запуска основного алгоритма
 */
 int run(int argc, char *argv[])
@@ -322,6 +381,8 @@ int run(int argc, char *argv[])
     double scene_y1 = 0.0;
     double scene_x2 = 0.0;
     double scene_y2 = 0.0;
+    double dx = 0.0;
+    double dy = 0.0;
 
     const struct option long_opts[] = {
               { "debug", no_argument, NULL, 'd' },
@@ -337,11 +398,19 @@ int run(int argc, char *argv[])
               { "width", required_argument, NULL, 'W' },
               { "height", required_argument, NULL, 'H' },
               { "scene", required_argument, NULL, 's' },
+              { "text_color", required_argument, NULL, 't' },
+              { "ground_color", required_argument, NULL, 'f' },
+              { "border_color", required_argument, NULL, 'b' },
+              { "grid_color", required_argument, NULL, 'g' },
+              { "axis_color", required_argument, NULL, 'a' },
+              { "pen0_color", required_argument, NULL, 'q' },
+              { "dx", required_argument, NULL, 'T' },
+              { "dy", required_argument, NULL, 'D' },
               { NULL, 0, NULL, 0 }
        };
 
     if (DBG_MODE) logAddLine("OPTIONS:");
-    while ((opt = getopt_long(argc, argv, "dlvhOIPXY0WHs:", long_opts, NULL)) != -1)
+    while ((opt = getopt_long(argc, argv, "dlvhOIPXY0WHstfbgaqTD:", long_opts, NULL)) != -1)
     {
         switch (opt)
         {
@@ -426,6 +495,46 @@ int run(int argc, char *argv[])
                 if (DBG_MODE) logAddLine("\t--scene = %s", optarg);
                 break;
 
+            case 't':
+                LGColor.Text = getColorByName(optarg);
+                if (DBG_MODE) logAddLine("\t--text_color = %s", optarg);
+                break;
+
+            case 'f':
+                LGColor.Ground = getColorByName(optarg);
+                if (DBG_MODE) logAddLine("\t--ground_color = %s", optarg);
+                break;
+
+            case 'b':
+                LGColor.Border = getColorByName(optarg);
+                if (DBG_MODE) logAddLine("\t--border_color = %s", optarg);
+                break;
+
+            case 'g':
+                LGColor.Grid = getColorByName(optarg);
+                if (DBG_MODE) logAddLine("\t--grid_color = %s", optarg);
+                break;
+
+            case 'a':
+                LGColor.Axis = getColorByName(optarg);
+                if (DBG_MODE) logAddLine("\t--axis_color = %s", optarg);
+                break;
+
+            case 'q':
+                LGColor.Line = getColorByName(optarg);
+                if (DBG_MODE) logAddLine("\t--pen0_color = %s", optarg);
+                break;
+
+            case 'T':
+                dx = time_to_long(optarg);
+                if (DBG_MODE) logAddLine("\t--dx = %s", optarg);
+                break;
+
+            case 'D':
+                dy = atof(optarg);
+                if (DBG_MODE) logAddLine("\t--dy = %s", optarg);
+                break;
+
             default:
                 fprintf(stderr, "Unknown parameter: \'%c\'", opt);
                 return FALSE;
@@ -434,10 +543,10 @@ int run(int argc, char *argv[])
 
     if (bPNG == TRUE)
         draw_png(output_filename, pen_0, x_type, y_type, img_width, img_height,
-                 scene_x1, scene_y1, scene_x2, scene_y2);
+                 scene_x1, scene_y1, scene_x2, scene_y2, dx, dy);
     else if (bPDF == TRUE)
         draw_pdf(output_filename, pen_0, x_type, y_type, img_width, img_height,
-                 scene_x1, scene_y1, scene_x2, scene_y2);
+                 scene_x1, scene_y1, scene_x2, scene_y2, dx, dy);
 
     return 1;
 }

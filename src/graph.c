@@ -6,7 +6,7 @@
 #include "graph.h"
 
 // Цвета режима графического вывода
-static GRAPH_COLOR  LGColor = {CYAN, BLACK, DARKGRAY, DARKGRAY, DARKGRAY, YELLOW};
+GRAPH_COLOR  LGColor = {CYAN, BLACK, DARKGRAY, DARKGRAY, DARKGRAY, YELLOW};
 // Цвета режима печати
 static GRAPH_COLOR  LPColor = {BLACK, WHITE, BLACK, BLACK, BLACK, BLACK};
 
@@ -212,6 +212,7 @@ void CheckGraph(GRAPH *graph)
     if (DBG_MODE) logAddLine("Check coord graph options:");
     if (DBG_MODE) logAddLine("\tX1: %d Y1: %d", graph->G->X1, graph->G->Y1);
     if (DBG_MODE) logAddLine("\tX2: %d Y2: %d", graph->G->X2, graph->G->Y2);
+
     CheckCoords(&graph->G->X1, &graph->G->X2, MINX, MAXX, 200);
     CheckCoords(&graph->G->Y1, &graph->G->Y2, MINY, MAXY, 200);
 
@@ -752,7 +753,8 @@ int CrossPoint(double *x1, double *y1, double *x2, double *y2, double x, int Mod
 *   Инициализация структуры графика
 */
 GRAPH *initGraph(GRAPH *graph, GRAPH_DATA *graph_data, cairo_surface_t *surface, cairo_t *cr,
-                 unsigned int width, unsigned int height)
+                 unsigned int width, unsigned int height,
+                 double DX, double DY)
 {
     if (graph == NULL)
     {
@@ -765,8 +767,8 @@ GRAPH *initGraph(GRAPH *graph, GRAPH_DATA *graph_data, cairo_surface_t *surface,
     graph->X2 = width - 1;
     graph->Y2 = height - 1;
 
-    graph->dX = 20;
-    graph->dY = 2;
+    graph->dX = DX;
+    graph->dY = DY;
 
     graph->G = graph_data;
 

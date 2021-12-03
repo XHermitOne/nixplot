@@ -14,8 +14,8 @@ libdir = $(prefix)/lib
 mandir = $(prefix)/man/man1
 includedir = $(prefix)/include
 
-# CC = gcc
-CC = g++
+CC = gcc
+# CC = g++
 DEFS = -DHAVE_CONFIG_H
 #CFLAGS = -g -O2 -Wall
 CFLAGS =

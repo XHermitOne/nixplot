@@ -64,9 +64,27 @@ static char HelpTxt[]="\n\
         --pen7=             Данные пера 8 [x1/y1,x2/y2,...]\n\
         --pen8=             Данные пера 9 [x1/y1,x2/y2,...]\n\
         --pen9=             Данные пера 10 [x1/y1,x2/y2,...]\n\
+        --pen0_color=       Цвет пера 1 \n\
+                            Цвета задаются как BLACK, BLUE, GREEN, CYAN, RED, MAGENTA, BROWN, LIGHTGRAY, DARKGRAY, LIGHTBLUE, LIGHTGREEN, LIGTHCYAN, LIGHTRED, LIGHTMAGENTA, YELLOW, WHITE \n\
+        --pen1_color=       Цвет пера 2\n\
+        --pen2_color=       Цвет пера 3\n\
+        --pen3_color=       Цвет пера 4\n\
+        --pen4_color=       Цвет пера 5\n\
+        --pen5_color=       Цвет пера 6\n\
+        --pen6_color=       Цвет пера 7\n\
+        --pen7_color=       Цвет пера 8\n\
+        --pen8_color=       Цвет пера 9\n\
+        --pen9_color=       Цвет пера 10\n\
+        --text_color=       Цвет текста шкал\n\
+        --ground_color=     Цвет фона\n\
+        --border_color=     Цвет окантовки\n\
+        --grid_color=       Цвет сетки\n\
+        --axis_color=       Цвет осей\n\
         --width=            Ширина в точках\n\
         --height=           Высота в точках\n\
         --scene=            Данные точек видимой сцены\n\
+        --dx=               Цена деления сетки по оси X\n\
+        --dy=               Цена деления сетки по оси Y\n\
 \n\
 ";
 

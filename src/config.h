@@ -23,8 +23,8 @@
 */
 typedef struct
 {
-    const char	*name;  /**< Имя параметра */
-	char    *location;  /**< Значение */
+  const char	*name;  /**< Имя параметра */
+  char    *location;  /**< Значение */
 } Config_t;
 
 

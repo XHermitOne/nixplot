@@ -132,7 +132,7 @@ typedef struct
 /**
 *   Данные графика
 */
-struct GRAPH_DATA
+typedef struct 
 {
     GRAPH_STATUS *Status;
     GRAPH_COLOR  *Color;
@@ -145,8 +145,7 @@ struct GRAPH_DATA
 
     double x1, y1, x2, y2;      /** Диапазон данных графика (Сцена) */
     int    X1, Y1, X2,  Y2;     /** Графическая граница области графика */
-};
-//} GRAPH_DATA;
+} GRAPH_DATA;
 
 
 /**
@@ -163,6 +162,9 @@ typedef struct
     cairo_t *CR;
 
 } GRAPH;
+
+// Цвета режима графического вывода
+extern GRAPH_COLOR  LGColor;
 
 /**
 *   Функции обработки графика
@@ -191,7 +193,8 @@ int  CrossPoint(double *x1, double *y1, double *x2, double *y2, double x, int Mo
 *   Инициализация структуры графика
 */
 GRAPH *initGraph(GRAPH *graph, GRAPH_DATA *graph_data, cairo_surface_t *surface, cairo_t *cr,
-                 unsigned int width, unsigned int height);
+                 unsigned int width, unsigned int height,
+                 double DX, double DY);
 
 /**
 *   Инициализация структуры данных графика
