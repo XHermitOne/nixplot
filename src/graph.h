@@ -1,17 +1,18 @@
 /**
 * Модуль функций отрисовки графиков
 * @file
+* @version 0.0.0.1
 */
 
-#if !defined( __GRAPH_H )
-#define __GRAPH_H
+#if !defined( __graph_t_H )
+#define __graph_t_H
 
 #include <string.h>
 #include <stdio.h>
 #include <math.h>
 #include <cairo.h>
 
-#include "ictypes.h"
+#include "ext_types.h"
 #include "log.h"
 #include "main.h"
 
@@ -76,8 +77,8 @@
 /**
 *   Направление
 */
-#define HORIZ_DIR   0   /** Горизонтальное направление */
-#define VERT_DIR    1   /** Вертикальное направление */
+#define HORIZ_DIRECTION   0   /** Горизонтальное направление */
+#define VERT_DIRECTION    1   /** Вертикальное направление */
 
 
 /**
@@ -85,13 +86,13 @@
 */
 typedef struct
 {
-    char Text;
-    char Ground;
-    char Border;
-    char Grid;
-    char Axis;
-    char Line;
-} GRAPH_COLOR;
+    char text;
+    char ground;
+    char border;
+    char grid;
+    char axis;
+    char line;
+} graph_color_t;
 
 
 /**
@@ -99,25 +100,25 @@ typedef struct
 */
 typedef struct
 {
-    unsigned AxisX:     1;  /** */
-    unsigned AxisY:     1;  /** */
+    unsigned axis_x:     1;  /** */
+    unsigned axis_y:     1;  /** */
 
-    unsigned GridX:     1;  /** */
-    unsigned GridY:     1;  /** */
+    unsigned grid_x:     1;  /** */
+    unsigned grid_y:     1;  /** */
 
-    unsigned NumberX:   1;  /** */
-    unsigned NumberY:   1;  /** */
+    unsigned number_x:   1;  /** */
+    unsigned number_y:   1;  /** */
 
-    unsigned Clear:     1;  /** */
+    unsigned clear:     1;  /** */
 
-    unsigned XType:     2;  /** */
-    unsigned YType:     2;  /** */
+    unsigned x_type:     2;  /** */
+    unsigned y_type:     2;  /** */
 
-    unsigned Origin:    1;  /** */
-    unsigned DType:     1;  /** */
+    unsigned origin:    1;  /** */
+    unsigned dtype:     1;  /** */
 
-    unsigned Line:      2;  /** */
-} GRAPH_STATUS;
+    unsigned line:      2;  /** */
+} graph_status_t;
 
 
 /**
@@ -127,25 +128,25 @@ typedef struct
 {
     double x;
     double y;
-} GRAPH_POINT;
+} graph_point_t;
 
 /**
 *   Данные графика
 */
 typedef struct 
 {
-    GRAPH_STATUS *Status;
-    GRAPH_COLOR  *Color;
+    graph_status_t *status;
+    graph_color_t  *color;
 
-    void (*GetPoint)(struct GRAPH_DATA *graph_data, double*, double*, long);   /** Функция получения координат точки по ее индексу */
+    void (*get_point)(struct graph_data_t *graph_data, double*, double*, long);   /** Функция получения координат точки по ее индексу */
 
-    long   NPoints;     /** Количество точек */
+    long   n_points;     /** Количество точек */
 
-    GRAPH_POINT *Points; /** Точки графика */
+    graph_point_t *points; /** Точки графика */
 
     double x1, y1, x2, y2;      /** Диапазон данных графика (Сцена) */
-    int    X1, Y1, X2,  Y2;     /** Графическая граница области графика */
-} GRAPH_DATA;
+    int    X1, Y1, X2, Y2;      /** Графическая граница области графика */
+} graph_data_t;
 
 
 /**
@@ -156,50 +157,50 @@ typedef struct
     double dX;
     double dY;
     int    X1, Y1, X2, Y2;  /** Размеры самого графика */
-    GRAPH_DATA *G;
+    graph_data_t *graph_data;
 
-    cairo_surface_t *Surface;
-    cairo_t *CR;
+    cairo_surface_t *surface;
+    cairo_t *cr;
 
-} GRAPH;
+} graph_t;
 
 // Цвета режима графического вывода
-extern GRAPH_COLOR  LGColor;
+extern graph_color_t  LGColor;
 
 /**
 *   Функции обработки графика
 */
-void   get_point(GRAPH_DATA *graph_data, double *X, double *Y, long I);
-int    Draw(GRAPH *graph, GRAPH_DATA *Grp, BOOL isPrintMode);
-void   CheckGraph(GRAPH *graph);
-void   DrawGrid(GRAPH *graph);
-void   DrawAxis(GRAPH *graph);
-int    DrawGraph(GRAPH *graph);
-double StepX(GRAPH *graph);
-double StepY(GRAPH *graph);
-double Step(GRAPH *graph, double st, int AType);
-long   MostLeftPoint(GRAPH *graph, double *x, double *y);
-void   OutGridNumber(GRAPH *graph, int x, int y, double Number, int Orient);
-int    Split(GRAPH *graph, double *x1, double *y1, double *x2, double *y2);
+void   get_point(graph_data_t *graph_data, double *X, double *Y, long count);
+int    draw(graph_t *graph, graph_data_t *graph_data, BOOL is_print_mode);
+void   check_graph(graph_t *graph);
+void   draw_grid(graph_t *graph);
+void   draw_axis(graph_t *graph);
+int    draw_graph(graph_t *graph);
+double step_x(graph_t *graph);
+double step_y(graph_t *graph);
+double step(graph_t *graph, double st, int a_type);
+long   most_left_point(graph_t *graph, double *x, double *y);
+void   out_grid_number(graph_t *graph, int x, int y, double number, int orient);
+int    split_graph(graph_t *graph, double *x1, double *y1, double *x2, double *y2);
 
 /**
 *   Функции общего назначения
 */
-void CheckCoords(int *X1, int *X2, int MinX, int MaxX, int dX);
-void swap(void *Src, void *Dst, int Size);
-int  CrossPoint(double *x1, double *y1, double *x2, double *y2, double x, int Mode);
+void check_coords(int *X1, int *X2, int min_x, int max_x, int dX);
+void swap(void *src, void *dst, int size);
+int  cross_point(double *x1, double *y1, double *x2, double *y2, double x, int mode);
 
 /**
 *   Инициализация структуры графика
 */
-GRAPH *initGraph(GRAPH *graph, GRAPH_DATA *graph_data, cairo_surface_t *surface, cairo_t *cr,
-                 unsigned int width, unsigned int height,
-                 double DX, double DY);
+graph_t *init_graph(graph_t *graph, graph_data_t *graph_data, cairo_surface_t *surface, cairo_t *cr,
+                    unsigned int width, unsigned int height,
+                    double DX, double DY);
 
 /**
 *   Инициализация структуры данных графика
 */
-GRAPH_DATA *initGraphData(GRAPH_DATA *graph_data, double x1, double y1, double x2, double y2);
+graph_data_t *init_graph_data(graph_data_t *graph_data, double x1, double y1, double x2, double y2);
 
 
-#endif /* __GRAPH_H */
+#endif /* __graph_t_H */

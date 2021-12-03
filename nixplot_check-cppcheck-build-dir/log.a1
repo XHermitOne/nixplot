@@ -1,0 +1,131 @@
+<?xml version="1.0"?>
+<analyzerinfo checksum="268083064">
+  <FileInfo check="Bounds checking">
+    <ArraySize array="DefaultLogFileName" size="13"/>
+    <ArraySize array="TimeDate" size="128"/>
+  </FileInfo>
+  <FileInfo check="Bounds checking">
+    <ArraySize array="DefaultLogFileName" size="13"/>
+    <ArraySize array="TimeDate" size="128"/>
+  </FileInfo>
+  <FileInfo check="Bounds checking">
+    <ArraySize array="DefaultLogFileName" size="13"/>
+    <ArraySize array="TimeDate" size="128"/>
+  </FileInfo>
+  <FileInfo check="Bounds checking">
+    <ArraySize array="DefaultLogFileName" size="13"/>
+    <ArraySize array="TimeDate" size="128"/>
+  </FileInfo>
+  <FileInfo check="Bounds checking">
+    <ArraySize array="DefaultLogFileName" size="13"/>
+    <ArraySize array="TimeDate" size="128"/>
+  </FileInfo>
+  <FileInfo check="Bounds checking">
+    <ArraySize array="DefaultLogFileName" size="13"/>
+    <ArraySize array="TimeDate" size="128"/>
+  </FileInfo>
+  <FileInfo check="Bounds checking">
+    <ArraySize array="DefaultLogFileName" size="13"/>
+    <ArraySize array="TimeDate" size="128"/>
+  </FileInfo>
+  <FileInfo check="CheckUnusedFunctions">
+    <functiondecl functionName="getTimeDate" lineNumber="26"/>
+    <functiondecl functionName="log_open" lineNumber="43"/>
+    <functiondecl functionName="log_close" lineNumber="68"/>
+    <functiondecl functionName="logAddLine" lineNumber="83"/>
+    <functiondecl functionName="logErr" lineNumber="100"/>
+    <functiondecl functionName="log_warning" lineNumber="117"/>
+    <functiondecl functionName="log_color_line" lineNumber="131"/>
+    <functiondecl functionName="getTimeDate" lineNumber="26"/>
+    <functiondecl functionName="log_open" lineNumber="43"/>
+    <functiondecl functionName="log_close" lineNumber="68"/>
+    <functiondecl functionName="logAddLine" lineNumber="83"/>
+    <functiondecl functionName="logErr" lineNumber="100"/>
+    <functiondecl functionName="log_warning" lineNumber="117"/>
+    <functiondecl functionName="log_color_line" lineNumber="131"/>
+    <functiondecl functionName="getTimeDate" lineNumber="26"/>
+    <functiondecl functionName="log_open" lineNumber="43"/>
+    <functiondecl functionName="log_close" lineNumber="68"/>
+    <functiondecl functionName="logAddLine" lineNumber="83"/>
+    <functiondecl functionName="logErr" lineNumber="100"/>
+    <functiondecl functionName="log_warning" lineNumber="117"/>
+    <functiondecl functionName="log_color_line" lineNumber="131"/>
+    <functiondecl functionName="getTimeDate" lineNumber="26"/>
+    <functiondecl functionName="log_open" lineNumber="43"/>
+    <functiondecl functionName="log_close" lineNumber="68"/>
+    <functiondecl functionName="logAddLine" lineNumber="83"/>
+    <functiondecl functionName="logErr" lineNumber="100"/>
+    <functiondecl functionName="log_warning" lineNumber="117"/>
+    <functiondecl functionName="log_color_line" lineNumber="131"/>
+    <functiondecl functionName="getTimeDate" lineNumber="26"/>
+    <functiondecl functionName="log_open" lineNumber="43"/>
+    <functiondecl functionName="log_close" lineNumber="68"/>
+    <functiondecl functionName="logAddLine" lineNumber="83"/>
+    <functiondecl functionName="logErr" lineNumber="100"/>
+    <functiondecl functionName="log_warning" lineNumber="117"/>
+    <functiondecl functionName="log_color_line" lineNumber="131"/>
+    <functiondecl functionName="getTimeDate" lineNumber="26"/>
+    <functiondecl functionName="log_open" lineNumber="43"/>
+    <functiondecl functionName="log_close" lineNumber="68"/>
+    <functiondecl functionName="logAddLine" lineNumber="83"/>
+    <functiondecl functionName="logErr" lineNumber="100"/>
+    <functiondecl functionName="log_warning" lineNumber="117"/>
+    <functiondecl functionName="log_color_line" lineNumber="131"/>
+    <functiondecl functionName="getTimeDate" lineNumber="26"/>
+    <functiondecl functionName="log_open" lineNumber="43"/>
+    <functiondecl functionName="log_close" lineNumber="68"/>
+    <functiondecl functionName="log_line" lineNumber="83"/>
+    <functiondecl functionName="log_err" lineNumber="100"/>
+    <functiondecl functionName="log_warning" lineNumber="117"/>
+    <functiondecl functionName="log_color_line" lineNumber="131"/>
+    <functioncall functionName="DefaultLogFileName"/>
+    <functioncall functionName="FALSE"/>
+    <functioncall functionName="IC_BLUE_COLOR_TEXT"/>
+    <functioncall functionName="IC_CYAN_COLOR_TEXT"/>
+    <functioncall functionName="IC_GREEN_COLOR_TEXT"/>
+    <functioncall functionName="IC_PURPLE_COLOR_TEXT"/>
+    <functioncall functionName="IC_RED_COLOR_TEXT"/>
+    <functioncall functionName="IC_WHITE_COLOR_TEXT"/>
+    <functioncall functionName="IC_YELLOW_COLOR_TEXT"/>
+    <functioncall functionName="LogName"/>
+    <functioncall functionName="MAX_LOG_MSG"/>
+    <functioncall functionName="NULL"/>
+    <functioncall functionName="S"/>
+    <functioncall functionName="TimeDate"/>
+    <functioncall functionName="ap"/>
+    <functioncall functionName="argptr"/>
+    <functioncall functionName="buffer"/>
+    <functioncall functionName="calloc"/>
+    <functioncall functionName="cfg_path"/>
+    <functioncall functionName="char"/>
+    <functioncall functionName="fclose"/>
+    <functioncall functionName="fflush"/>
+    <functioncall functionName="fopen"/>
+    <functioncall functionName="fprintf"/>
+    <functioncall functionName="free"/>
+    <functioncall functionName="full_log_filename"/>
+    <functioncall functionName="getCfgPath"/>
+    <functioncall functionName="getTimeDate"/>
+    <functioncall functionName="iColor"/>
+    <functioncall functionName="if"/>
+    <functioncall functionName="loc_time"/>
+    <functioncall functionName="localtime"/>
+    <functioncall functionName="log_color_line"/>
+    <functioncall functionName="msg"/>
+    <functioncall functionName="out"/>
+    <functioncall functionName="print_color_txt"/>
+    <functioncall functionName="signature"/>
+    <functioncall functionName="sizeof"/>
+    <functioncall functionName="strcat"/>
+    <functioncall functionName="strcpy"/>
+    <functioncall functionName="strfree"/>
+    <functioncall functionName="strftime"/>
+    <functioncall functionName="strlen"/>
+    <functioncall functionName="time"/>
+    <functioncall functionName="today"/>
+    <functioncall functionName="va_end"/>
+    <functioncall functionName="va_start"/>
+    <functioncall functionName="vsnprintf"/>
+    <functioncall functionName="vsprintf"/>
+  </FileInfo>
+</analyzerinfo>

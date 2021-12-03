@@ -2,36 +2,37 @@
 * Модуль функций всё что связано с версией...
 * в этом модуле будет хранится версия программы
 *
-* version - "vXX.YY [DD.MM.YEAR]
-*   XX - старший разряд версии
-*   YY - младший, реально кол-во фиксов, исправленных багов в версии XX
+* version - "MajorVersion.MinorVersion [DD.MM.YEAR]
+*   MajorVersion - старший разряд версии
+*   MinorVersion - младший, реально кол-во фиксов, исправленных багов в версии XX
 *        смотри файлик changelog.txt
 * @file
+* @version 0.0.0.1
 */
 
 
 #include "version.h"
 
-const int XV = 1;  /**< XX */
-const int YV = 1;  /**< YY */
+const int MajorVersion = 2;  /**< старший разряд версии */
+const int MinorVersion = 1;  /**< младший разряд версии */
 
 
-static char version[100];
-char *getVersion(void)
+static char Version[100];
+char *get_version(void)
 {
     char build_time[100];
     strcpy(build_time, __TIMESTAMP__);
-    sprintf(version, "v%i.%2i [%s]", XV, YV, build_time);
-    return version;
+    sprintf(Version, "v%i.%2i [%s]", MajorVersion, MinorVersion, build_time);
+    return Version;
 }
 
 /**
 * Вывести на экран версию программы
 */
-void printVersion(void)
+void print_version(void)
 {
     printf("NixPlot version: ");
-    printf(getVersion());
+    printf(get_version());
     printf("\n");
 }
 
@@ -91,7 +92,7 @@ static char HelpTxt[]="\n\
 /**
 * Вывести на экран помощь
 */
-void printHelp(void)
+void print_help(void)
 {
     printf("NixPlot программа вывода данных графиков в PNG|PDF: \n");
     printf(HelpTxt);
@@ -101,7 +102,7 @@ void printHelp(void)
 /**
 * Вывести на экран системной информации(для выявления утечек памяти)
 */
-void printSysInfo(void)
+void print_system_info(void)
 {
     struct sysinfo info;
 

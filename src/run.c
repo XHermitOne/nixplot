@@ -9,14 +9,14 @@
 /**
 * Режим отладки
 */
-BOOL DBG_MODE = TRUE;
+BOOL DebugMode = TRUE;
 
 
 /**
 *   Выполнить отрисовку графика в PNG файл
 *   png_filename - Полное имя PNG файла
 */
-BOOL draw_png(char *png_filename, GRAPH_DATA *graph_data, int x_type, int y_type,
+BOOL draw_png(char *png_filename, graph_data_t *graph_data, int x_type, int y_type,
               unsigned int width, unsigned int height,
               double scene_x1, double scene_y1, double scene_x2, double scene_y2,
               double dx, double dy)
@@ -33,7 +33,7 @@ BOOL draw_png(char *png_filename, GRAPH_DATA *graph_data, int x_type, int y_type
     if (height == 0)
         height = DEFAULT_HEIGHT;
 
-    if (DBG_MODE) logAddLine("Draw PNG file: %s [%d x %d]", png_filename, width, height);
+    if (DebugMode) log_line("Draw PNG file: %s [%d x %d]", png_filename, width, height);
 
     surface = cairo_image_surface_create(CAIRO_FORMAT_ARGB32, width, height);
     //cairo_surface_set_device_offset(surface, 0.0, 1.0);
@@ -45,8 +45,8 @@ BOOL draw_png(char *png_filename, GRAPH_DATA *graph_data, int x_type, int y_type
     if (dy <= 0)
         dy = 2;
 
-    GRAPH graphic;
-    initGraph(&graphic, graph_data, surface, cr, width, height, dx, dy);
+    graph_t graphic;
+    init_graph(&graphic, graph_data, surface, cr, width, height, dx, dy);
 
     if (graph_data != NULL)
     {
@@ -60,24 +60,24 @@ BOOL draw_png(char *png_filename, GRAPH_DATA *graph_data, int x_type, int y_type
             graph_data->y1 = scene_y1;
             graph_data->x2 = scene_x2;
             graph_data->y2 = scene_y2;
-            if (DBG_MODE) logAddLine("Set graph data scene (%f, %f) - (%f, %f)", scene_x1, scene_y1, scene_x2, scene_y2);
+            if (DebugMode) log_line("Set graph data scene (%f, %f) - (%f, %f)", scene_x1, scene_y1, scene_x2, scene_y2);
         }
         else
         {
-            if (DBG_MODE) logAddLine("Graph data scene (%f, %f) - (%f, %f)", scene_x1, scene_y1, scene_x2, scene_y2);
+            if (DebugMode) log_line("Graph data scene (%f, %f) - (%f, %f)", scene_x1, scene_y1, scene_x2, scene_y2);
         }
     }
 
-    Draw(&graphic, graph_data, FALSE);
+    draw(&graphic, graph_data, FALSE);
 
     cairo_fill(cr);
 
     cairo_surface_write_to_png(surface, png_filename);
 
     cairo_surface_destroy(surface);
-    graphic.Surface = NULL;
+    graphic.surface = NULL;
     cairo_destroy(cr);
-    graphic.CR = NULL;
+    graphic.cr = NULL;
 
     return TRUE;
 }
@@ -87,7 +87,7 @@ BOOL draw_png(char *png_filename, GRAPH_DATA *graph_data, int x_type, int y_type
 *   Выполнить отрисовку графика в PDF файл
 *   pdf_filename - Полное имя PDF файла
 */
-BOOL draw_pdf(char *pdf_filename, GRAPH_DATA * graph_data, int x_type, int y_type,
+BOOL draw_pdf(char *pdf_filename, graph_data_t * graph_data, int x_type, int y_type,
               unsigned int width, unsigned int height,
               double scene_x1, double scene_y1, double scene_x2, double scene_y2,
               double dx, double dy)
@@ -104,7 +104,7 @@ BOOL draw_pdf(char *pdf_filename, GRAPH_DATA * graph_data, int x_type, int y_typ
     if (height == 0)
         height = DEFAULT_HEIGHT;
 
-    if (DBG_MODE) logAddLine("Draw PDF file: %s [%d x %d]", pdf_filename, width, height);
+    if (DebugMode) log_line("Draw PDF file: %s [%d x %d]", pdf_filename, width, height);
 
     surface = cairo_pdf_surface_create(pdf_filename, width, height);
     cairo_surface_set_device_offset(surface, 0.0, 1.0);
@@ -116,8 +116,8 @@ BOOL draw_pdf(char *pdf_filename, GRAPH_DATA * graph_data, int x_type, int y_typ
     if (dy <= 0)
         dy = 2;
 
-    GRAPH graphic;
-    initGraph(&graphic, graph_data, surface, cr, width, height, dx, dy);
+    graph_t graphic;
+    init_graph(&graphic, graph_data, surface, cr, width, height, dx, dy);
 
     if (graph_data != NULL)
     {
@@ -132,22 +132,22 @@ BOOL draw_pdf(char *pdf_filename, GRAPH_DATA * graph_data, int x_type, int y_typ
             graph_data->y1 = scene_y1;
             graph_data->x2 = scene_x2;
             graph_data->y2 = scene_y2;
-            if (DBG_MODE) logAddLine("Set graph data scene (%f, %f) - (%f, %f)", scene_x1, scene_y1, scene_x2, scene_y2);
+            if (DebugMode) log_line("Set graph data scene (%f, %f) - (%f, %f)", scene_x1, scene_y1, scene_x2, scene_y2);
         }
         else
         {
-            if (DBG_MODE) logAddLine("Graph data scene (%f, %f) - (%f, %f)", scene_x1, scene_y1, scene_x2, scene_y2);
+            if (DebugMode) log_line("Graph data scene (%f, %f) - (%f, %f)", scene_x1, scene_y1, scene_x2, scene_y2);
         }
     }
 
-    Draw(&graphic, graph_data, TRUE);
+    draw(&graphic, graph_data, TRUE);
 
     cairo_fill(cr);
 
     cairo_surface_destroy(surface);
-    graphic.Surface = NULL;
+    graphic.surface = NULL;
     cairo_destroy(cr);
-    graphic.CR = NULL;
+    graphic.cr = NULL;
 
     return TRUE;
 }
@@ -156,7 +156,7 @@ BOOL draw_pdf(char *pdf_filename, GRAPH_DATA * graph_data, int x_type, int y_typ
 /**
 *   Определить тип значений оси
 */
-int getAxisType(char *axis_type)
+int get_axis_type(char *axis_type)
 {
     if (strequal(axis_type, "N"))
         return GM_OPTIMAL;
@@ -171,12 +171,12 @@ int getAxisType(char *axis_type)
 *   Определить данные пера
 *   Данные в командной строке определяются как x1/y1,x2/y2,...
 */
-GRAPH_DATA *getPenData(char *str_pen_data)
+graph_data_t *get_pen_data(char *str_pen_data)
 {
-    if (DBG_MODE) logAddLine("Points parse");
+    if (DebugMode) log_line("Points parse");
     if (str_pen_data == NULL)
     {
-        if (DBG_MODE) logWarning("Not define pen data");
+        if (DebugMode) log_warning("Not define pen data");
         return NULL;
     }
 
@@ -195,10 +195,10 @@ GRAPH_DATA *getPenData(char *str_pen_data)
     long max_time = 0;
     double max_data = 0.0;
 
-    GRAPH_DATA *pen_data = (GRAPH_DATA *) calloc(1, sizeof(GRAPH_DATA));
-    initGraphData(pen_data, prev_time, prev_data, i_time, y_data);
-    pen_data->Points = (GRAPH_POINT *) calloc(str_count, sizeof(GRAPH_POINT));
-    pen_data->NPoints = str_count;
+    graph_data_t *pen_data = (graph_data_t *) calloc(1, sizeof(graph_data_t));
+    init_graph_data(pen_data, prev_time, prev_data, i_time, y_data);
+    pen_data->points = (graph_point_t *) calloc(str_count, sizeof(graph_point_t));
+    pen_data->n_points = str_count;
 
     do
     {
@@ -210,13 +210,13 @@ GRAPH_DATA *getPenData(char *str_pen_data)
         i_time = time_to_long(point[0]);
         y_data = str2double(point[1]);
 
-        GRAPH_POINT *point_data = (GRAPH_POINT *) calloc(1, sizeof(GRAPH_POINT));
+        graph_point_t *point_data = (graph_point_t *) calloc(1, sizeof(graph_point_t));
         point_data->x = i_time;
         point_data->y = y_data;
 
-        memcpy(&pen_data->Points[i], point_data, sizeof(GRAPH_POINT));
+        memcpy(&pen_data->points[i], point_data, sizeof(graph_point_t));
 
-        if (DBG_MODE) logAddLine("\tPoint data: [%d : %f] - [%d : %f]", prev_time, prev_data, i_time, y_data);
+        if (DebugMode) log_line("\tPoint data: [%d : %f] - [%d : %f]", prev_time, prev_data, i_time, y_data);
         free(point_data);
 
         prev_time = i_time;
@@ -240,7 +240,7 @@ GRAPH_DATA *getPenData(char *str_pen_data)
     pen_data->y1 = min_data;
     pen_data->x2 = max_time;
     pen_data->y2 = max_data;
-    if (DBG_MODE) logAddLine("Graphic range: [%d : %f] - [%d : %f]", min_time, min_data, max_time, max_data);
+    if (DebugMode) log_line("Graphic range: [%d : %f] - [%d : %f]", min_time, min_data, max_time, max_data);
 
     return pen_data;
 }
@@ -250,12 +250,12 @@ GRAPH_DATA *getPenData(char *str_pen_data)
 *   Определить данные сцены
 *   Данные в командной строке определяются как x1/y1,x2/y2
 */
-BOOL getSceneData(char *str_scene_data, double *x1, double *y1, double *x2, double *y2)
+BOOL get_scene_data(char *str_scene_data, double *x1, double *y1, double *x2, double *y2)
 {
-    if (DBG_MODE) logAddLine("Scene parse");
+    if (DebugMode) log_line("Scene parse");
     if (str_scene_data == NULL)
     {
-        if (DBG_MODE) logWarning("Not define scene data");
+        if (DebugMode) log_warning("Not define scene data");
         return FALSE;
     }
 
@@ -271,7 +271,7 @@ BOOL getSceneData(char *str_scene_data, double *x1, double *y1, double *x2, doub
 
     if (str_count != 2)
     {
-        if (DBG_MODE) logWarning("Not valid scene coordinates");
+        if (DebugMode) log_warning("Not valid scene coordinates");
         return FALSE;
     }
 
@@ -295,7 +295,7 @@ BOOL getSceneData(char *str_scene_data, double *x1, double *y1, double *x2, doub
         y_data = str2double(point[1]);
     }
 
-    if (DBG_MODE) logAddLine("\tScene data: [%d : %f] - [%d : %f]", prev_time, prev_data, i_time, y_data);
+    if (DebugMode) log_line("\tScene data: [%d : %f] - [%d : %f]", prev_time, prev_data, i_time, y_data);
     *x1 = prev_time;
     *y1 = prev_data;
     *x2 = i_time;
@@ -307,7 +307,7 @@ BOOL getSceneData(char *str_scene_data, double *x1, double *y1, double *x2, doub
 /**
 * Функция определения кода цвета по его имени
 */
-char getColorByName(char *color_name)
+char get_color_by_name(char *color_name)
 {
     color_name = strupr_lat(color_name);
     if (strequal(color_name, "BLACK"))
@@ -343,8 +343,7 @@ char getColorByName(char *color_name)
     else if (strequal(color_name, "WHITE"))
         return WHITE;
 
-    if (DBG_MODE)
-        logAddLine("Not define color <%s>", color_name);
+    if (DebugMode) log_line("Not define color <%s>", color_name);
     // По умолчанию белый цвет
     return WHITE;
 }
@@ -356,22 +355,22 @@ int run(int argc, char *argv[])
 {
     // Разбор коммандной строки
     int opt = 0;
-    BOOL bPNG = TRUE;   // По умолчанию вывод графиков в PNG
-    BOOL bPDF = FALSE;
+    BOOL do_png = TRUE;   // По умолчанию вывод графиков в PNG
+    BOOL do_pdf = FALSE;
     char *output_filename = NULL;   // Имя результирующего файла
     int x_type = GM_OPTIMAL;
     int y_type = GM_OPTIMAL;     // Тип оси X и Y
 
-    GRAPH_DATA *pen_0 = NULL;   // Данные пера 1
-    GRAPH_DATA *pen_1 = NULL;   // Данные пера 2
-    GRAPH_DATA *pen_2 = NULL;   // Данные пера 3
-    GRAPH_DATA *pen_3 = NULL;   // Данные пера 4
-    GRAPH_DATA *pen_4 = NULL;   // Данные пера 5
-    GRAPH_DATA *pen_5 = NULL;   // Данные пера 6
-    GRAPH_DATA *pen_6 = NULL;   // Данные пера 7
-    GRAPH_DATA *pen_7 = NULL;   // Данные пера 8
-    GRAPH_DATA *pen_8 = NULL;   // Данные пера 9
-    GRAPH_DATA *pen_9 = NULL;   // Данные пера 10
+    graph_data_t *pen_0 = NULL;   // Данные пера 1
+    graph_data_t *pen_1 = NULL;   // Данные пера 2
+    graph_data_t *pen_2 = NULL;   // Данные пера 3
+    graph_data_t *pen_3 = NULL;   // Данные пера 4
+    graph_data_t *pen_4 = NULL;   // Данные пера 5
+    graph_data_t *pen_5 = NULL;   // Данные пера 6
+    graph_data_t *pen_6 = NULL;   // Данные пера 7
+    graph_data_t *pen_7 = NULL;   // Данные пера 8
+    graph_data_t *pen_8 = NULL;   // Данные пера 9
+    graph_data_t *pen_9 = NULL;   // Данные пера 10
 
     unsigned int img_width = 0;
     unsigned int img_height = 0;
@@ -409,130 +408,130 @@ int run(int argc, char *argv[])
               { NULL, 0, NULL, 0 }
        };
 
-    if (DBG_MODE) logAddLine("OPTIONS:");
+    if (DebugMode) log_line("OPTIONS:");
     while ((opt = getopt_long(argc, argv, "dlvhOIPXY0WHstfbgaqTD:", long_opts, NULL)) != -1)
     {
         switch (opt)
         {
             case 'd':
-                DBG_MODE = TRUE;
-                if (DBG_MODE) logAddLine("\t--debug");
+                DebugMode = TRUE;
+                if (DebugMode) log_line("\t--debug");
                 break;
 
             case 'l':
-                DBG_MODE = TRUE;
-                if (DBG_MODE) logAddLine("\t--log");
+                DebugMode = TRUE;
+                if (DebugMode) log_line("\t--log");
                 break;
 
             case 'h':
-                printHelp();
-                if (DBG_MODE) logAddLine("\t--help");
+                print_help();
+                if (DebugMode) log_line("\t--help");
                 break;
 
             case 'v':
-                printVersion();
-                if (DBG_MODE) logAddLine("\t--version");
+                print_version();
+                if (DebugMode) log_line("\t--version");
                 break;
 
             case '?':
-                printHelp();
+                print_help();
                 return TRUE;
 
             case 'O':
                 output_filename = optarg;
-                if (DBG_MODE) logAddLine("\t--out = %s", output_filename);
+                if (DebugMode) log_line("\t--out = %s", output_filename);
                 break;
 
             case 'I':
-                bPNG = TRUE;
-                bPDF = FALSE;
-                if (DBG_MODE) logAddLine("\t--PNG");
+                do_png = TRUE;
+                do_pdf = FALSE;
+                if (DebugMode) log_line("\t--PNG");
                 break;
 
             case 'P':
-                bPNG = FALSE;
-                bPDF = TRUE;
-                if (DBG_MODE) logAddLine("\t--PDF");
+                do_png = FALSE;
+                do_pdf = TRUE;
+                if (DebugMode) log_line("\t--PDF");
                 break;
 
             case 'X':
-                x_type = getAxisType(optarg);
-                if (DBG_MODE) logAddLine("\t--xtype = %s", optarg);
+                x_type = get_axis_type(optarg);
+                if (DebugMode) log_line("\t--xtype = %s", optarg);
                 break;
 
             case 'Y':
-                y_type = getAxisType(optarg);
-                if (DBG_MODE) logAddLine("\t--ytype = %s", optarg);
+                y_type = get_axis_type(optarg);
+                if (DebugMode) log_line("\t--ytype = %s", optarg);
                 break;
 
             case '0':
-                pen_0 = getPenData(optarg);
-                if (DBG_MODE) logAddLine("\t--pen0 = %s", optarg);
+                pen_0 = get_pen_data(optarg);
+                if (DebugMode) log_line("\t--pen0 = %s", optarg);
                 break;
 
             case 'W':
                 if (isnumeric(optarg))
                 {
                     img_width = atoi(optarg);
-                    if (DBG_MODE) logAddLine("\t--width = %s", optarg);
+                    if (DebugMode) log_line("\t--width = %s", optarg);
                 }
                 else
-                    if (DBG_MODE) logWarning("\t--width = ERROR");
+                    if (DebugMode) log_warning("\t--width = ERROR");
                 break;
 
             case 'H':
                 if (isnumeric(optarg))
                 {
                     img_height = atoi(optarg);
-                    if (DBG_MODE) logAddLine("\t--height = %s", optarg);
+                    if (DebugMode) log_line("\t--height = %s", optarg);
                 }
                 else
-                    if (DBG_MODE) logWarning("\t--height = ERROR");
+                    if (DebugMode) log_warning("\t--height = ERROR");
                 break;
 
             case 's':
-                getSceneData(optarg, &scene_x1, &scene_y1, &scene_x2, &scene_y2);
-                if (DBG_MODE) logAddLine("\t--scene = %s", optarg);
+                get_scene_data(optarg, &scene_x1, &scene_y1, &scene_x2, &scene_y2);
+                if (DebugMode) log_line("\t--scene = %s", optarg);
                 break;
 
             case 't':
-                LGColor.Text = getColorByName(optarg);
-                if (DBG_MODE) logAddLine("\t--text_color = %s", optarg);
+                LGColor.text = get_color_by_name(optarg);
+                if (DebugMode) log_line("\t--text_color = %s", optarg);
                 break;
 
             case 'f':
-                LGColor.Ground = getColorByName(optarg);
-                if (DBG_MODE) logAddLine("\t--ground_color = %s", optarg);
+                LGColor.ground = get_color_by_name(optarg);
+                if (DebugMode) log_line("\t--ground_color = %s", optarg);
                 break;
 
             case 'b':
-                LGColor.Border = getColorByName(optarg);
-                if (DBG_MODE) logAddLine("\t--border_color = %s", optarg);
+                LGColor.border = get_color_by_name(optarg);
+                if (DebugMode) log_line("\t--border_color = %s", optarg);
                 break;
 
             case 'g':
-                LGColor.Grid = getColorByName(optarg);
-                if (DBG_MODE) logAddLine("\t--grid_color = %s", optarg);
+                LGColor.grid = get_color_by_name(optarg);
+                if (DebugMode) log_line("\t--grid_color = %s", optarg);
                 break;
 
             case 'a':
-                LGColor.Axis = getColorByName(optarg);
-                if (DBG_MODE) logAddLine("\t--axis_color = %s", optarg);
+                LGColor.axis = get_color_by_name(optarg);
+                if (DebugMode) log_line("\t--axis_color = %s", optarg);
                 break;
 
             case 'q':
-                LGColor.Line = getColorByName(optarg);
-                if (DBG_MODE) logAddLine("\t--pen0_color = %s", optarg);
+                LGColor.line = get_color_by_name(optarg);
+                if (DebugMode) log_line("\t--pen0_color = %s", optarg);
                 break;
 
             case 'T':
                 dx = time_to_long(optarg);
-                if (DBG_MODE) logAddLine("\t--dx = %s", optarg);
+                if (DebugMode) log_line("\t--dx = %s", optarg);
                 break;
 
             case 'D':
                 dy = atof(optarg);
-                if (DBG_MODE) logAddLine("\t--dy = %s", optarg);
+                if (DebugMode) log_line("\t--dy = %s", optarg);
                 break;
 
             default:
@@ -541,10 +540,10 @@ int run(int argc, char *argv[])
         }
     }
 
-    if (bPNG == TRUE)
+    if (do_png == TRUE)
         draw_png(output_filename, pen_0, x_type, y_type, img_width, img_height,
                  scene_x1, scene_y1, scene_x2, scene_y2, dx, dy);
-    else if (bPDF == TRUE)
+    else if (do_pdf == TRUE)
         draw_pdf(output_filename, pen_0, x_type, y_type, img_width, img_height,
                  scene_x1, scene_y1, scene_x2, scene_y2, dx, dy);
 

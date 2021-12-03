@@ -1,6 +1,7 @@
 /**
 * Модуль сервисных функций
 * @file
+* @version 0.0.0.1
 */
 
 #include "tools.h"
@@ -12,7 +13,7 @@
 * Checks for the given parameter in the program's command line arguments
 * @return the argument number (1 to argc-1) or 0 if not present
 */
-int checkParm(const char *check, int argc, char **argv)
+int check_parameters(const char *check, int argc, char **argv)
 {
     int i = 0;
 
@@ -30,38 +31,37 @@ int checkParm(const char *check, int argc, char **argv)
 * Вывод ошибок в виде окна сообщений
 * Я использую в основном для отладки
 */
-void errBox(char *Fmt,...)
+void err_box(char *fmt,...)
 {
     char buffer[128];
     va_list ap;
 
-    va_start(ap, Fmt);
-    vsprintf(buffer, Fmt, ap);
+    va_start(ap, fmt);
+    vsprintf(buffer, fmt, ap);
 
-    log_color_line(IC_RED_COLOR_TEXT, "Error: ");
-    log_color_line(IC_RED_COLOR_TEXT, buffer);
+    log_color_line(RED_COLOR_TEXT, "Error: ");
+    log_color_line(RED_COLOR_TEXT, buffer);
 
     va_end(ap);
 }
 
 
-
-char sayError(char *msg)
+char print_error(char *message)
 {
-    errBox(msg);
+    err_box(message);
     return 0;
 }
 
 
 
-char sayMessage(char *Msg, int aOptions)
+char print_message(char *message, int options)
 {
-    return sayError(Msg);
+    return print_error(message);
 }
 
 
 
-char *getHomePath(void)
+char *get_home_path(void)
 {
     return getenv("HOME");
 }
@@ -94,7 +94,7 @@ static int do_mkdir(const char *path, mode_t mode)
     }
     else if (!S_ISDIR(st.st_mode))
     {
-        if (DBG_MODE) logAddLine("ERROR: %s is not directory",path);
+        if (DebugMode) log_line("ERROR: %s is not directory", path);
         status = -1;
     }
 
@@ -139,35 +139,35 @@ int mkpath(const char *path, mode_t mode)
 * Cуществует ли файл
 * @return TRUE  - exist / FALSE - don't exist
 */
-BOOL file_exists(char *FileName)
+BOOL file_exists(char *filename)
 {
-    BOOL bExist = FALSE;
-    if (!strempty(FileName))
+    BOOL exists = FALSE;
+    if (!strempty(filename))
     {
-        FILE *in = fopen(FileName, "rb");
+        FILE *in = fopen(filename, "rb");
         if (in != NULL)
         {
-            bExist = TRUE;
+            exists = TRUE;
             fclose( in );
         }
     }
-    return bExist;
+    return exists;
 }
 
 
 /**
 *   Удалить файл
 */
-BOOL del_file(char *FileName)
+BOOL del_file(char *filename)
 {
-    if (unlink(FileName) >= 0 )
+    if (unlink(filename) >= 0 )
     {
-        if (DBG_MODE) print_color_txt(IC_YELLOW_COLOR_TEXT, "Delete file <%s>\n", FileName);
+        if (DebugMode) print_color_txt(YELLOW_COLOR_TEXT, "Delete file <%s>\n", filename);
         return TRUE;
     }
     else
     {
-        if (DBG_MODE) print_color_txt(IC_RED_COLOR_TEXT, "ERROR. Delete file <%s>\n", FileName);
+        if (DebugMode) print_color_txt(RED_COLOR_TEXT, "ERROR. Delete file <%s>\n", filename);
         return FALSE;
     }
 }
@@ -176,43 +176,43 @@ BOOL del_file(char *FileName)
 /**
 *   Прочитать файл и вернуть массив символов
 */
-unsigned int load_txt_file_size(char *FileName, char *result)
+unsigned int load_txt_file_size(char *filename, char *result)
 {
     unsigned int size = 0;
-    FILE *f = fopen(FileName, "rb");
+    FILE *f = fopen(filename, "rb");
     if (f == NULL)
     {
         result = NULL;
-        if (DBG_MODE) logAddLine("ERROR. load_txt_file_size. Open file <%s>", FileName);
+        if (DebugMode) log_line("ERROR. load_txt_file_size. Open file <%s>", filename);
         return -1; // -1 means file opening fail
     }
     fseek(f, 0, SEEK_END);
     size = ftell(f);
     fseek(f, 0, SEEK_SET);
-    result = (char *) malloc(size+1);
+    result = (char *) malloc(size + 1);
     if (size != fread(result, sizeof(char), size, f))
     {
         result = strfree(result);
-        if (DBG_MODE) logAddLine("ERROR. load_txt_file_size. Read file <%s>", FileName);
+        if (DebugMode) log_line("ERROR. load_txt_file_size. Read file <%s>", filename);
         return -2; // -2 means file reading fail
     }
     fclose(f);
     result[size] = 0;
-    if (DBG_MODE) logAddLine("INFO. load_txt_file_size. File <%s>\tSize <%d>", FileName, size);
+    if (DebugMode) log_line("INFO. load_txt_file_size. File <%s>\tSize <%d>", filename, size);
     return size;
 }
 
 
-char *load_txt_file(char *FileName)
+char *load_txt_file(char *filename)
 {
     char *result = NULL;
     unsigned int size = 0;
-    FILE *f = fopen(FileName, "rb");
+    FILE *f = fopen(filename, "rb");
     unsigned int i = 0;
 
     if (f == NULL)
     {
-        if (DBG_MODE) print_color_txt(IC_RED_COLOR_TEXT, "ERROR. load_txt_file. Open file <%s>\n", FileName);
+        if (DebugMode) print_color_txt(RED_COLOR_TEXT, "ERROR. load_txt_file. Open file <%s>\n", filename);
         return NULL;
     }
 
@@ -224,7 +224,7 @@ char *load_txt_file(char *FileName)
     if (size != fread(result, sizeof(char), size, f))
     {
         result= strfree(result);
-        if (DBG_MODE) print_color_txt(IC_RED_COLOR_TEXT, "ERROR. load_txt_file. Read file <%s>\n", FileName);
+        if (DebugMode) print_color_txt(RED_COLOR_TEXT, "ERROR. load_txt_file. Read file <%s>\n", filename);
         return NULL;
     }
     fclose(f);
@@ -235,7 +235,7 @@ char *load_txt_file(char *FileName)
             result[i] = ' ';
     result[size] = '\0';
 
-    if (DBG_MODE) print_color_txt(IC_WHITE_COLOR_TEXT, "INFO. load_txt_file. File <%s>\tSize <%d>\n", FileName, size);
+    if (DebugMode) print_color_txt(WHITE_COLOR_TEXT, "INFO. load_txt_file. File <%s>\tSize <%d>\n", filename, size);
     return result;
 }
 
@@ -253,11 +253,10 @@ double min(double a, double b)
 
 
 /**
-* C++ version char* style "itoa".  It would appear that
+* C++ version char *style "itoa".  It would appear that
 * itoa() isn't ANSI C standard and doesn't work with GCC on Linux
-* @param nValue value to convert to ascii
-* @param szResult buffer for the result
-* @param nBase base for conversion
+* @param value value to convert to ascii
+* @param base base for conversion
 * @return value converted to ascii
 */
 char *itoa(int value, int base)
@@ -294,7 +293,7 @@ char *itoa(int value, int base)
 static double PRECISION = 0.00000000000001;
 static int MAX_NUMBER_STRING_SIZE = 32;
 
-char* dtoa(double n)
+char *dtoa(double n)
 {
     char *s = (char *) calloc(80, sizeof(char));
 
@@ -315,11 +314,11 @@ char* dtoa(double n)
             n = -n;
 
         m = log10(n);
-        int useExp = (m >= 14 || (neg && m >= 9) || m <= -9);
+        int use_exp = (m >= 14 || (neg && m >= 9) || m <= -9);
         if (neg)
             *(c++) = '-';
 
-        if (useExp)
+        if (use_exp)
         {
             if (m < 0)
                 m -= 1.0;
@@ -343,7 +342,7 @@ char* dtoa(double n)
                 *(c++) = '.';
             m--;
         }
-        if (useExp)
+        if (use_exp)
         {
             int i = 0;
             int j = 0;
@@ -407,22 +406,22 @@ double bytes_to_double(BYTE *bytes)
 
 long time_to_long(char *buffer)
 {
-    long Time = 0L;
+    long _time = 0L;
     int i = 0;
     int j = 0;
     int k = 0;
 
-    for(Time = i = j = 0; i < 3; i++)
+    for(_time = i = j = 0; i < 3; i++)
     {
         sscanf(&buffer[j], "%d", &k);
-        Time = Time * 60 + k;
+        _time = _time * 60 + k;
         for(; buffer[j] != ':' && buffer[j]; j++);
         if (!buffer[j])
             break;
         else
             j++;
     }
-    return Time;
+    return _time;
 }
 
 
@@ -452,7 +451,7 @@ long get_now_time(void)
 *       src_len=-1
 *       bFree=FALSE
 */
-char *norm_path(char *src, size_t src_len, BOOL bFree)
+char *norm_path(char *src, size_t src_len, BOOL do_free)
 {
     char * res = NULL;
     size_t res_len;
@@ -530,7 +529,7 @@ char *norm_path(char *src, size_t src_len, BOOL bFree)
     }
     res[res_len] = '\0';
 
-    if (bFree)
+    if (do_free)
         // src = strfree(src);
         strfree(src);
 
@@ -541,21 +540,21 @@ char *norm_path(char *src, size_t src_len, BOOL bFree)
 /**
 *   Конвертация представления пути из dos(C:\\path\\) в unix(C:/path/)
 *   По умолчанию:
-*       bFree=FALSE
+*       do_free=FALSE
 */
-char *dos_to_unix_path(char *src, BOOL bFree)
+char *dos_to_unix_path(char *src, BOOL do_free)
 {
     // Подразумевается что в unix все папки в нижнем регистре
-    return strlwr_lat(strreplace(src, "\\", "/", bFree));
+    return strlwr_lat(strreplace(src, "\\", "/", do_free));
 }
 
 
 /**
 *   Поменять расширение в имени файла
 *   По умолчанию:
-*       bFree=FALSE
+*       do_free=FALSE
 */
-char *change_filename_ext(char *filename, const char *new_ext, BOOL bFree)
+char *change_filename_ext(char *filename, const char *new_ext, BOOL do_free)
 {
     char *ext_filename = strrchr(filename, '.');
     char *result_filename = NULL;
@@ -569,7 +568,7 @@ char *change_filename_ext(char *filename, const char *new_ext, BOOL bFree)
     else
         result_filename = strprintf(NULL, "%s%s", filename, new_ext);
 
-    if (bFree)
+    if (do_free)
         // filename = strfree(filename);
         strfree(filename);
     return result_filename;
@@ -594,32 +593,32 @@ BOOL is_samefile(const char *filename1, const char *filename2)
 /**
 *   Печать цветного текста
 */
-void print_color_txt(unsigned int iColor, char *str, ...)
+void print_color_txt(unsigned int color, char *fmt, ...)
 {
     va_list argptr;
-    va_start(argptr, str);
+    va_start(argptr, fmt);
 
     char msg[4096];
-    char color[10];
-    vsnprintf(msg, sizeof(msg), str, argptr);
+    char str_color[10];
+    vsnprintf(msg, sizeof(msg), fmt, argptr);
     va_end(argptr);
 
-    if (iColor ==  IC_RED_COLOR_TEXT)
-        strcpy(color, "\x1b[31;1m");
-    else if (iColor ==  IC_GREEN_COLOR_TEXT)
-        strcpy(color, "\x1b[32m");
-    else if (iColor ==  IC_YELLOW_COLOR_TEXT)
-        strcpy(color, "\x1b[33m");
-    else if (iColor ==  IC_BLUE_COLOR_TEXT)
-        strcpy(color, "\x1b[34m");
-    else if (iColor ==  IC_PURPLE_COLOR_TEXT)
-        strcpy(color, "\x1b[35m");
-    else if (iColor ==  IC_CYAN_COLOR_TEXT)
-        strcpy(color, "\x1b[36m");
-    else if (iColor ==  IC_WHITE_COLOR_TEXT)
-        strcpy(color, "\x1b[37m");
-    else if (iColor ==  IC_NORMAL_COLOR_TEXT)
-        strcpy(color, "\x1b[0m");
+    if (color ==  RED_COLOR_TEXT)
+        strcpy(str_color, "\x1b[31;1m");
+    else if (color ==  GREEN_COLOR_TEXT)
+        strcpy(str_color, "\x1b[32m");
+    else if (color ==  YELLOW_COLOR_TEXT)
+        strcpy(str_color, "\x1b[33m");
+    else if (color ==  BLUE_COLOR_TEXT)
+        strcpy(str_color, "\x1b[34m");
+    else if (color ==  PURPLE_COLOR_TEXT)
+        strcpy(str_color, "\x1b[35m");
+    else if (color ==  CYAN_COLOR_TEXT)
+        strcpy(str_color, "\x1b[36m");
+    else if (color ==  WHITE_COLOR_TEXT)
+        strcpy(str_color, "\x1b[37m");
+    else if (color ==  NORMAL_COLOR_TEXT)
+        strcpy(str_color, "\x1b[0m");
 
-    printf("%s %s\x1b[0m", color, msg);
+    printf("%s %s\x1b[0m", str_color, msg);
 }

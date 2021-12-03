@@ -1,0 +1,150 @@
+<?xml version="1.0"?>
+<analyzerinfo checksum="417641947">
+        <error id="knownConditionTrueFalse" severity="style" msg="Condition &apos;DebugMode&apos; is always true" verbose="Condition &apos;DebugMode&apos; is always true" cwe="571">
+            <location file="/home/xhermit/dev/prj/work/nixplot/src/run.c" line="349" info="Condition &apos;DebugMode&apos; is always true"/>
+            <location file="/home/xhermit/dev/prj/work/nixplot/src/run.c" line="348" info="Assignment &apos;DebugMode=1&apos;, assigned value is 1"/>
+        </error>
+        <error id="knownConditionTrueFalse" severity="style" msg="Condition &apos;DebugMode&apos; is always true" verbose="Condition &apos;DebugMode&apos; is always true" cwe="571">
+            <location file="/home/xhermit/dev/prj/work/nixplot/src/run.c" line="354" info="Condition &apos;DebugMode&apos; is always true"/>
+            <location file="/home/xhermit/dev/prj/work/nixplot/src/run.c" line="353" info="Assignment &apos;DebugMode=1&apos;, assigned value is 1"/>
+        </error>
+        <error id="unreadVariable" severity="style" msg="Variable &apos;i&apos; is assigned a value that is never used." verbose="Variable &apos;i&apos; is assigned a value that is never used." cwe="563">
+            <location file="/home/xhermit/dev/prj/work/nixplot/src/run.c" line="248"/>
+        </error>
+  <FileInfo check="CheckUnusedFunctions">
+    <functiondecl functionName="draw_png" lineNumber="18"/>
+    <functiondecl functionName="draw_pdf" lineNumber="82"/>
+    <functiondecl functionName="getAxisType" lineNumber="144"/>
+    <functiondecl functionName="getPenData" lineNumber="159"/>
+    <functiondecl functionName="getSceneData" lineNumber="238"/>
+    <functiondecl functionName="run" lineNumber="295"/>
+    <functiondecl functionName="draw_png" lineNumber="18"/>
+    <functiondecl functionName="draw_pdf" lineNumber="82"/>
+    <functiondecl functionName="getAxisType" lineNumber="144"/>
+    <functiondecl functionName="getPenData" lineNumber="159"/>
+    <functiondecl functionName="getSceneData" lineNumber="238"/>
+    <functiondecl functionName="run" lineNumber="295"/>
+    <functiondecl functionName="draw_png" lineNumber="18"/>
+    <functiondecl functionName="draw_pdf" lineNumber="82"/>
+    <functiondecl functionName="getAxisType" lineNumber="144"/>
+    <functiondecl functionName="getPenData" lineNumber="159"/>
+    <functiondecl functionName="getSceneData" lineNumber="238"/>
+    <functiondecl functionName="run" lineNumber="295"/>
+    <functiondecl functionName="draw_png" lineNumber="18"/>
+    <functiondecl functionName="draw_pdf" lineNumber="82"/>
+    <functiondecl functionName="getAxisType" lineNumber="144"/>
+    <functiondecl functionName="getPenData" lineNumber="159"/>
+    <functiondecl functionName="getSceneData" lineNumber="238"/>
+    <functiondecl functionName="run" lineNumber="295"/>
+    <functiondecl functionName="draw_png" lineNumber="18"/>
+    <functiondecl functionName="draw_pdf" lineNumber="82"/>
+    <functiondecl functionName="getAxisType" lineNumber="144"/>
+    <functiondecl functionName="getPenData" lineNumber="159"/>
+    <functiondecl functionName="getSceneData" lineNumber="238"/>
+    <functiondecl functionName="run" lineNumber="295"/>
+    <functiondecl functionName="draw_png" lineNumber="18"/>
+    <functiondecl functionName="draw_pdf" lineNumber="82"/>
+    <functiondecl functionName="getAxisType" lineNumber="144"/>
+    <functiondecl functionName="getPenData" lineNumber="159"/>
+    <functiondecl functionName="getSceneData" lineNumber="238"/>
+    <functiondecl functionName="run" lineNumber="295"/>
+    <functioncall functionName="CAIRO_FORMAT_ARGB32"/>
+    <functioncall functionName="DebugMode"/>
+    <functioncall functionName="DEFAULT_HEIGHT"/>
+    <functioncall functionName="DEFAULT_WIDTH"/>
+    <functioncall functionName="Draw"/>
+    <functioncall functionName="FALSE"/>
+    <functioncall functionName="GM_OPTIMAL"/>
+    <functioncall functionName="GRAPH_DATA"/>
+    <functioncall functionName="GRAPH_POINT"/>
+    <functioncall functionName="IC_BLUE_COLOR_TEXT"/>
+    <functioncall functionName="IC_CYAN_COLOR_TEXT"/>
+    <functioncall functionName="IC_GREEN_COLOR_TEXT"/>
+    <functioncall functionName="IC_PURPLE_COLOR_TEXT"/>
+    <functioncall functionName="IC_RED_COLOR_TEXT"/>
+    <functioncall functionName="IC_WHITE_COLOR_TEXT"/>
+    <functioncall functionName="IC_YELLOW_COLOR_TEXT"/>
+    <functioncall functionName="NULL"/>
+    <functioncall functionName="TRUE"/>
+    <functioncall functionName="argc"/>
+    <functioncall functionName="argv"/>
+    <functioncall functionName="atoi"/>
+    <functioncall functionName="axis_type"/>
+    <functioncall functionName="break"/>
+    <functioncall functionName="cairo_create"/>
+    <functioncall functionName="cairo_destroy"/>
+    <functioncall functionName="cairo_fill"/>
+    <functioncall functionName="cairo_image_surface_create"/>
+    <functioncall functionName="cairo_pdf_surface_create"/>
+    <functioncall functionName="cairo_surface_destroy"/>
+    <functioncall functionName="cairo_surface_set_device_offset"/>
+    <functioncall functionName="cairo_surface_write_to_png"/>
+    <functioncall functionName="calloc"/>
+    <functioncall functionName="cr"/>
+    <functioncall functionName="default"/>
+    <functioncall functionName="draw_pdf"/>
+    <functioncall functionName="draw_png"/>
+    <functioncall functionName="fprintf"/>
+    <functioncall functionName="free"/>
+    <functioncall functionName="getAxisType"/>
+    <functioncall functionName="getPenData"/>
+    <functioncall functionName="getSceneData"/>
+    <functioncall functionName="get_string_count"/>
+    <functioncall functionName="getopt_long"/>
+    <functioncall functionName="graph_data"/>
+    <functioncall functionName="graphic"/>
+    <functioncall functionName="height"/>
+    <functioncall functionName="i"/>
+    <functioncall functionName="i_time"/>
+    <functioncall functionName="if"/>
+    <functioncall functionName="img_height"/>
+    <functioncall functionName="img_width"/>
+    <functioncall functionName="initGraph"/>
+    <functioncall functionName="initGraphData"/>
+    <functioncall functionName="isnumeric"/>
+    <functioncall functionName="log_line"/>
+    <functioncall functionName="log_warning"/>
+    <functioncall functionName="long_opts"/>
+    <functioncall functionName="max_data"/>
+    <functioncall functionName="max_time"/>
+    <functioncall functionName="memcpy"/>
+    <functioncall functionName="min_data"/>
+    <functioncall functionName="min_time"/>
+    <functioncall functionName="no_argument"/>
+    <functioncall functionName="opt"/>
+    <functioncall functionName="optarg"/>
+    <functioncall functionName="output_filename"/>
+    <functioncall functionName="pdf_filename"/>
+    <functioncall functionName="pen_0"/>
+    <functioncall functionName="pen_data"/>
+    <functioncall functionName="png_filename"/>
+    <functioncall functionName="point_data"/>
+    <functioncall functionName="prev_data"/>
+    <functioncall functionName="prev_time"/>
+    <functioncall functionName="printHelp"/>
+    <functioncall functionName="printVersion"/>
+    <functioncall functionName="required_argument"/>
+    <functioncall functionName="scene_x1"/>
+    <functioncall functionName="scene_x2"/>
+    <functioncall functionName="scene_y1"/>
+    <functioncall functionName="scene_y2"/>
+    <functioncall functionName="sizeof"/>
+    <functioncall functionName="stderr"/>
+    <functioncall functionName="str2double"/>
+    <functioncall functionName="str_count"/>
+    <functioncall functionName="str_pen_data"/>
+    <functioncall functionName="str_point"/>
+    <functioncall functionName="str_points"/>
+    <functioncall functionName="str_scene_data"/>
+    <functioncall functionName="strequal"/>
+    <functioncall functionName="strsplit"/>
+    <functioncall functionName="surface"/>
+    <functioncall functionName="switch"/>
+    <functioncall functionName="time_to_long"/>
+    <functioncall functionName="while"/>
+    <functioncall functionName="width"/>
+    <functioncall functionName="x_type"/>
+    <functioncall functionName="y_data"/>
+    <functioncall functionName="y_type"/>
+  </FileInfo>
+</analyzerinfo>

@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<results version="2">
+    <cppcheck version="1.82"/>
+    <errors>
+        <error id="redundantAssignment" severity="style" msg="Variable &amp;#039;result&amp;#039; is reassigned a value before the old one has been used." verbose="Variable &amp;#039;result&amp;#039; is reassigned a value before the old one has been used." sinceDate="22.03.19">
+            <location file="src/config.c" line="104" info=""/>
+            <location file="src/config.c" line="107" info=""/>
+        </error>
+        <error id="variableScope" severity="style" msg="The scope of the variable &amp;#039;i&amp;#039; can be reduced." verbose="The scope of the variable &amp;#039;i&amp;#039; can be reduced. Warning: Be careful when fixing this message, especially when there are inner loops. Here is an example where cppcheck will write that the scope for &amp;#039;i&amp;#039; can be reduced:\012void f(int x)\012{\012    int i = 0;\012    if (x) {\012        // it&amp;#039;s safe to move &amp;#039;int i = 0;&amp;#039; here\012        for (int n = 0; n &amp;lt; 10; ++n) {\012            // it is possible but not safe to move &amp;#039;int i = 0;&amp;#039; here\012            do_something(&amp;amp;i);\012        }\012    }\012}\012When you see this message it is always safe to reduce the variable scope 1 level." sinceDate="22.03.19">
+            <location file="src/config.c" line="49"/>
+        </error>
+        <error id="variableScope" severity="style" msg="The scope of the variable &amp;#039;len&amp;#039; can be reduced." verbose="The scope of the variable &amp;#039;len&amp;#039; can be reduced. Warning: Be careful when fixing this message, especially when there are inner loops. Here is an example where cppcheck will write that the scope for &amp;#039;i&amp;#039; can be reduced:\012void f(int x)\012{\012    int i = 0;\012    if (x) {\012        // it&amp;#039;s safe to move &amp;#039;int i = 0;&amp;#039; here\012        for (int n = 0; n &amp;lt; 10; ++n) {\012            // it is possible but not safe to move &amp;#039;int i = 0;&amp;#039; here\012            do_something(&amp;amp;i);\012        }\012    }\012}\012When you see this message it is always safe to reduce the variable scope 1 level." sinceDate="22.03.19">
+            <location file="src/config.c" line="50"/>
+        </error>
+        <error id="variableScope" severity="style" msg="The scope of the variable &amp;#039;def&amp;#039; can be reduced." verbose="The scope of the variable &amp;#039;def&amp;#039; can be reduced. Warning: Be careful when fixing this message, especially when there are inner loops. Here is an example where cppcheck will write that the scope for &amp;#039;i&amp;#039; can be reduced:\012void f(int x)\012{\012    int i = 0;\012    if (x) {\012        // it&amp;#039;s safe to move &amp;#039;int i = 0;&amp;#039; here\012        for (int n = 0; n &amp;lt; 10; ++n) {\012            // it is possible but not safe to move &amp;#039;int i = 0;&amp;#039; here\012            do_something(&amp;amp;i);\012        }\012    }\012}\012When you see this message it is always safe to reduce the variable scope 1 level." sinceDate="22.03.19">
+            <location file="src/config.c" line="52"/>
+        </error>
+        <error id="variableScope" severity="style" msg="The scope of the variable &amp;#039;strparm&amp;#039; can be reduced." verbose="The scope of the variable &amp;#039;strparm&amp;#039; can be reduced. Warning: Be careful when fixing this message, especially when there are inner loops. Here is an example where cppcheck will write that the scope for &amp;#039;i&amp;#039; can be reduced:\012void f(int x)\012{\012    int i = 0;\012    if (x) {\012        // it&amp;#039;s safe to move &amp;#039;int i = 0;&amp;#039; here\012        for (int n = 0; n &amp;lt; 10; ++n) {\012            // it is possible but not safe to move &amp;#039;int i = 0;&amp;#039; here\012            do_something(&amp;amp;i);\012        }\012    }\012}\012When you see this message it is always safe to reduce the variable scope 1 level." sinceDate="22.03.19">
+            <location file="src/config.c" line="53"/>
+        </error>
+        <error id="invalidscanf" severity="warning" msg="fscanf() without field width limits can crash with huge input data." verbose="fscanf() without field width limits can crash with huge input data. Add a field width specifier to fix this problem.\012\012Sample program that can crash:\012\012#include &amp;lt;stdio.h&amp;gt;\012int main()\012{\012    char c[5];\012    scanf(&amp;quot;%s&amp;quot;, c);\012    return 0;\012}\012\012Typing in 5 or more characters may make the program crash. The correct usage here is &amp;#039;scanf(&amp;quot;%4s&amp;quot;, c);&amp;#039;, as the maximum field width does not include the terminating null byte.\012Source: http://linux.die.net/man/3/scanf\012Source: http://www.opensource.apple.com/source/xnu/xnu-1456.1.26/libkern/stdio/scanf.c" sinceDate="22.03.19">
+            <location file="src/config.c" line="63"/>
+        </error>
+        <error id="redundantAssignment" severity="style" msg="Variable &amp;#039;stx&amp;#039; is reassigned a value before the old one has been used." verbose="Variable &amp;#039;stx&amp;#039; is reassigned a value before the old one has been used." sinceDate="22.03.19">
+            <location file="src/graph.c" line="199" info=""/>
+            <location file="src/graph.c" line="210" info=""/>
+        </error>
+        <error id="redundantAssignment" severity="style" msg="Variable &amp;#039;sty&amp;#039; is reassigned a value before the old one has been used." verbose="Variable &amp;#039;sty&amp;#039; is reassigned a value before the old one has been used." sinceDate="22.03.19">
+            <location file="src/graph.c" line="204" info=""/>
+            <location file="src/graph.c" line="211" info=""/>
+        </error>
+        <error id="variableScope" severity="style" msg="The scope of the variable &amp;#039;dx&amp;#039; can be reduced." verbose="The scope of the variable &amp;#039;dx&amp;#039; can be reduced. Warning: Be careful when fixing this message, especially when there are inner loops. Here is an example where cppcheck will write that the scope for &amp;#039;i&amp;#039; can be reduced:\012void f(int x)\012{\012    int i = 0;\012    if (x) {\012        // it&amp;#039;s safe to move &amp;#039;int i = 0;&amp;#039; here\012        for (int n = 0; n &amp;lt; 10; ++n) {\012            // it is possible but not safe to move &amp;#039;int i = 0;&amp;#039; here\012            do_something(&amp;amp;i);\012        }\012    }\012}\012When you see this message it is always safe to reduce the variable scope 1 level." sinceDate="22.03.19">
+            <location file="src/graph.c" line="147"/>
+        </error>
+        <error id="variableScope" severity="style" msg="The scope of the variable &amp;#039;dXmax&amp;#039; can be reduced." verbose="The scope of the variable &amp;#039;dXmax&amp;#039; can be reduced. Warning: Be careful when fixing this message, especially when there are inner loops. Here is an example where cppcheck will write that the scope for &amp;#039;i&amp;#039; can be reduced:\012void f(int x)\012{\012    int i = 0;\012    if (x) {\012        // it&amp;#039;s safe to move &amp;#039;int i = 0;&amp;#039; here\012        for (int n = 0; n &amp;lt; 10; ++n) {\012            // it is possible but not safe to move &amp;#039;int i = 0;&amp;#039; here\012            do_something(&amp;amp;i);\012        }\012    }\012}\012When you see this message it is always safe to reduce the variable scope 1 level." sinceDate="22.03.19">
+            <location file="src/graph.c" line="148"/>
+        </error>
+        <error id="variableScope" severity="style" msg="The scope of the variable &amp;#039;j&amp;#039; can be reduced." verbose="The scope of the variable &amp;#039;j&amp;#039; can be reduced. Warning: Be careful when fixing this message, especially when there are inner loops. Here is an example where cppcheck will write that the scope for &amp;#039;i&amp;#039; can be reduced:\012void f(int x)\012{\012    int i = 0;\012    if (x) {\012        // it&amp;#039;s safe to move &amp;#039;int i = 0;&amp;#039; here\012        for (int n = 0; n &amp;lt; 10; ++n) {\012            // it is possible but not safe to move &amp;#039;int i = 0;&amp;#039; here\012            do_something(&amp;amp;i);\012        }\012    }\012}\012When you see this message it is always safe to reduce the variable scope 1 level." sinceDate="22.03.19">
+            <location file="src/graph.c" line="181"/>
+        </error>
+        <error id="variableScope" severity="style" msg="The scope of the variable &amp;#039;fl&amp;#039; can be reduced." verbose="The scope of the variable &amp;#039;fl&amp;#039; can be reduced. Warning: Be careful when fixing this message, especially when there are inner loops. Here is an example where cppcheck will write that the scope for &amp;#039;i&amp;#039; can be reduced:\012void f(int x)\012{\012    int i = 0;\012    if (x) {\012        // it&amp;#039;s safe to move &amp;#039;int i = 0;&amp;#039; here\012        for (int n = 0; n &amp;lt; 10; ++n) {\012            // it is possible but not safe to move &amp;#039;int i = 0;&amp;#039; here\012            do_something(&amp;amp;i);\012        }\012    }\012}\012When you see this message it is always safe to reduce the variable scope 1 level." sinceDate="22.03.19">
+            <location file="src/graph.c" line="301"/>
+        </error>
+        <error id="variableScope" severity="style" msg="The scope of the variable &amp;#039;i&amp;#039; can be reduced." verbose="The scope of the variable &amp;#039;i&amp;#039; can be reduced. Warning: Be careful when fixing this message, especially when there are inner loops. Here is an example where cppcheck will write that the scope for &amp;#039;i&amp;#039; can be reduced:\012void f(int x)\012{\012    int i = 0;\012    if (x) {\012        // it&amp;#039;s safe to move &amp;#039;int i = 0;&amp;#039; here\012        for (int n = 0; n &amp;lt; 10; ++n) {\012            // it is possible but not safe to move &amp;#039;int i = 0;&amp;#039; here\012            do_something(&amp;amp;i);\012        }\012    }\012}\012When you see this message it is always safe to reduce the variable scope 1 level." sinceDate="22.03.19">
+            <location file="src/graph.c" line="302"/>
+        </error>
+        <error id="variableScope" severity="style" msg="The scope of the variable &amp;#039;i&amp;#039; can be reduced." verbose="The scope of the variable &amp;#039;i&amp;#039; can be reduced. Warning: Be careful when fixing this message, especially when there are inner loops. Here is an example where cppcheck will write that the scope for &amp;#039;i&amp;#039; can be reduced:\012void f(int x)\012{\012    int i = 0;\012    if (x) {\012        // it&amp;#039;s safe to move &amp;#039;int i = 0;&amp;#039; here\012        for (int n = 0; n &amp;lt; 10; ++n) {\012            // it is possible but not safe to move &amp;#039;int i = 0;&amp;#039; here\012            do_something(&amp;amp;i);\012        }\012    }\012}\012When you see this message it is always safe to reduce the variable scope 1 level." sinceDate="22.03.19">
+            <location file="src/graph.c" line="341"/>
+        </error>
+        <error id="variableScope" severity="style" msg="The scope of the variable &amp;#039;j&amp;#039; can be reduced." verbose="The scope of the variable &amp;#039;j&amp;#039; can be reduced. Warning: Be careful when fixing this message, especially when there are inner loops. Here is an example where cppcheck will write that the scope for &amp;#039;i&amp;#039; can be reduced:\012void f(int x)\012{\012    int i = 0;\012    if (x) {\012        // it&amp;#039;s safe to move &amp;#039;int i = 0;&amp;#039; here\012        for (int n = 0; n &amp;lt; 10; ++n) {\012            // it is possible but not safe to move &amp;#039;int i = 0;&amp;#039; here\012            do_something(&amp;amp;i);\012        }\012    }\012}\012When you see this message it is always safe to reduce the variable scope 1 level." sinceDate="22.03.19">
+            <location file="src/graph.c" line="465"/>
+        </error>
+        <error id="variableScope" severity="style" msg="The scope of the variable &amp;#039;k&amp;#039; can be reduced." verbose="The scope of the variable &amp;#039;k&amp;#039; can be reduced. Warning: Be careful when fixing this message, especially when there are inner loops. Here is an example where cppcheck will write that the scope for &amp;#039;i&amp;#039; can be reduced:\012void f(int x)\012{\012    int i = 0;\012    if (x) {\012        // it&amp;#039;s safe to move &amp;#039;int i = 0;&amp;#039; here\012        for (int n = 0; n &amp;lt; 10; ++n) {\012            // it is possible but not safe to move &amp;#039;int i = 0;&amp;#039; here\012            do_something(&amp;amp;i);\012        }\012    }\012}\012When you see this message it is always safe to reduce the variable scope 1 level." sinceDate="22.03.19">
+            <location file="src/graph.c" line="466"/>
+        </error>
+        <error id="knownConditionTrueFalse" severity="style" msg="Condition &amp;#039;DebugMode&amp;#039; is always true" verbose="Condition &amp;#039;DebugMode&amp;#039; is always true" sinceDate="22.03.19">
+            <location file="src/run.c" line="348" info="Assignment &amp;#039;DebugMode=1&amp;#039;, assigned value is 1"/>
+            <location file="src/run.c" line="349" info="Condition &amp;#039;DebugMode&amp;#039; is always true"/>
+        </error>
+        <error id="knownConditionTrueFalse" severity="style" msg="Condition &amp;#039;DebugMode&amp;#039; is always true" verbose="Condition &amp;#039;DebugMode&amp;#039; is always true" sinceDate="22.03.19">
+            <location file="src/run.c" line="353" info="Assignment &amp;#039;DebugMode=1&amp;#039;, assigned value is 1"/>
+            <location file="src/run.c" line="354" info="Condition &amp;#039;DebugMode&amp;#039; is always true"/>
+        </error>
+        <error id="unreadVariable" severity="style" msg="Variable &amp;#039;i&amp;#039; is assigned a value that is never used." verbose="Variable &amp;#039;i&amp;#039; is assigned a value that is never used." sinceDate="22.03.19">
+            <location file="src/run.c" line="248"/>
+        </error>
+        <error id="nullPointerRedundantCheck" severity="warning" msg="Either the condition &amp;#039;if(str)&amp;#039; is redundant or there is possible null pointer dereference: pointer." verbose="Either the condition &amp;#039;if(str)&amp;#039; is redundant or there is possible null pointer dereference: pointer." sinceDate="22.03.19">
+            <location file="src/strfunc.c" line="83" info="Assuming that condition &amp;#039;if(str)&amp;#039; is not redundant"/>
+            <location file="src/strfunc.c" line="81" info="Assignment &amp;#039;pointer=str&amp;#039;, assigned value is 0"/>
+            <location file="src/strfunc.c" line="88" info="Null pointer dereference"/>
+        </error>
+        <error id="redundantAssignment" severity="style" msg="Variable &amp;#039;ret&amp;#039; is reassigned a value before the old one has been used." verbose="Variable &amp;#039;ret&amp;#039; is reassigned a value before the old one has been used." sinceDate="22.03.19">
+            <location file="src/strfunc.c" line="44" info=""/>
+            <location file="src/strfunc.c" line="47" info=""/>
+        </error>
+        <error id="redundantAssignment" severity="style" msg="Variable &amp;#039;ret&amp;#039; is reassigned a value before the old one has been used." verbose="Variable &amp;#039;ret&amp;#039; is reassigned a value before the old one has been used." sinceDate="22.03.19">
+            <location file="src/strfunc.c" line="67" info=""/>
+            <location file="src/strfunc.c" line="68" info=""/>
+        </error>
+        <error id="redundantAssignment" severity="style" msg="Variable &amp;#039;temp&amp;#039; is reassigned a value before the old one has been used." verbose="Variable &amp;#039;temp&amp;#039; is reassigned a value before the old one has been used." sinceDate="22.03.19">
+            <location file="src/strfunc.c" line="188" info=""/>
+            <location file="src/strfunc.c" line="190" info=""/>
+        </error>
+        <error id="redundantAssignment" severity="style" msg="Variable &amp;#039;begin&amp;#039; is reassigned a value before the old one has been used." verbose="Variable &amp;#039;begin&amp;#039; is reassigned a value before the old one has been used." sinceDate="22.03.19">
+            <location file="src/strfunc.c" line="820" info=""/>
+            <location file="src/strfunc.c" line="825" info=""/>
+        </error>
+        <error id="redundantAssignment" severity="style" msg="Variable &amp;#039;end&amp;#039; is reassigned a value before the old one has been used." verbose="Variable &amp;#039;end&amp;#039; is reassigned a value before the old one has been used." sinceDate="22.03.19">
+            <location file="src/strfunc.c" line="821" info=""/>
+            <location file="src/strfunc.c" line="826" info=""/>
+        </error>
+        <error id="variableScope" severity="style" msg="The scope of the variable &amp;#039;count&amp;#039; can be reduced." verbose="The scope of the variable &amp;#039;count&amp;#039; can be reduced. Warning: Be careful when fixing this message, especially when there are inner loops. Here is an example where cppcheck will write that the scope for &amp;#039;i&amp;#039; can be reduced:\012void f(int x)\012{\012    int i = 0;\012    if (x) {\012        // it&amp;#039;s safe to move &amp;#039;int i = 0;&amp;#039; here\012        for (int n = 0; n &amp;lt; 10; ++n) {\012            // it is possible but not safe to move &amp;#039;int i = 0;&amp;#039; here\012            do_something(&amp;amp;i);\012        }\012    }\012}\012When you see this message it is always safe to reduce the variable scope 1 level." sinceDate="22.03.19">
+            <location file="src/strfunc.c" line="227"/>
+        </error>
+        <error id="variableScope" severity="style" msg="The scope of the variable &amp;#039;temp&amp;#039; can be reduced." verbose="The scope of the variable &amp;#039;temp&amp;#039; can be reduced. Warning: Be careful when fixing this message, especially when there are inner loops. Here is an example where cppcheck will write that the scope for &amp;#039;i&amp;#039; can be reduced:\012void f(int x)\012{\012    int i = 0;\012    if (x) {\012        // it&amp;#039;s safe to move &amp;#039;int i = 0;&amp;#039; here\012        for (int n = 0; n &amp;lt; 10; ++n) {\012            // it is possible but not safe to move &amp;#039;int i = 0;&amp;#039; here\012            do_something(&amp;amp;i);\012        }\012    }\012}\012When you see this message it is always safe to reduce the variable scope 1 level." sinceDate="22.03.19">
+            <location file="src/strfunc.c" line="822"/>
+        </error>
+        <error id="variableScope" severity="style" msg="The scope of the variable &amp;#039;emptystr&amp;#039; can be reduced." verbose="The scope of the variable &amp;#039;emptystr&amp;#039; can be reduced. Warning: Be careful when fixing this message, especially when there are inner loops. Here is an example where cppcheck will write that the scope for &amp;#039;i&amp;#039; can be reduced:\012void f(int x)\012{\012    int i = 0;\012    if (x) {\012        // it&amp;#039;s safe to move &amp;#039;int i = 0;&amp;#039; here\012        for (int n = 0; n &amp;lt; 10; ++n) {\012            // it is possible but not safe to move &amp;#039;int i = 0;&amp;#039; here\012            do_something(&amp;amp;i);\012        }\012    }\012}\012When you see this message it is always safe to reduce the variable scope 1 level." sinceDate="22.03.19">
+            <location file="src/strfunc.c" line="891"/>
+        </error>
+        <error id="unsignedLessThanZero" severity="style" msg="Checking if unsigned variable &amp;#039;char_index&amp;#039; is less than zero." verbose="The unsigned variable &amp;#039;char_index&amp;#039; will never be negative so it is either pointless or an error to check if it is." sinceDate="22.03.19">
+            <location file="src/strfunc.c" line="959"/>
+        </error>
+        <error id="unsignedLessThanZero" severity="style" msg="Checking if unsigned variable &amp;#039;pos&amp;#039; is less than zero." verbose="The unsigned variable &amp;#039;pos&amp;#039; will never be negative so it is either pointless or an error to check if it is." sinceDate="22.03.19">
+            <location file="src/strfunc.c" line="982"/>
+        </error>
+    </errors>
+</results>

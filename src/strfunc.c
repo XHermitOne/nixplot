@@ -1,6 +1,7 @@
 /**
 * Модуль сервисных функций
 * @file
+* @version 0.0.0.1
 */
 
 #include <stdio.h>
@@ -59,24 +60,24 @@ char *trim_space(char *str)
 
 /**
 *   Удаление начальных и завершающих пробелов из строки
-*   bFree: Освободить автоматически память после использования?
-*   По умолчанию bFree=FALSE.
+*   do_free: Освободить автоматически память после использования?
+*   По умолчанию do_free=FALSE.
 *   В языке <C> нет возможности задать значение по умолчанию аргумента функции.
 */
-char *strtrim(char *str, BOOL bFree)
+char *strtrim(char *str, BOOL do_free)
 {
     char *ret = NULL;
     ret = strtrim_left(str, FALSE);
     ret = strtrim_right(ret, TRUE);
 
-    if (bFree)
+    if (do_free)
         // str = strfree(str);
         strfree(str);
     return ret;
 }
 
 
-char *strtrim_left(char *str, BOOL bFree)
+char *strtrim_left(char *str, BOOL do_free)
 {
     char *ret = NULL;
     char *pointer = str;
@@ -91,14 +92,14 @@ char *strtrim_left(char *str, BOOL bFree)
 
     memmove(ret, pointer, strlen(pointer) + 1);
 
-    if (bFree)
+    if (do_free)
         //str = strfree(str);
         strfree(str);
     return ret;
 }
 
 
-char *strtrim_right(char *str, BOOL bFree)
+char *strtrim_right(char *str, BOOL do_free)
 {
     char *ret = (char *) calloc(strlen(str) + 1, sizeof(char));
     char *end = str + strlen(str);
@@ -109,7 +110,7 @@ char *strtrim_right(char *str, BOOL bFree)
     memmove(ret, str, end - str);
     ret[end - str] = '\0';
 
-    if (bFree)
+    if (do_free)
         //str = strfree(str);
         strfree(str);
 
@@ -131,7 +132,7 @@ static int to_utf8(char *from, char *to, const char *codepage)
 }
 
 
-char *cp1251_to_utf8(char *from, BOOL bFree)
+char *cp1251_to_utf8(char *from, BOOL do_free)
 {
     char *result = NULL;
 
@@ -143,14 +144,14 @@ char *cp1251_to_utf8(char *from, BOOL bFree)
         to_utf8(from, result, "CP1251");
     }
 
-    if (bFree)
+    if (do_free)
         //from = strfree(from);
         strfree(from);
     return result;
 }
 
 
-char *cp866_to_utf8(char *from, BOOL bFree)
+char *cp866_to_utf8(char *from, BOOL do_free)
 {
     char *result = NULL;
 
@@ -162,14 +163,14 @@ char *cp866_to_utf8(char *from, BOOL bFree)
         to_utf8(from, result, "CP866");
     }
 
-    if (bFree)
+    if (do_free)
         // from = strfree(from);
         strfree(from);
     return result;
 }
 
 
-char *strreplace_old(char *src, char *from, char *to, BOOL bFree)
+char *strreplace_old(char *src, char *from, char *to, BOOL do_free)
 {
     size_t size    = strlen(src) + 1;
     size_t fromlen = strlen(from);
@@ -211,14 +212,14 @@ char *strreplace_old(char *src, char *from, char *to, BOOL bFree)
         }
     }
 
-    if (bFree)
+    if (do_free)
         // src = strfree(src);
         strfree(src);
     return value;
 }
 
 
-char *strreplace(char *str, const char *from, const char *to, BOOL bFree)
+char *strreplace(char *str, const char *from, const char *to, BOOL do_free)
 {
     char *ret = NULL;
     char *r = NULL;
@@ -254,7 +255,7 @@ char *strreplace(char *str, const char *from, const char *to, BOOL bFree)
     }
     strcpy(r, p);
 
-    if (bFree)
+    if (do_free)
         // str = strfree(str);
         strfree(str);
 
@@ -262,13 +263,13 @@ char *strreplace(char *str, const char *from, const char *to, BOOL bFree)
 }
 
 
-char *strreplace_all(char *src, sr *r)
+char *strreplace_all(char *src, search_replace_t *replaces)
 {
     char *ret = src;
     int i = 0;
 
-    for(i=0; r[i].search; i++)
-        ret = strreplace(ret, r[i].search, r[i].replace, FALSE);
+    for(i=0; replaces[i].search; i++)
+        ret = strreplace(ret, replaces[i].search, replaces[i].replace, FALSE);
 
     //ret = strreplace(ret, "\\", "/");
     return ret;
@@ -591,14 +592,14 @@ char *strright_pos(char *str, int position)
 
 /**
 *   Взять length символов с начала строки.
-*   bFree: Освободить автоматически память после использования?
-*   По умолчанию bFree=FALSE.
+*   do_free: Освободить автоматически память после использования?
+*   По умолчанию do_free=FALSE.
 *   В языке <C> нет возможности задать значение по умолчанию аргумента функции.
 */
-char *strleft(char *str, int length, BOOL bFree)
+char *strleft(char *str, int length, BOOL do_free)
 {
     char *ret = substr(str, 0, length);
-    if (bFree)
+    if (do_free)
         // str = strfree(str);
         strfree(str);
     return ret;
@@ -607,15 +608,15 @@ char *strleft(char *str, int length, BOOL bFree)
 
 /**
 *   Взять length символов с конца строки.
-*   bFree: Освободить автоматически память после использования?
-*   По умолчанию bFree=FALSE.
+*   do_free: Освободить автоматически память после использования?
+*   По умолчанию do_free=FALSE.
 *   В языке <C> нет возможности задать значение по умолчанию аргумента функции.
 */
-char *strright(char *str, int length, BOOL bFree)
+char *strright(char *str, int length, BOOL do_free)
 {
     int len = strlen(str);
     char *ret = substr(str, len-length, len);
-    if (bFree)
+    if (do_free)
         // str = strfree(str);
         strfree(str);
     return ret;
@@ -625,7 +626,7 @@ char *strright(char *str, int length, BOOL bFree)
 /**
 *   detecting whether base is starts with str
 */
-BOOL startswith(char* base, char* str)
+BOOL startswith(char *base, char *str)
 {
     return (strstr(base, str) - base) == 0;
 }
@@ -634,7 +635,7 @@ BOOL startswith(char* base, char* str)
 /**
 *   detecting whether base is ends with str
 */
-BOOL endswith(char* base, char* str)
+BOOL endswith(char *base, char *str)
 {
     int blen = strlen(base);
     int slen = strlen(str);
@@ -645,13 +646,13 @@ BOOL endswith(char* base, char* str)
 /**
 *   getting the first index of str in base
 */
-int strfind(char* base, char* str)
+int strfind(char *base, char *str)
 {
     return strfind_offset(base, str, 0);
 }
 
 
-int strfind_offset(char* base, char* str, int startIndex)
+int strfind_offset(char *base, char *str, int startIndex)
 {
     int result = 0;
     int baselen = strlen(base);
@@ -936,12 +937,12 @@ char *strprintf(char *str, char *fmt,...)
 }
 
 
-char *strconcatenate(char *str1, char *str2, BOOL bFree)
+char *strconcatenate(char *str1, char *str2, BOOL do_free)
 {
     char *ret = (char *) calloc((strlen(str1)+strlen(str2)+1), sizeof(char));
 
     ret = strcpy(ret, str1);
-    if (bFree)
+    if (do_free)
         // str1 = strfree(str1);
         strfree(str1);
 
@@ -975,7 +976,7 @@ char *strreplacechar(char *str, unsigned int char_index, char new_char)
 /**
 *   Заменить символ с номером char_index на строку new_str в строке
 */
-char *strreplace_pos(char *str, unsigned int pos, char *new_str, BOOL bFree)
+char *strreplace_pos(char *str, unsigned int pos, char *new_str, BOOL do_free)
 {
     unsigned int len = strlen(str);
     unsigned int i = 0;
@@ -998,7 +999,7 @@ char *strreplace_pos(char *str, unsigned int pos, char *new_str, BOOL bFree)
         }
     }
 
-    if (bFree)
+    if (do_free)
         // str = strfree(str);
         strfree(str);
     return result;
@@ -1007,11 +1008,11 @@ char *strreplace_pos(char *str, unsigned int pos, char *new_str, BOOL bFree)
 
 /**
 *   Взять подстроку слева до указанного символа
-*   bFree: Освободить автоматически память после использования?
-*   По умолчанию bFree=FALSE.
+*   do_free: Освободить автоматически память после использования?
+*   По умолчанию do_free=FALSE.
 *   В языке <C> нет возможности задать значение по умолчанию аргумента функции.
 */
-char *strleft_to(char *str, char symb, BOOL bFree)
+char *strleft_to(char *str, char symb, BOOL do_free)
 {
     char *p = str;
     char *result = NULL;
@@ -1021,7 +1022,7 @@ char *strleft_to(char *str, char symb, BOOL bFree)
         if (*p == symb)
         {
             result = strleft(str, p-str, FALSE);
-            if (bFree)
+            if (do_free)
                 // str = strfree(str);
                 strfree(str);
             return result;
@@ -1030,7 +1031,7 @@ char *strleft_to(char *str, char symb, BOOL bFree)
     }
 
     result = strcopy(str);
-    if (bFree)
+    if (do_free)
         // str = strfree(str);
         strfree(str);
     return result;
@@ -1039,11 +1040,11 @@ char *strleft_to(char *str, char symb, BOOL bFree)
 
 /**
 *   Взять подстрку справа до указанного символа
-*   bFree: Освободить автоматически память после использования?
-*   По умолчанию bFree=FALSE.
+*   do_free: Освободить автоматически память после использования?
+*   По умолчанию do_free=FALSE.
 *   В языке <C> нет возможности задать значение по умолчанию аргумента функции.
 */
-char *strright_to(char *str, char symb, BOOL bFree)
+char *strright_to(char *str, char symb, BOOL do_free)
 {
     char *start = str + strlen(str) - 1;
     char *p = start;        //Перейти на последний элемент
@@ -1054,7 +1055,7 @@ char *strright_to(char *str, char symb, BOOL bFree)
         if (*p == symb)
         {
             result = strright(str, start - p, FALSE);
-            if (bFree)
+            if (do_free)
                 // str = strfree(str);
                 strfree(str);
             return result;
@@ -1063,7 +1064,7 @@ char *strright_to(char *str, char symb, BOOL bFree)
     }
 
     result = strcopy(str);
-    if (bFree)
+    if (do_free)
         // str = strfree(str);
         strfree(str);
     return result;
@@ -1077,14 +1078,14 @@ BOOL isnumeric(const char *str)
 {
     if (str == NULL || *str == '\0' || isspace(*str))
     {
-        // if (DBG_MODE) logAddLine("WARNING. Empty string <%s>", str);
+        // if (DebugMode) logAddLine("WARNING. Empty string <%s>", str);
         return FALSE;
     }
 
     char *p = NULL;
     strtod(str, &p);
     BOOL result = (*p == '\0');
-    // if (DBG_MODE) logAddLine("Is NUM <%s> [%s] [%d]", str, p, result);
+    // if (DebugMode) logAddLine("Is NUM <%s> [%s] [%d]", str, p, result);
 
     // Число может быть ИНН
     // Обработка такого случая
@@ -1106,7 +1107,7 @@ BOOL isnumeric(const char *str)
             i++;
         }
         result = (!((i == 10) || (i == 12)));
-        //if (DBG_MODE) logAddLine("INN <%s> [%d] [%d]", str, i, result);
+        //if (DebugMode) logAddLine("INN <%s> [%d] [%d]", str, i, result);
     }
 
     return result;
@@ -1125,7 +1126,7 @@ int decimal_point(const char *number)
 
     for (i = last; i--; i >= 0)
     {
-        // if (DBG_MODE) logAddLine("Find decimal point <%c>", *(number+i));
+        // if (DebugMode) logAddLine("Find decimal point <%c>", *(number+i));
         if (*(number+i) == '.')
             break;
         else
@@ -1163,7 +1164,7 @@ char *strcopy(const char *str)
     if (copy)
         memcpy(copy, str, len);
     else
-        logAddLine("Memory allocation error");
+        log_line("Memory allocation error");
 
     return copy;
 }

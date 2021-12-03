@@ -1,94 +1,93 @@
 /**
 * Модуль функций отрисовки графиков
 * @file
+* @version 0.0.0.1
 */
 
 #include "graph.h"
 
 // Цвета режима графического вывода
-GRAPH_COLOR  LGColor = {CYAN, BLACK, DARKGRAY, DARKGRAY, DARKGRAY, YELLOW};
+graph_color_t  LGColor = {CYAN, BLACK, DARKGRAY, DARKGRAY, DARKGRAY, YELLOW};
 // Цвета режима печати
-static GRAPH_COLOR  LPColor = {BLACK, WHITE, BLACK, BLACK, BLACK, BLACK};
+static graph_color_t  LPColor = {BLACK, WHITE, BLACK, BLACK, BLACK, BLACK};
 
-static GRAPH_STATUS LGStatus = {AXIS_ON, AXIS_ON,
-                                GRID_ON, GRID_ON,
-                                NUMBER_ON, NUMBER_ON,
-                                CLEAR,
-                                GM_TIME, GM_OPTIMAL, GRID_ORIGIN, NOSEQ};
+static graph_status_t LGStatus = {AXIS_ON, AXIS_ON,
+                                  GRID_ON, GRID_ON,
+                                  NUMBER_ON, NUMBER_ON,
+                                  CLEAR,
+                                  GM_TIME, GM_OPTIMAL, GRID_ORIGIN, NOSEQ};
 
-static GRAPH_DATA   LGraph = {&LGStatus, &LGColor,
-                              NULL, 0, NULL,
-                              0, 0, 320, 120, 0, 0, 639, 479};
+static graph_data_t   LGraph = {&LGStatus, &LGColor,
+                                NULL, 0, NULL,
+                                0, 0, 320, 120, 0, 0, 639, 479};
 
 
 /**
 *   Установить текущий цвет отрисовки
 */
-void setCGAColor(GRAPH *graph, int CGAColor)
+void set_cga_color(graph_t *graph, int color)
 {
-    if (DBG_MODE) logAddLine("Set CGA color: %d", CGAColor);
+    if (DebugMode) log_line("Set CGA color: %d", color);
 
-    if (CGAColor == BLACK)
-        return cairo_set_source_rgb(graph->CR, 0.0, 0.0, 0.0);
-    if (CGAColor == BLUE)
-        return cairo_set_source_rgb(graph->CR, 0.0, 0.0, 0.5);
-    if (CGAColor == GREEN)
-        return cairo_set_source_rgb(graph->CR, 0.0, 0.5, 0.0);
-    if (CGAColor == CYAN)
-        return cairo_set_source_rgb(graph->CR, 0.0, 0.5, 0.5);
-    if (CGAColor == RED)
-        return cairo_set_source_rgb(graph->CR, 0.5, 0.0, 0.0);
-    if (CGAColor == MAGENTA)
-        return cairo_set_source_rgb(graph->CR, 0.5, 0.0, 0.5);
-    if (CGAColor == BROWN)
-        return cairo_set_source_rgb(graph->CR, 1.0, 0.5, 0.5);
-    if (CGAColor == LIGHTGRAY)
-        return cairo_set_source_rgb(graph->CR, 0.8, 0.8, 0.8);
-    if (CGAColor == DARKGRAY)
-        return cairo_set_source_rgb(graph->CR, 0.5, 0.5, 0.5);
-    if (CGAColor == LIGHTBLUE)
-        return cairo_set_source_rgb(graph->CR, 0.0, 0.0, 2.0);
-    if (CGAColor == LIGHTGREEN)
-        return cairo_set_source_rgb(graph->CR, 0.0, 1.0, 0.0);
-    if (CGAColor == LIGTHCYAN)
-        return cairo_set_source_rgb(graph->CR, 0.0, 1.0, 1.0);
-    if (CGAColor == LIGHTRED)
-        return cairo_set_source_rgb(graph->CR, 1.0, 0.0, 0.0);
-    if (CGAColor == LIGHTMAGENTA)
-        return cairo_set_source_rgb(graph->CR, 1.0, 1.0, 0.0);
-    if (CGAColor == YELLOW)
-        return cairo_set_source_rgb(graph->CR, 1.0, 1.0, 0.0);
-    if (CGAColor == WHITE)
-        return cairo_set_source_rgb(graph->CR, 1.0, 1.0, 1.0);
+    if (color == BLACK)
+        return cairo_set_source_rgb(graph->cr, 0.0, 0.0, 0.0);
+    if (color == BLUE)
+        return cairo_set_source_rgb(graph->cr, 0.0, 0.0, 0.5);
+    if (color == GREEN)
+        return cairo_set_source_rgb(graph->cr, 0.0, 0.5, 0.0);
+    if (color == CYAN)
+        return cairo_set_source_rgb(graph->cr, 0.0, 0.5, 0.5);
+    if (color == RED)
+        return cairo_set_source_rgb(graph->cr, 0.5, 0.0, 0.0);
+    if (color == MAGENTA)
+        return cairo_set_source_rgb(graph->cr, 0.5, 0.0, 0.5);
+    if (color == BROWN)
+        return cairo_set_source_rgb(graph->cr, 1.0, 0.5, 0.5);
+    if (color == LIGHTGRAY)
+        return cairo_set_source_rgb(graph->cr, 0.8, 0.8, 0.8);
+    if (color == DARKGRAY)
+        return cairo_set_source_rgb(graph->cr, 0.5, 0.5, 0.5);
+    if (color == LIGHTBLUE)
+        return cairo_set_source_rgb(graph->cr, 0.0, 0.0, 2.0);
+    if (color == LIGHTGREEN)
+        return cairo_set_source_rgb(graph->cr, 0.0, 1.0, 0.0);
+    if (color == LIGTHCYAN)
+        return cairo_set_source_rgb(graph->cr, 0.0, 1.0, 1.0);
+    if (color == LIGHTRED)
+        return cairo_set_source_rgb(graph->cr, 1.0, 0.0, 0.0);
+    if (color == LIGHTMAGENTA)
+        return cairo_set_source_rgb(graph->cr, 1.0, 1.0, 0.0);
+    if (color == YELLOW)
+        return cairo_set_source_rgb(graph->cr, 1.0, 1.0, 0.0);
+    if (color == WHITE)
+        return cairo_set_source_rgb(graph->cr, 1.0, 1.0, 1.0);
 }
 
 
 /**
 *   Установить текущий цвет отрисовки
 */
-void outTextXY(GRAPH *graph, int x, int y, char *text, int Orient)
+void out_text_xy(graph_t *graph, int x, int y, char *text, int orient)
 {
     cairo_text_extents_t te;
-    cairo_text_extents(graph->CR, text, &te);
+    cairo_text_extents(graph->cr, text, &te);
 
-    if (Orient == HORIZ_DIR)
-        cairo_move_to(graph->CR, x - te.width - te.x_bearing,
-                      y - te.height / 2 - te.y_bearing);
-    if (Orient == VERT_DIR)
-        cairo_move_to(graph->CR, x - te.height / 2 - te.y_bearing,
-                      y + te.width + te.x_bearing);
+    if (orient == HORIZ_DIRECTION)
+        cairo_move_to(graph->cr, x - te.width - te.x_bearing, y - te.height / 2 - te.y_bearing);
+    if (orient == VERT_DIRECTION)
+        cairo_move_to(graph->cr, x - te.height / 2 - te.y_bearing, y + te.width + te.x_bearing);
 
-    if (Orient == VERT_DIR)
+    if (orient == VERT_DIRECTION)
     {
-        cairo_save(graph->CR);
-        cairo_rotate(graph->CR, - M_PI / 2);
+        cairo_save(graph->cr);
+        cairo_rotate(graph->cr, - M_PI / 2);
     }
 
-    cairo_show_text(graph->CR, text);
+    cairo_show_text(graph->cr, text);
 
-    if (Orient == VERT_DIR)
+    if (orient == VERT_DIRECTION)
     {
-        cairo_restore(graph->CR);
+        cairo_restore(graph->cr);
     }
 }
 
@@ -96,7 +95,7 @@ void outTextXY(GRAPH *graph, int x, int y, char *text, int Orient)
 /**
 *   Установить точечный стиль отрисовки линий
 */
-void setDotLineStyle(GRAPH *graph)
+void set_dot_line_style(graph_t *graph)
 {
     double dashes[] = {1.0,  /* ink */
                        3.0,  /* skip */
@@ -104,52 +103,52 @@ void setDotLineStyle(GRAPH *graph)
     int    ndash  = sizeof(dashes) / sizeof(dashes[0]);
     double offset = -50.0;
 
-    cairo_set_dash(graph->CR, dashes, ndash, offset);
-    cairo_set_line_width(graph->CR, 1.0);
+    cairo_set_dash(graph->cr, dashes, ndash, offset);
+    cairo_set_line_width(graph->cr, 1.0);
 }
 
 
 /**
 *   Установить нормальный стиль отрисовки линий
 */
-void setSolidLineStyle(GRAPH *graph)
+void set_solid_line_style(graph_t *graph)
 {
     double dashes[] = {1.0,  /* ink */
                        3.0,  /* skip */
                        };
 
-    cairo_set_dash(graph->CR, dashes, 0, 0);
-    cairo_set_line_width(graph->CR, 1.0);
+    cairo_set_dash(graph->cr, dashes, 0, 0);
+    cairo_set_line_width(graph->cr, 1.0);
 }
 
 
 /**
 *   Функция получения данных графика по умолчанию
 */
-void get_point(GRAPH_DATA *graph_data, double *X, double *Y, long I)
+void get_point(graph_data_t *graph_data, double *X, double *Y, long count)
 {
     if (!graph_data)
     {
-        if (DBG_MODE) logWarning("Don't define graphic data");
+        if (DebugMode) log_warning("Don't define graphic data");
         return;
     }
     else
     {
-        if (!graph_data->NPoints)
+        if (!graph_data->n_points)
         {
-            if (DBG_MODE) logWarning("Points is empty");
+            if (DebugMode) log_warning("Points is empty");
             return;
         }
 
-        if ((I < 0) || (graph_data->NPoints <= I))
+        if ((count < 0) || (graph_data->n_points <= count))
         {
-            if (DBG_MODE) logWarning("Invalid index in function <get_point>");
+            if (DebugMode) log_warning("Invalid index in function <get_point>");
             return;
         }
 
-        *X = graph_data->Points[I].x;
-        *Y = graph_data->Points[I].y;
-        if (DBG_MODE) logAddLine("Get point (%f, %f)", *X, *Y);
+        *X = graph_data->points[count].x;
+        *Y = graph_data->points[count].y;
+        if (DebugMode) log_line("Get point (%f, %f)", *X, *Y);
     }
 }
 
@@ -157,39 +156,39 @@ void get_point(GRAPH_DATA *graph_data, double *X, double *Y, long I)
 /**
 *   Функция полной отрисовки графика
 */
-int Draw(GRAPH *graph, GRAPH_DATA *Grp, BOOL isPrintMode)
+int draw(graph_t *graph, graph_data_t *graph_data, BOOL is_print_mode)
 {
-    graph->G = Grp;
+    graph->graph_data = graph_data;
 
-    if (!graph->G)
-        graph->G = &LGraph;
+    if (!graph->graph_data)
+        graph->graph_data = &LGraph;
 
-    if (!graph->G->Status)
-        graph->G->Status = &LGStatus;
+    if (!graph->graph_data->status)
+        graph->graph_data->status = &LGStatus;
 
-    if (!graph->G->Color)
+    if (!graph->graph_data->color)
     {
-        if (isPrintMode)
-            graph->G->Color = &LPColor;
+        if (is_print_mode)
+            graph->graph_data->color = &LPColor;
         else
-            graph->G->Color = &LGColor;
+            graph->graph_data->color = &LGColor;
     }
 
-    if (DBG_MODE) logAddLine("Default graph options:");
-    if (DBG_MODE) logAddLine("\tX1: %d Y1: %d", graph->X1, graph->Y1);
-    if (DBG_MODE) logAddLine("\tX2: %d Y2: %d", graph->X2, graph->Y2);
-    if (DBG_MODE) logAddLine("\tdX: %f dY: %f", graph->dX, graph->dY);
+    if (DebugMode) log_line("Default graph options:");
+    if (DebugMode) log_line("\tX1: %d Y1: %d", graph->X1, graph->Y1);
+    if (DebugMode) log_line("\tX2: %d Y2: %d", graph->X2, graph->Y2);
+    if (DebugMode) log_line("\tdX: %f dY: %f", graph->dX, graph->dY);
 
     // Переносим настройки на данные графика
-    graph->G->X1 = graph->X1;
-    graph->G->Y1 = graph->Y1;
-    graph->G->X2 = graph->X2;
-    graph->G->Y2 = graph->Y2;
+    graph->graph_data->X1 = graph->X1;
+    graph->graph_data->Y1 = graph->Y1;
+    graph->graph_data->X2 = graph->X2;
+    graph->graph_data->Y2 = graph->Y2;
 
-    CheckGraph(graph);
-    DrawGrid(graph);
-    DrawAxis(graph);
-    DrawGraph(graph);
+    check_graph(graph);
+    draw_grid(graph);
+    draw_axis(graph);
+    draw_graph(graph);
 
     return 1;
 }
@@ -198,55 +197,55 @@ int Draw(GRAPH *graph, GRAPH_DATA *Grp, BOOL isPrintMode)
 /**
 *   Функция проверки всех данных графика
 */
-void CheckGraph(GRAPH *graph)
+void check_graph(graph_t *graph)
 {
-    if (graph->G->x1 == graph->G->x2)
-        graph->G->x2 = graph->G->x1 + 0.001;
-    if (graph->G->y1 == graph->G->y2)
-        graph->G->y2 = graph->G->y1 + 0.001;
-    if (graph->G->x1 > graph->G->x2)
-        swap(&graph->G->x1, &graph->G->x2, sizeof(double));
-    if (graph->G->y1 > graph->G->y2)
-        swap(&graph->G->y1, &graph->G->y2, sizeof(double));
+    if (graph->graph_data->x1 == graph->graph_data->x2)
+        graph->graph_data->x2 = graph->graph_data->x1 + 0.001;
+    if (graph->graph_data->y1 == graph->graph_data->y2)
+        graph->graph_data->y2 = graph->graph_data->y1 + 0.001;
+    if (graph->graph_data->x1 > graph->graph_data->x2)
+        swap(&graph->graph_data->x1, &graph->graph_data->x2, sizeof(double));
+    if (graph->graph_data->y1 > graph->graph_data->y2)
+        swap(&graph->graph_data->y1, &graph->graph_data->y2, sizeof(double));
 
-    if (DBG_MODE) logAddLine("Check coord graph options:");
-    if (DBG_MODE) logAddLine("\tX1: %d Y1: %d", graph->G->X1, graph->G->Y1);
-    if (DBG_MODE) logAddLine("\tX2: %d Y2: %d", graph->G->X2, graph->G->Y2);
+    if (DebugMode) log_line("Check coord graph options:");
+    if (DebugMode) log_line("\tX1: %d Y1: %d", graph->graph_data->X1, graph->graph_data->Y1);
+    if (DebugMode) log_line("\tX2: %d Y2: %d", graph->graph_data->X2, graph->graph_data->Y2);
 
-    CheckCoords(&graph->G->X1, &graph->G->X2, MINX, MAXX, 200);
-    CheckCoords(&graph->G->Y1, &graph->G->Y2, MINY, MAXY, 200);
+    check_coords(&graph->graph_data->X1, &graph->graph_data->X2, MINX, MAXX, 200);
+    check_coords(&graph->graph_data->Y1, &graph->graph_data->Y2, MINY, MAXY, 200);
 
-    if (graph->G->Status->NumberY)
-        graph->X1 = graph->G->X1 + 66;
+    if (graph->graph_data->status->number_y)
+        graph->X1 = graph->graph_data->X1 + 66;
     else
-        graph->X1 = graph->G->X1;
+        graph->X1 = graph->graph_data->X1;
 
-    graph->Y1 = graph->G->Y1;
+    graph->Y1 = graph->graph_data->Y1;
 
-    graph->X2 = graph->G->X2;
+    graph->X2 = graph->graph_data->X2;
 
-    if (graph->G->Status->NumberX)
-        graph->Y2 = graph->G->Y2 - 66;
+    if (graph->graph_data->status->number_x)
+        graph->Y2 = graph->graph_data->Y2 - 66;
     else
-        graph->Y2 = graph->G->Y2;
+        graph->Y2 = graph->graph_data->Y2;
 
-    graph->dX = ((double)(graph->X2 - graph->X1)) / (graph->G->x2 - graph->G->x1);
-    graph->dY = ((double)(graph->Y2 - graph->Y1)) / (graph->G->y2 - graph->G->y1);
+    graph->dX = ((double)(graph->X2 - graph->X1)) / (graph->graph_data->x2 - graph->graph_data->x1);
+    graph->dY = ((double)(graph->Y2 - graph->Y1)) / (graph->graph_data->y2 - graph->graph_data->y1);
 
-    if (DBG_MODE) logAddLine("Checked graph options:");
-    if (DBG_MODE) logAddLine("\tX1: %d Y1: %d", graph->X1, graph->Y1);
-    if (DBG_MODE) logAddLine("\tX2: %d Y2: %d", graph->X2, graph->Y2);
-    if (DBG_MODE) logAddLine("\tdX: %f dY: %f", graph->dX, graph->dY);
-    if (DBG_MODE) logAddLine("Graph data options:");
-    if (DBG_MODE) logAddLine("\tx1: %f y1: %f", graph->G->x1, graph->G->y1);
-    if (DBG_MODE) logAddLine("\tx2: %f y2: %f", graph->G->x2, graph->G->y2);
-    if (DBG_MODE) logAddLine("\tX1: %d Y1: %d", graph->G->X1, graph->G->Y1);
-    if (DBG_MODE) logAddLine("\tX2: %d Y2: %d", graph->G->X2, graph->G->Y2);
+    if (DebugMode) log_line("Checked graph options:");
+    if (DebugMode) log_line("\tX1: %d Y1: %d", graph->X1, graph->Y1);
+    if (DebugMode) log_line("\tX2: %d Y2: %d", graph->X2, graph->Y2);
+    if (DebugMode) log_line("\tdX: %f dY: %f", graph->dX, graph->dY);
+    if (DebugMode) log_line("Graph data options:");
+    if (DebugMode) log_line("\tx1: %f y1: %f", graph->graph_data->x1, graph->graph_data->y1);
+    if (DebugMode) log_line("\tx2: %f y2: %f", graph->graph_data->x2, graph->graph_data->y2);
+    if (DebugMode) log_line("\tX1: %d Y1: %d", graph->graph_data->X1, graph->graph_data->Y1);
+    if (DebugMode) log_line("\tX2: %d Y2: %d", graph->graph_data->X2, graph->graph_data->Y2);
 
-    if (!graph->G->GetPoint)
+    if (!graph->graph_data->get_point)
     {
-        graph->G->GetPoint = get_point;
-        if (DBG_MODE) logAddLine("Set default <get_point> function");
+        graph->graph_data->get_point = get_point;
+        if (DebugMode) log_line("Set default <get_point> function");
     }
 }
 
@@ -254,29 +253,29 @@ void CheckGraph(GRAPH *graph)
 /**
 *   Функция проверки координат графика
 */
-void CheckCoords(int *X1, int *X2, int MinX, int MaxX, int dX)
+void check_coords(int *X1, int *X2, int min_x, int max_x, int dX)
 {
     int dx = 0;
-    int dXmax = 0;
+    int dx_max = 0;
 
     if (dX > 0)
     {
         if(*X2 < *X1)
             swap(X1, X2, sizeof(int));
         dx = (*X2) - (*X1);
-        dXmax = MaxX - MinX;
-        if (dX > dXmax)
-            dX = dXmax;
-        if (*X1 < MinX)
-            *X1 = MinX;
-        if (*X2 > MaxX)
-            *X2 = MaxX;
+        dx_max = max_x - min_x;
+        if (dX > dx_max)
+            dX = dx_max;
+        if (*X1 < min_x)
+            *X1 = min_x;
+        if (*X2 > max_x)
+            *X2 = max_x;
         if (dx < dX)
         {
             *X2 = (*X1) + dX;
-            if (*X2 > MaxX)
+            if (*X2 > max_x)
             {
-                *X2 = MaxX;
+                *X2 = max_x;
                 *X1 = (*X2) - dX;
             }
         }
@@ -287,14 +286,14 @@ void CheckCoords(int *X1, int *X2, int MinX, int MaxX, int dX)
 /**
 *   Вспомогательная функция свопирования двух элементов памяти
 */
-void swap(void *Src, void *Dst, int Size)
+void swap(void *src, void *dst, int size)
 {
     int i = 0;
     int j = 0;
-    char* S = (char*) Src;
-    char* D = (char*) Dst;
+    char *S = (char*) src;
+    char *D = (char*) dst;
 
-    for(i = 0; i < Size; i++)
+    for(i = 0; i < size; i++)
     {
         j = S[i];
         S[i] = D[i];
@@ -306,143 +305,143 @@ void swap(void *Src, void *Dst, int Size)
 /**
 *   Отрисовка области под надписи
 */
-static void drawLabelArea(GRAPH *graph)
+static void draw_label_area(graph_t *graph)
 {
     // Отрисовка области под надписи
-    setCGAColor(graph, graph->G->Color->Ground);
+    set_cga_color(graph, graph->graph_data->color->ground);
     // Косяк с заливкой------------------------------------------------v
-    cairo_rectangle(graph->CR, graph->G->X1, graph->Y2, graph->G->X2 + 1, graph->G->Y2);
+    cairo_rectangle(graph->cr, graph->graph_data->X1, graph->Y2, graph->graph_data->X2 + 1, graph->graph_data->Y2);
     // Операция cairo_fill() используется вместо контура как шаблон закрашивания.
-    cairo_fill(graph->CR);
+    cairo_fill(graph->cr);
 
-    setCGAColor(graph, graph->G->Color->Ground);
-    cairo_rectangle(graph->CR, graph->G->X1, graph->G->Y1, graph->X1, graph->Y2);
+    set_cga_color(graph, graph->graph_data->color->ground);
+    cairo_rectangle(graph->cr, graph->graph_data->X1, graph->graph_data->Y1, graph->X1, graph->Y2);
     // Операция cairo_fill() используется вместо контура как шаблон закрашивания.
-    cairo_fill(graph->CR);
+    cairo_fill(graph->cr);
 }
 
 /**
 *   Область поля графика
 */
-static void drawGraphArea(GRAPH *graph)
+static void draw_graph_area(graph_t *graph)
 {
     // Область поля графика
-    setCGAColor(graph, graph->G->Color->Ground);
-    cairo_rectangle(graph->CR, graph->X1, graph->G->Y1, graph->G->X2, graph->Y2);
+    set_cga_color(graph, graph->graph_data->color->ground);
+    cairo_rectangle(graph->cr, graph->X1, graph->graph_data->Y1, graph->graph_data->X2, graph->Y2);
     // Операция cairo_fill() используется вместо контура как шаблон закрашивания.
-    cairo_fill(graph->CR);
+    cairo_fill(graph->cr);
 }
 
 
 /**
 *   Бордер
 */
-static void drawBorder(GRAPH *graph)
+static void draw_border(graph_t *graph)
 {
     // Бордер
-    setCGAColor(graph, graph->G->Color->Border);
+    set_cga_color(graph, graph->graph_data->color->border);
 
-    cairo_rectangle(graph->CR, graph->X1, graph->Y1, graph->X2, graph->Y2);
+    cairo_rectangle(graph->cr, graph->X1, graph->Y1, graph->X2, graph->Y2);
     // Дополнительная вертикальная линия (какой то косяк с cairo_rectangle)
-    cairo_move_to(graph->CR, graph->X2, graph->Y1);
-    cairo_line_to(graph->CR, graph->X2, graph->Y2);
+    cairo_move_to(graph->cr, graph->X2, graph->Y1);
+    cairo_line_to(graph->cr, graph->X2, graph->Y2);
     // Операция cairo_stroke() применяет виртуальный карандаш вдоль контура.
-    cairo_stroke(graph->CR);
+    cairo_stroke(graph->cr);
 }
 
 
 /**
 *   Отрисовка сетки
 */
-void DrawGrid(GRAPH *graph)
+void draw_grid(graph_t *graph)
 {
     double  stx = 0.0;
-    double  STX = 0.0;
+    double  _stx = 0.0;
     double  tmpx = 0.0;
-    double  TMPX = 0.0;
-    double  TMP0X = 0.0;
+    double  _tmpx = 0.0;
+    double  _tmp0x = 0.0;
     double  sty = 0.0;
-    double  STY = 0.0;
+    double  _sty = 0.0;
     double  tmpy = 0.0;
-    double  TMPY = 0.0;
-    double  TMP0Y = 0.0;
+    double  _tmpy = 0.0;
+    double  _tmp0y = 0.0;
 
-    stx = StepX(graph);
-    sty = StepY(graph);
-    if(graph->G->Status->Origin)
+    stx = step_x(graph);
+    sty = step_y(graph);
+    if(graph->graph_data->status->origin)
     {
-        tmpx = ceil(graph->G->x1 / stx) * stx;
-        if (tmpx - graph->G->x1 < 8 / graph->dX)
+        tmpx = ceil(graph->graph_data->x1 / stx) * stx;
+        if (tmpx - graph->graph_data->x1 < 8 / graph->dX)
             tmpx += stx;
-        tmpy = ceil(graph->G->y1 / sty) * sty;
-        if (tmpy - graph->G->y1 < 8 / graph->dY)
+        tmpy = ceil(graph->graph_data->y1 / sty) * sty;
+        if (tmpy - graph->graph_data->y1 < 8 / graph->dY)
             tmpy += sty;
     }
     else
     {
-        tmpx = graph->G->x1 + stx;
-        tmpy = graph->G->y1 + sty;
+        tmpx = graph->graph_data->x1 + stx;
+        tmpy = graph->graph_data->y1 + sty;
     }
 
-    STX = stx * graph->dX;
-    TMP0X = graph->X1 + (tmpx - graph->G->x1) * graph->dX;
-    STY = sty * graph->dY;
-    TMP0Y = graph->Y2 - (tmpy - graph->G->y1) * graph->dY;
+    _stx = stx * graph->dX;
+    _tmp0x = graph->X1 + (tmpx - graph->graph_data->x1) * graph->dX;
+    _sty = sty * graph->dY;
+    _tmp0y = graph->Y2 - (tmpy - graph->graph_data->y1) * graph->dY;
 
     // Отрисовка области под надписи
-    drawLabelArea(graph);
+    draw_label_area(graph);
 
     // Область поля графика
-    drawGraphArea(graph);
+    draw_graph_area(graph);
 
     // Бордер
-    drawBorder(graph);
+    draw_border(graph);
 
     // Сетка
-    setCGAColor(graph, graph->G->Color->Grid);
-    setDotLineStyle(graph);
-    if (graph->G->Status->GridX)
-        for (TMPX = TMP0X; graph->X2 - TMPX > 8; TMPX += STX)
+    set_cga_color(graph, graph->graph_data->color->grid);
+    set_dot_line_style(graph);
+    if (graph->graph_data->status->grid_x)
+        for (_tmpx = _tmp0x; graph->X2 - _tmpx > 8; _tmpx += _stx)
         {
-            cairo_move_to(graph->CR, TMPX, graph->Y1);
-            cairo_line_to(graph->CR, TMPX, graph->Y2);
+            cairo_move_to(graph->cr, _tmpx, graph->Y1);
+            cairo_line_to(graph->cr, _tmpx, graph->Y2);
         }
 
-    if (graph->G->Status->GridY)
-        for (TMPY = TMP0Y; TMPY - graph->Y1 > 8; TMPY -= STY)
+    if (graph->graph_data->status->grid_y)
+        for (_tmpy = _tmp0y; _tmpy - graph->Y1 > 8; _tmpy -= _sty)
         {
-            cairo_move_to(graph->CR, graph->X1, TMPY);
-            cairo_line_to(graph->CR, graph->X2, TMPY);
+            cairo_move_to(graph->cr, graph->X1, _tmpy);
+            cairo_line_to(graph->cr, graph->X2, _tmpy);
         }
 
     // Операция cairo_stroke() применяет виртуальный карандаш вдоль контура.
-    cairo_stroke(graph->CR);
+    cairo_stroke(graph->cr);
 
     // Шкала X
-    setCGAColor(graph, graph->G->Color->Text);
-    if (graph->G->Status->NumberX)
+    set_cga_color(graph, graph->graph_data->color->text);
+    if (graph->graph_data->status->number_x)
     {
-        for (TMPX = TMP0X; graph->X2 - TMPX > 8; tmpx += stx, TMPX += STX)
-            OutGridNumber(graph, TMPX, graph->Y2, tmpx, VERT_DIR);
+        for (_tmpx = _tmp0x; graph->X2 - _tmpx > 8; tmpx += stx, _tmpx += _stx)
+            out_grid_number(graph, _tmpx, graph->Y2, tmpx, VERT_DIRECTION);
     }
 
     // Шкала Y
-    setCGAColor(graph, graph->G->Color->Text);
-    if (graph->G->Status->NumberY)
+    set_cga_color(graph, graph->graph_data->color->text);
+    if (graph->graph_data->status->number_y)
     {
-        for (TMPY = TMP0Y; TMPY - graph->Y1 > 8; tmpy += sty, TMPY -= STY)
-            OutGridNumber(graph, graph->X1, TMPY, tmpy, HORIZ_DIR);
+        for (_tmpy = _tmp0y; _tmpy - graph->Y1 > 8; tmpy += sty, _tmpy -= _sty)
+            out_grid_number(graph, graph->X1, _tmpy, tmpy, HORIZ_DIRECTION);
     }
 
 }
 
 
-double Step(GRAPH *graph, double st, int AType)
+double step(graph_t *graph, double st, int a_type)
 {
     double  fl = 0.0;
     int     i = 0;
 
-    if (graph->G->Status->Origin)
+    if (graph->graph_data->status->origin)
     {
         for (i = 0; st < 1.0; st *= 10, i--);
         for (; st > 10.0; st /= 10, i++);
@@ -452,33 +451,33 @@ double Step(GRAPH *graph, double st, int AType)
         else
             st = fl;
         st *= pow(10.0, i);
-        if (AType == 1 && st < 1)
+        if (a_type == 1 && st < 1)
             st = 1;
     }
     return st;
 }
 
 
-double StepX(GRAPH *graph)
+double step_x(graph_t *graph)
 {
-    return Step(graph, (graph->G->x2 - graph->G->x1) / ((graph->X2 - graph->X1) >> 5), graph->G->Status->XType);
+    return step(graph, (graph->graph_data->x2 - graph->graph_data->x1) / ((graph->X2 - graph->X1) >> 5), graph->graph_data->status->x_type);
 }
 
 
-double StepY(GRAPH *graph)
+double step_y(graph_t *graph)
 {
-    return Step(graph, (graph->G->y2 - graph->G->y1) / ((graph->Y2 - graph->Y1) >> 5), graph->G->Status->YType);
+    return step(graph, (graph->graph_data->y2 - graph->graph_data->y1) / ((graph->Y2 - graph->Y1) >> 5), graph->graph_data->status->y_type);
 }
 
 
 /**
 *   Отрисовка надписей сетки
 */
-void OutGridNumber(GRAPH *graph, int x, int y, double Number, int Orient)
+void out_grid_number(graph_t *graph, int x, int y, double number, int orient)
 {
-    double  ModNumber = fabs(Number);
+    double  mod_number = fabs(number);
     long    tmp = 0L;
-    long    Mode = 0L;
+    long    mode = 0L;
     int     i = 0;
     int     hh = 0;
     int     mm = 0;
@@ -488,66 +487,61 @@ void OutGridNumber(GRAPH *graph, int x, int y, double Number, int Orient)
     int     y1 = 0;
     int     x2 = 0;
     int     y2 = 0;
-    char Buffer[16];
+    char    buffer[16];
 
-    if (ModNumber < 1E-14)
-        Number = 0;
+    if (mod_number < 1E-14)
+        number = 0;
 
-    if (Orient)
-        Mode = graph->G->Status->XType;
+    if (orient)
+        mode = graph->graph_data->status->x_type;
     else
-        Mode = graph->G->Status->YType;
+        mode = graph->graph_data->status->y_type;
 
-    // if (DBG_MODE) logAddLine("Mode: %d Orient: %d", Mode, Orient);
-
-    switch(Mode)
+    switch(mode)
     {
         case GM_TIME:
-            tmp = Number;
+            tmp = number;
             ss = tmp % 60;
             mm = (tmp / 60) % 60;
             hh = (tmp / 3600) % 24;
             dd = tmp / 86400;
-            if (Number < 0 || Number >= 864000000)
-                sprintf(Buffer, "##:##:##");
+            if (number < 0 || number >= 864000000)
+                sprintf(buffer, "##:##:##");
             else
-                sprintf(Buffer, "%02d:%02d:%02d", hh, mm, ss);
+                sprintf(buffer, "%02d:%02d:%02d", hh, mm, ss);
             if (dd)
             {
-                outTextXY(graph, x1, y1, Buffer, Orient);
-
-                sprintf(Buffer, "(%d)", dd);
-
-                outTextXY(graph, x2, y2, Buffer, Orient);
-
+                out_text_xy(graph, x1, y1, buffer, orient);
+                sprintf(buffer, "(%d)", dd);
+                out_text_xy(graph, x2, y2, buffer, orient);
             }
             else
-                outTextXY(graph, x, y, Buffer, Orient);
+                out_text_xy(graph, x, y, buffer, orient);
             break;
 
         case GM_OPTIMAL:
-            if (ModNumber < 1000000.0 && ModNumber > 0.00001 || !Number)
+            if (mod_number < 1000000.0 && mod_number > 0.00001 || !number)
             {
-                if (Number)
-                    sprintf(Buffer, "% lf", Number);
+                if (number)
+                    sprintf(buffer, "% lf", number);
                 else
-                    sprintf(Buffer, "0");
+                    sprintf(buffer, "0");
 
-                Buffer[8] = 0;
-                for (i = 7; i > 0 && Buffer[i] == '0'; i--)
-                    Buffer[i] = 0;
-                if (Buffer[i] == '.')
-                    Buffer[i] = 0;
-                outTextXY(graph, x, y, Buffer, Orient);
+                buffer[8] = 0;
+                for (i = 7; i > 0 && buffer[i] == '0'; i--)
+                    buffer[i] = 0;
+                if (buffer[i] == '.')
+                    buffer[i] = 0;
+                out_text_xy(graph, x, y, buffer, orient);
                 break;
             }
 
         case GM_EXP:
-            sprintf(Buffer, "%12.5E", Number);
-            outTextXY(graph, x2, y2, &Buffer[8], Orient);
+            sprintf(buffer, "%12.5E", number);
+            out_text_xy(graph, x2, y2, &buffer[8], orient);
 
-            Buffer[8] = 0;
-            outTextXY(graph, x1, y1, Buffer, Orient);
+            buffer[8] = 0;
+            out_text_xy(graph, x1, y1, buffer, orient);
             break;
     }
 }
@@ -556,37 +550,37 @@ void OutGridNumber(GRAPH *graph, int x, int y, double Number, int Orient)
 /**
 *   Отрисовка осей
 */
-void DrawAxis(GRAPH *graph)
+void draw_axis(graph_t *graph)
 {
     int i = 0;
 
-    setCGAColor(graph, graph->G->Color->Axis);
-    setSolidLineStyle(graph);
+    set_cga_color(graph, graph->graph_data->color->axis);
+    set_solid_line_style(graph);
 
-    if(graph->G->y1 <= 0 && graph->G->y2 >= 0 && graph->G->Status->AxisX)
+    if(graph->graph_data->y1 <= 0 && graph->graph_data->y2 >= 0 && graph->graph_data->status->axis_x)
     {
-        i = graph->Y2 + (int)(graph->G->y1 * graph->dY);
-        cairo_move_to(graph->CR, graph->X1, i);
-        cairo_line_to(graph->CR, graph->X2, i);
+        i = graph->Y2 + (int)(graph->graph_data->y1 * graph->dY);
+        cairo_move_to(graph->cr, graph->X1, i);
+        cairo_line_to(graph->cr, graph->X2, i);
     }
 
-    if(graph->G->x1 <= 0 && graph->G->x2 >= 0 && graph->G->Status->AxisY)
+    if(graph->graph_data->x1 <= 0 && graph->graph_data->x2 >= 0 && graph->graph_data->status->axis_y)
     {
-        i = graph->X1 - (int)(graph->G->x1 * graph->dX);
-        cairo_move_to(graph->CR, i, graph->Y1);
-        cairo_line_to(graph->CR, i, graph->Y2);
+        i = graph->X1 - (int)(graph->graph_data->x1 * graph->dX);
+        cairo_move_to(graph->cr, i, graph->Y1);
+        cairo_line_to(graph->cr, i, graph->Y2);
     }
 
     // ВНИМАНИЕ! Для отображения ранее отрисованных
     //           линий необходимо вызвать cairo_stroke().
-    cairo_stroke(graph->CR);
+    cairo_stroke(graph->cr);
 }
 
 
 /**
 *   Отрисовка самого графика
 */
-int DrawGraph(GRAPH *graph)
+int draw_graph(graph_t *graph)
 {
     double  _y1 = 0.0;
     double  _x1 = 0.0;
@@ -607,49 +601,49 @@ int DrawGraph(GRAPH *graph)
     long    k = 0L;
     // unsigned Pattern, Pc, P;
 
-    if (!graph->G)
+    if (!graph->graph_data)
     {
-        if (DBG_MODE) logWarning("Don't define graphic data");
+        if (DebugMode) log_warning("Don't define graphic data");
         return 0;
     }
 
-    if (!graph->G->NPoints)
+    if (!graph->graph_data->n_points)
     {
-        if (DBG_MODE) logWarning("Empty points");
+        if (DebugMode) log_warning("Empty points");
         return 0;
     }
 
-    if (graph->G->NPoints < 2)
+    if (graph->graph_data->n_points < 2)
     {
-        if (DBG_MODE) logWarning("Point count < 2 %d", graph->G->NPoints);
+        if (DebugMode) log_warning("Point count < 2 %d", graph->graph_data->n_points);
         return 0;
     }
 
-    if (!graph->G->GetPoint)
+    if (!graph->graph_data->get_point)
     {
-        if (DBG_MODE) logWarning("Not define <GetPoint> function");
+        if (DebugMode) log_warning("Not define <GetPoint> function");
         return 0;
     }
 
     // Берем первую точку
-    graph->G->GetPoint(graph->G, &x1, &y1, i=0);
-    if (graph->G->Status->DType)
+    graph->graph_data->get_point(graph->graph_data, &x1, &y1, i=0);
+    if (graph->graph_data->status->dtype)
     {
-        graph->G->GetPoint(graph->G, &x2, &y2, j=graph->G->NPoints - 1);
-        if (x2 > graph->G->x1 && x1 < graph->G->x2)
+        graph->graph_data->get_point(graph->graph_data, &x2, &y2, j=graph->graph_data->n_points - 1);
+        if (x2 > graph->graph_data->x1 && x1 < graph->graph_data->x2)
         {
-            if (x1 < graph->G->x1)
+            if (x1 < graph->graph_data->x1)
                 while((j - i) > 1)
                 {
                     k = (i + j) >> 1;
-                    graph->G->GetPoint(graph->G, &x, &y, k);
-                    if (x > graph->G->x1)
+                    graph->graph_data->get_point(graph->graph_data, &x, &y, k);
+                    if (x > graph->graph_data->x1)
                     {
                         x2 = x;
                         y2 = y;
                         j = k;
                     }
-                    else if (x < graph->G->x1)
+                    else if (x < graph->graph_data->x1)
                     {
                         x1 = x;
                         y1 = y;
@@ -660,39 +654,42 @@ int DrawGraph(GRAPH *graph)
             }
         }
         else
-            i = graph->G->NPoints;
+            i = graph->graph_data->n_points;
     }
 
-    setCGAColor(graph, graph->G->Color->Line);
-    setSolidLineStyle(graph);
+    set_cga_color(graph, graph->graph_data->color->line);
+    set_solid_line_style(graph);
 
     _x2 = x1;
     _y2 = y1;
-    for(i++; i < graph->G->NPoints && (!graph->G->Status->DType || x1 < graph->G->x2); memcpy(&x1, &x2, 16), i++)
+    for(i++; i < graph->graph_data->n_points && (!graph->graph_data->status->dtype || x1 < graph->graph_data->x2); memcpy(&x1, &x2, 16), i++)
     {
-        graph->G->GetPoint(graph->G, &x2, &y2, i);
-        if (!(y1 <= graph->G->y1 && y2 <= graph->G->y1 || y1 >= graph->G->y2 && y2 >= graph->G->y2 || x1 <= graph->G->x1 && x2 <= graph->G->x1 || x1 >= graph->G->x2 && x2 >= graph->G->x2))
+        graph->graph_data->get_point(graph->graph_data, &x2, &y2, i);
+        if (!(y1 <= graph->graph_data->y1 && y2 <= graph->graph_data->y1 || 
+              y1 >= graph->graph_data->y2 && y2 >= graph->graph_data->y2 || 
+              x1 <= graph->graph_data->x1 && x2 <= graph->graph_data->x1 || 
+              x1 >= graph->graph_data->x2 && x2 >= graph->graph_data->x2))
         {
             _x1 = _x2;
             _y1 = _y2;
             _x2 = x2;
             _y2 = y2;
 
-            Split(graph, &_x1, &_y1, &_x2, &_y2);
+            split_graph(graph, &_x1, &_y1, &_x2, &_y2);
 
-            ix1 = (long)((_x1 - graph->G->x1) * graph->dX) + graph->X1;
-            iy1 = graph->Y2 - (long)((_y1 - graph->G->y1) * graph->dY);
-            ix2 = (long)((_x2 - graph->G->x1) * graph->dX) + graph->X1;
-            iy2 = graph->Y2 - (long)((_y2 - graph->G->y1) * graph->dY);
+            ix1 = (long)((_x1 - graph->graph_data->x1) * graph->dX) + graph->X1;
+            iy1 = graph->Y2 - (long)((_y1 - graph->graph_data->y1) * graph->dY);
+            ix2 = (long)((_x2 - graph->graph_data->x1) * graph->dX) + graph->X1;
+            iy2 = graph->Y2 - (long)((_y2 - graph->graph_data->y1) * graph->dY);
 
-            cairo_move_to(graph->CR, ix1, iy1);
-            cairo_line_to(graph->CR, ix2, iy2);
-            if (DBG_MODE) logAddLine("Draw line (%d, %d) - (%d, %d)", (int)ix1, (int)iy1, (int)ix2, (int)iy2);
+            cairo_move_to(graph->cr, ix1, iy1);
+            cairo_line_to(graph->cr, ix2, iy2);
+            if (DebugMode) log_line("Draw line (%d, %d) - (%d, %d)", (int)ix1, (int)iy1, (int)ix2, (int)iy2);
         }
     }
     // ВНИМАНИЕ! Для отображения ранее отрисованных
     //           линий необходимо вызвать cairo_stroke().
-    cairo_stroke(graph->CR);
+    cairo_stroke(graph->cr);
 
     return 1;
 }
@@ -700,17 +697,17 @@ int DrawGraph(GRAPH *graph)
 /**
 *   Обрезка линии
 */
-int Split(GRAPH *graph, double *x1, double *y1, double *x2, double *y2)
+int split_graph(graph_t *graph, double *x1, double *y1, double *x2, double *y2)
 {
- CrossPoint(y1, x1, y2, x2, graph->G->y1, 0);
- CrossPoint(y1, x1, y2, x2, graph->G->y2, 1);
- CrossPoint(x1, y1, x2, y2, graph->G->x1, 0);
- CrossPoint(x1, y1, x2, y2, graph->G->x2, 1);
+ cross_point(y1, x1, y2, x2, graph->graph_data->y1, 0);
+ cross_point(y1, x1, y2, x2, graph->graph_data->y2, 1);
+ cross_point(x1, y1, x2, y2, graph->graph_data->x1, 0);
+ cross_point(x1, y1, x2, y2, graph->graph_data->x2, 1);
  return OK;
 }
 
 
-int CrossPoint(double *x1, double *y1, double *x2, double *y2, double x, int Mode)
+int cross_point(double *x1, double *y1, double *x2, double *y2, double x, int mode)
 {
     double y = 0;
     double dx1 = 0;
@@ -735,7 +732,7 @@ int CrossPoint(double *x1, double *y1, double *x2, double *y2, double x, int Mod
     else
         y = (*y2) - dy / dx * dx2;
 
-    if (Mode)
+    if (mode)
     {
         *x2 = x;
         *y2 = y;
@@ -752,13 +749,13 @@ int CrossPoint(double *x1, double *y1, double *x2, double *y2, double x, int Mod
 /**
 *   Инициализация структуры графика
 */
-GRAPH *initGraph(GRAPH *graph, GRAPH_DATA *graph_data, cairo_surface_t *surface, cairo_t *cr,
+graph_t *init_graph(graph_t *graph, graph_data_t *graph_data, cairo_surface_t *surface, cairo_t *cr,
                  unsigned int width, unsigned int height,
                  double DX, double DY)
 {
     if (graph == NULL)
     {
-        if (DBG_MODE) logWarning("Not define graph");
+        if (DebugMode) log_warning("Not define graph");
         return NULL;
     }
 
@@ -770,10 +767,10 @@ GRAPH *initGraph(GRAPH *graph, GRAPH_DATA *graph_data, cairo_surface_t *surface,
     graph->dX = DX;
     graph->dY = DY;
 
-    graph->G = graph_data;
+    graph->graph_data = graph_data;
 
-    graph->Surface = surface;
-    graph->CR = cr;
+    graph->surface = surface;
+    graph->cr = cr;
 
     return graph;
 }
@@ -781,11 +778,11 @@ GRAPH *initGraph(GRAPH *graph, GRAPH_DATA *graph_data, cairo_surface_t *surface,
 /**
 *   Инициализация структуры данных графика
 */
-GRAPH_DATA *initGraphData(GRAPH_DATA *graph_data, double x1, double y1, double x2, double y2)
+graph_data_t *init_graph_data(graph_data_t *graph_data, double x1, double y1, double x2, double y2)
 {
     if (graph_data == NULL)
     {
-        if (DBG_MODE) logWarning("Not define graph data");
+        if (DebugMode) log_warning("Not define graph data");
         return NULL;
     }
 
@@ -794,10 +791,10 @@ GRAPH_DATA *initGraphData(GRAPH_DATA *graph_data, double x1, double y1, double x
     graph_data->x2 = x2;
     graph_data->y2 = y2;
 
-    graph_data->Status = NULL;
-    graph_data->Color = NULL;
+    graph_data->status = NULL;
+    graph_data->color = NULL;
 
-    graph_data->NPoints = 0;
+    graph_data->n_points = 0;
 
     //x1, y1, x2, y2 0, 0, 320, 120,
     graph_data->X1 = 0;
@@ -805,7 +802,7 @@ GRAPH_DATA *initGraphData(GRAPH_DATA *graph_data, double x1, double y1, double x
     graph_data->X2 = 639;
     graph_data->Y2 = 479;
 
-    if (DBG_MODE) logAddLine("Init graph data");
+    if (DebugMode) log_line("Init graph data");
 
     return graph_data;
 }

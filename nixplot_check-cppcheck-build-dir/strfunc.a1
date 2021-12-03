@@ -1,0 +1,383 @@
+<?xml version="1.0"?>
+<analyzerinfo checksum="3752722741">
+        <error id="nullPointerRedundantCheck" severity="warning" msg="Either the condition &apos;if(str)&apos; is redundant or there is possible null pointer dereference: pointer." verbose="Either the condition &apos;if(str)&apos; is redundant or there is possible null pointer dereference: pointer." cwe="476">
+            <location file="/home/xhermit/dev/prj/work/nixplot/src/strfunc.c" line="88" info="Null pointer dereference"/>
+            <location file="/home/xhermit/dev/prj/work/nixplot/src/strfunc.c" line="81" info="Assignment &apos;pointer=str&apos;, assigned value is 0"/>
+            <location file="/home/xhermit/dev/prj/work/nixplot/src/strfunc.c" line="83" info="Assuming that condition &apos;if(str)&apos; is not redundant"/>
+        </error>
+        <error id="redundantAssignment" severity="style" msg="Variable &apos;ret&apos; is reassigned a value before the old one has been used." verbose="Variable &apos;ret&apos; is reassigned a value before the old one has been used." cwe="563">
+            <location file="/home/xhermit/dev/prj/work/nixplot/src/strfunc.c" line="47"/>
+            <location file="/home/xhermit/dev/prj/work/nixplot/src/strfunc.c" line="44"/>
+        </error>
+        <error id="redundantAssignment" severity="style" msg="Variable &apos;ret&apos; is reassigned a value before the old one has been used." verbose="Variable &apos;ret&apos; is reassigned a value before the old one has been used." cwe="563">
+            <location file="/home/xhermit/dev/prj/work/nixplot/src/strfunc.c" line="68"/>
+            <location file="/home/xhermit/dev/prj/work/nixplot/src/strfunc.c" line="67"/>
+        </error>
+        <error id="redundantAssignment" severity="style" msg="Variable &apos;temp&apos; is reassigned a value before the old one has been used." verbose="Variable &apos;temp&apos; is reassigned a value before the old one has been used." cwe="563">
+            <location file="/home/xhermit/dev/prj/work/nixplot/src/strfunc.c" line="190"/>
+            <location file="/home/xhermit/dev/prj/work/nixplot/src/strfunc.c" line="188"/>
+        </error>
+        <error id="redundantAssignment" severity="style" msg="Variable &apos;begin&apos; is reassigned a value before the old one has been used." verbose="Variable &apos;begin&apos; is reassigned a value before the old one has been used." cwe="563">
+            <location file="/home/xhermit/dev/prj/work/nixplot/src/strfunc.c" line="825"/>
+            <location file="/home/xhermit/dev/prj/work/nixplot/src/strfunc.c" line="820"/>
+        </error>
+        <error id="redundantAssignment" severity="style" msg="Variable &apos;end&apos; is reassigned a value before the old one has been used." verbose="Variable &apos;end&apos; is reassigned a value before the old one has been used." cwe="563">
+            <location file="/home/xhermit/dev/prj/work/nixplot/src/strfunc.c" line="826"/>
+            <location file="/home/xhermit/dev/prj/work/nixplot/src/strfunc.c" line="821"/>
+        </error>
+        <error id="variableScope" severity="style" msg="The scope of the variable &apos;count&apos; can be reduced." verbose="The scope of the variable &apos;count&apos; can be reduced. Warning: Be careful when fixing this message, especially when there are inner loops. Here is an example where cppcheck will write that the scope for &apos;i&apos; can be reduced:\012void f(int x)\012{\012    int i = 0;\012    if (x) {\012        // it&apos;s safe to move &apos;int i = 0;&apos; here\012        for (int n = 0; n &lt; 10; ++n) {\012            // it is possible but not safe to move &apos;int i = 0;&apos; here\012            do_something(&amp;i);\012        }\012    }\012}\012When you see this message it is always safe to reduce the variable scope 1 level." cwe="398">
+            <location file="/home/xhermit/dev/prj/work/nixplot/src/strfunc.c" line="227"/>
+        </error>
+        <error id="variableScope" severity="style" msg="The scope of the variable &apos;temp&apos; can be reduced." verbose="The scope of the variable &apos;temp&apos; can be reduced. Warning: Be careful when fixing this message, especially when there are inner loops. Here is an example where cppcheck will write that the scope for &apos;i&apos; can be reduced:\012void f(int x)\012{\012    int i = 0;\012    if (x) {\012        // it&apos;s safe to move &apos;int i = 0;&apos; here\012        for (int n = 0; n &lt; 10; ++n) {\012            // it is possible but not safe to move &apos;int i = 0;&apos; here\012            do_something(&amp;i);\012        }\012    }\012}\012When you see this message it is always safe to reduce the variable scope 1 level." cwe="398">
+            <location file="/home/xhermit/dev/prj/work/nixplot/src/strfunc.c" line="822"/>
+        </error>
+        <error id="variableScope" severity="style" msg="The scope of the variable &apos;emptystr&apos; can be reduced." verbose="The scope of the variable &apos;emptystr&apos; can be reduced. Warning: Be careful when fixing this message, especially when there are inner loops. Here is an example where cppcheck will write that the scope for &apos;i&apos; can be reduced:\012void f(int x)\012{\012    int i = 0;\012    if (x) {\012        // it&apos;s safe to move &apos;int i = 0;&apos; here\012        for (int n = 0; n &lt; 10; ++n) {\012            // it is possible but not safe to move &apos;int i = 0;&apos; here\012            do_something(&amp;i);\012        }\012    }\012}\012When you see this message it is always safe to reduce the variable scope 1 level." cwe="398">
+            <location file="/home/xhermit/dev/prj/work/nixplot/src/strfunc.c" line="891"/>
+        </error>
+        <error id="unsignedLessThanZero" severity="style" msg="Checking if unsigned variable &apos;char_index&apos; is less than zero." verbose="The unsigned variable &apos;char_index&apos; will never be negative so it is either pointless or an error to check if it is." cwe="570">
+            <location file="/home/xhermit/dev/prj/work/nixplot/src/strfunc.c" line="959"/>
+        </error>
+        <error id="unsignedLessThanZero" severity="style" msg="Checking if unsigned variable &apos;pos&apos; is less than zero." verbose="The unsigned variable &apos;pos&apos; will never be negative so it is either pointless or an error to check if it is." cwe="570">
+            <location file="/home/xhermit/dev/prj/work/nixplot/src/strfunc.c" line="982"/>
+        </error>
+  <FileInfo check="CheckUnusedFunctions">
+    <functiondecl functionName="concatenate" lineNumber="21"/>
+    <functiondecl functionName="trim_space" lineNumber="41"/>
+    <functiondecl functionName="strtrim" lineNumber="65"/>
+    <functiondecl functionName="strtrim_left" lineNumber="78"/>
+    <functiondecl functionName="strtrim_right" lineNumber="100"/>
+    <functiondecl functionName="to_utf8" lineNumber="119"/>
+    <functiondecl functionName="cp1251_to_utf8" lineNumber="133"/>
+    <functiondecl functionName="cp866_to_utf8" lineNumber="152"/>
+    <functiondecl functionName="strreplace_old" lineNumber="171"/>
+    <functiondecl functionName="strreplace" lineNumber="220"/>
+    <functiondecl functionName="strreplace_all" lineNumber="264"/>
+    <functiondecl functionName="skip" lineNumber="287"/>
+    <functiondecl functionName="copy" lineNumber="295"/>
+    <functiondecl functionName="newword" lineNumber="304"/>
+    <functiondecl functionName="subsplit" lineNumber="313"/>
+    <functiondecl functionName="qstrsplit" lineNumber="403"/>
+    <functiondecl functionName="strsplit" lineNumber="445"/>
+    <functiondecl functionName="get_string_count" lineNumber="453"/>
+    <functiondecl functionName="strlwr_lat" lineNumber="470"/>
+    <functiondecl functionName="strupr_lat" lineNumber="486"/>
+    <functiondecl functionName="strnset" lineNumber="499"/>
+    <functiondecl functionName="strempty" lineNumber="515"/>
+    <functiondecl functionName="find_word" lineNumber="533"/>
+    <functiondecl functionName="substr" lineNumber="560"/>
+    <functiondecl functionName="strright_pos" lineNumber="585"/>
+    <functiondecl functionName="strleft" lineNumber="597"/>
+    <functiondecl functionName="strright" lineNumber="613"/>
+    <functiondecl functionName="startswith" lineNumber="627"/>
+    <functiondecl functionName="endswith" lineNumber="636"/>
+    <functiondecl functionName="strfind" lineNumber="647"/>
+    <functiondecl functionName="strfind_offset" lineNumber="653"/>
+    <functiondecl functionName="strfind_char" lineNumber="688"/>
+    <functiondecl functionName="strfind_count" lineNumber="708"/>
+    <functiondecl functionName="strfind_count_offset" lineNumber="714"/>
+    <functiondecl functionName="strfind_last" lineNumber="740"/>
+    <functiondecl functionName="strequal" lineNumber="803"/>
+    <functiondecl functionName="strreverse" lineNumber="816"/>
+    <functiondecl functionName="strset" lineNumber="849"/>
+    <functiondecl functionName="strgen" lineNumber="868"/>
+    <functiondecl functionName="strgen_empty" lineNumber="877"/>
+    <functiondecl functionName="str_eat_chars" lineNumber="888"/>
+    <functiondecl functionName="strfree" lineNumber="909"/>
+    <functiondecl functionName="strprintf" lineNumber="920"/>
+    <functiondecl functionName="strconcatenate" lineNumber="938"/>
+    <functiondecl functionName="strreplacechar" lineNumber="954"/>
+    <functiondecl functionName="strreplace_pos" lineNumber="977"/>
+    <functiondecl functionName="strleft_to" lineNumber="1013"/>
+    <functiondecl functionName="strright_to" lineNumber="1045"/>
+    <functiondecl functionName="isnumeric" lineNumber="1075"/>
+    <functiondecl functionName="decimal_point" lineNumber="1115"/>
+    <functiondecl functionName="strinit" lineNumber="1140"/>
+    <functiondecl functionName="strcopy" lineNumber="1151"/>
+    <functiondecl functionName="concatenate" lineNumber="21"/>
+    <functiondecl functionName="trim_space" lineNumber="41"/>
+    <functiondecl functionName="strtrim" lineNumber="65"/>
+    <functiondecl functionName="strtrim_left" lineNumber="78"/>
+    <functiondecl functionName="strtrim_right" lineNumber="100"/>
+    <functiondecl functionName="to_utf8" lineNumber="119"/>
+    <functiondecl functionName="cp1251_to_utf8" lineNumber="133"/>
+    <functiondecl functionName="cp866_to_utf8" lineNumber="152"/>
+    <functiondecl functionName="strreplace_old" lineNumber="171"/>
+    <functiondecl functionName="strreplace" lineNumber="220"/>
+    <functiondecl functionName="strreplace_all" lineNumber="264"/>
+    <functiondecl functionName="skip" lineNumber="287"/>
+    <functiondecl functionName="copy" lineNumber="295"/>
+    <functiondecl functionName="newword" lineNumber="304"/>
+    <functiondecl functionName="subsplit" lineNumber="313"/>
+    <functiondecl functionName="qstrsplit" lineNumber="403"/>
+    <functiondecl functionName="strsplit" lineNumber="445"/>
+    <functiondecl functionName="get_string_count" lineNumber="453"/>
+    <functiondecl functionName="strlwr_lat" lineNumber="470"/>
+    <functiondecl functionName="strupr_lat" lineNumber="486"/>
+    <functiondecl functionName="strnset" lineNumber="499"/>
+    <functiondecl functionName="strempty" lineNumber="515"/>
+    <functiondecl functionName="find_word" lineNumber="533"/>
+    <functiondecl functionName="substr" lineNumber="560"/>
+    <functiondecl functionName="strright_pos" lineNumber="585"/>
+    <functiondecl functionName="strleft" lineNumber="597"/>
+    <functiondecl functionName="strright" lineNumber="613"/>
+    <functiondecl functionName="startswith" lineNumber="627"/>
+    <functiondecl functionName="endswith" lineNumber="636"/>
+    <functiondecl functionName="strfind" lineNumber="647"/>
+    <functiondecl functionName="strfind_offset" lineNumber="653"/>
+    <functiondecl functionName="strfind_char" lineNumber="688"/>
+    <functiondecl functionName="strfind_count" lineNumber="708"/>
+    <functiondecl functionName="strfind_count_offset" lineNumber="714"/>
+    <functiondecl functionName="strfind_last" lineNumber="740"/>
+    <functiondecl functionName="strequal" lineNumber="803"/>
+    <functiondecl functionName="strreverse" lineNumber="816"/>
+    <functiondecl functionName="strset" lineNumber="849"/>
+    <functiondecl functionName="strgen" lineNumber="868"/>
+    <functiondecl functionName="strgen_empty" lineNumber="877"/>
+    <functiondecl functionName="str_eat_chars" lineNumber="888"/>
+    <functiondecl functionName="strfree" lineNumber="909"/>
+    <functiondecl functionName="strprintf" lineNumber="920"/>
+    <functiondecl functionName="strconcatenate" lineNumber="938"/>
+    <functiondecl functionName="strreplacechar" lineNumber="954"/>
+    <functiondecl functionName="strreplace_pos" lineNumber="977"/>
+    <functiondecl functionName="strleft_to" lineNumber="1013"/>
+    <functiondecl functionName="strright_to" lineNumber="1045"/>
+    <functiondecl functionName="isnumeric" lineNumber="1075"/>
+    <functiondecl functionName="decimal_point" lineNumber="1115"/>
+    <functiondecl functionName="strinit" lineNumber="1140"/>
+    <functiondecl functionName="strcopy" lineNumber="1151"/>
+    <functiondecl functionName="concatenate" lineNumber="21"/>
+    <functiondecl functionName="trim_space" lineNumber="41"/>
+    <functiondecl functionName="strtrim" lineNumber="65"/>
+    <functiondecl functionName="strtrim_left" lineNumber="78"/>
+    <functiondecl functionName="strtrim_right" lineNumber="100"/>
+    <functiondecl functionName="to_utf8" lineNumber="119"/>
+    <functiondecl functionName="cp1251_to_utf8" lineNumber="133"/>
+    <functiondecl functionName="cp866_to_utf8" lineNumber="152"/>
+    <functiondecl functionName="strreplace_old" lineNumber="171"/>
+    <functiondecl functionName="strreplace" lineNumber="220"/>
+    <functiondecl functionName="strreplace_all" lineNumber="264"/>
+    <functiondecl functionName="skip" lineNumber="287"/>
+    <functiondecl functionName="copy" lineNumber="295"/>
+    <functiondecl functionName="newword" lineNumber="304"/>
+    <functiondecl functionName="subsplit" lineNumber="313"/>
+    <functiondecl functionName="qstrsplit" lineNumber="403"/>
+    <functiondecl functionName="strsplit" lineNumber="445"/>
+    <functiondecl functionName="get_string_count" lineNumber="453"/>
+    <functiondecl functionName="strlwr_lat" lineNumber="470"/>
+    <functiondecl functionName="strupr_lat" lineNumber="486"/>
+    <functiondecl functionName="strnset" lineNumber="499"/>
+    <functiondecl functionName="strempty" lineNumber="515"/>
+    <functiondecl functionName="find_word" lineNumber="533"/>
+    <functiondecl functionName="substr" lineNumber="560"/>
+    <functiondecl functionName="strright_pos" lineNumber="585"/>
+    <functiondecl functionName="strleft" lineNumber="597"/>
+    <functiondecl functionName="strright" lineNumber="613"/>
+    <functiondecl functionName="startswith" lineNumber="627"/>
+    <functiondecl functionName="endswith" lineNumber="636"/>
+    <functiondecl functionName="strfind" lineNumber="647"/>
+    <functiondecl functionName="strfind_offset" lineNumber="653"/>
+    <functiondecl functionName="strfind_char" lineNumber="688"/>
+    <functiondecl functionName="strfind_count" lineNumber="708"/>
+    <functiondecl functionName="strfind_count_offset" lineNumber="714"/>
+    <functiondecl functionName="strfind_last" lineNumber="740"/>
+    <functiondecl functionName="strequal" lineNumber="803"/>
+    <functiondecl functionName="strreverse" lineNumber="816"/>
+    <functiondecl functionName="strset" lineNumber="849"/>
+    <functiondecl functionName="strgen" lineNumber="868"/>
+    <functiondecl functionName="strgen_empty" lineNumber="877"/>
+    <functiondecl functionName="str_eat_chars" lineNumber="888"/>
+    <functiondecl functionName="strfree" lineNumber="909"/>
+    <functiondecl functionName="strprintf" lineNumber="920"/>
+    <functiondecl functionName="strconcatenate" lineNumber="938"/>
+    <functiondecl functionName="strreplacechar" lineNumber="954"/>
+    <functiondecl functionName="strreplace_pos" lineNumber="977"/>
+    <functiondecl functionName="strleft_to" lineNumber="1013"/>
+    <functiondecl functionName="strright_to" lineNumber="1045"/>
+    <functiondecl functionName="isnumeric" lineNumber="1075"/>
+    <functiondecl functionName="decimal_point" lineNumber="1115"/>
+    <functiondecl functionName="strinit" lineNumber="1140"/>
+    <functiondecl functionName="strcopy" lineNumber="1151"/>
+    <functiondecl functionName="concatenate" lineNumber="21"/>
+    <functiondecl functionName="trim_space" lineNumber="41"/>
+    <functiondecl functionName="strtrim" lineNumber="65"/>
+    <functiondecl functionName="strtrim_left" lineNumber="78"/>
+    <functiondecl functionName="strtrim_right" lineNumber="100"/>
+    <functiondecl functionName="to_utf8" lineNumber="119"/>
+    <functiondecl functionName="cp1251_to_utf8" lineNumber="133"/>
+    <functiondecl functionName="cp866_to_utf8" lineNumber="152"/>
+    <functiondecl functionName="strreplace_old" lineNumber="171"/>
+    <functiondecl functionName="strreplace" lineNumber="220"/>
+    <functiondecl functionName="strreplace_all" lineNumber="264"/>
+    <functiondecl functionName="skip" lineNumber="287"/>
+    <functiondecl functionName="copy" lineNumber="295"/>
+    <functiondecl functionName="newword" lineNumber="304"/>
+    <functiondecl functionName="subsplit" lineNumber="313"/>
+    <functiondecl functionName="qstrsplit" lineNumber="403"/>
+    <functiondecl functionName="strsplit" lineNumber="445"/>
+    <functiondecl functionName="get_string_count" lineNumber="453"/>
+    <functiondecl functionName="strlwr_lat" lineNumber="470"/>
+    <functiondecl functionName="strupr_lat" lineNumber="486"/>
+    <functiondecl functionName="strnset" lineNumber="499"/>
+    <functiondecl functionName="strempty" lineNumber="515"/>
+    <functiondecl functionName="find_word" lineNumber="533"/>
+    <functiondecl functionName="substr" lineNumber="560"/>
+    <functiondecl functionName="strright_pos" lineNumber="585"/>
+    <functiondecl functionName="strleft" lineNumber="597"/>
+    <functiondecl functionName="strright" lineNumber="613"/>
+    <functiondecl functionName="startswith" lineNumber="627"/>
+    <functiondecl functionName="endswith" lineNumber="636"/>
+    <functiondecl functionName="strfind" lineNumber="647"/>
+    <functiondecl functionName="strfind_offset" lineNumber="653"/>
+    <functiondecl functionName="strfind_char" lineNumber="688"/>
+    <functiondecl functionName="strfind_count" lineNumber="708"/>
+    <functiondecl functionName="strfind_count_offset" lineNumber="714"/>
+    <functiondecl functionName="strfind_last" lineNumber="740"/>
+    <functiondecl functionName="strequal" lineNumber="803"/>
+    <functiondecl functionName="strreverse" lineNumber="816"/>
+    <functiondecl functionName="strset" lineNumber="849"/>
+    <functiondecl functionName="strgen" lineNumber="868"/>
+    <functiondecl functionName="strgen_empty" lineNumber="877"/>
+    <functiondecl functionName="str_eat_chars" lineNumber="888"/>
+    <functiondecl functionName="strfree" lineNumber="909"/>
+    <functiondecl functionName="strprintf" lineNumber="920"/>
+    <functiondecl functionName="strconcatenate" lineNumber="938"/>
+    <functiondecl functionName="strreplacechar" lineNumber="954"/>
+    <functiondecl functionName="strreplace_pos" lineNumber="977"/>
+    <functiondecl functionName="strleft_to" lineNumber="1013"/>
+    <functiondecl functionName="strright_to" lineNumber="1045"/>
+    <functiondecl functionName="isnumeric" lineNumber="1075"/>
+    <functiondecl functionName="decimal_point" lineNumber="1115"/>
+    <functiondecl functionName="strinit" lineNumber="1140"/>
+    <functiondecl functionName="strcopy" lineNumber="1151"/>
+    <functioncall functionName="CNULL"/>
+    <functioncall functionName="DEFQUOTES"/>
+    <functioncall functionName="FALSE"/>
+    <functioncall functionName="Lfrom"/>
+    <functioncall functionName="Lto"/>
+    <functioncall functionName="MAX_STR"/>
+    <functioncall functionName="NULL"/>
+    <functioncall functionName="SLOSH"/>
+    <functioncall functionName="TRUE"/>
+    <functioncall functionName="ap"/>
+    <functioncall functionName="bFree"/>
+    <functioncall functionName="base"/>
+    <functioncall functionName="break"/>
+    <functioncall functionName="buff"/>
+    <functioncall functionName="buffer"/>
+    <functioncall functionName="bufp"/>
+    <functioncall functionName="c"/>
+    <functioncall functionName="calloc"/>
+    <functioncall functionName="ch"/>
+    <functioncall functionName="char"/>
+    <functioncall functionName="codepage"/>
+    <functioncall functionName="concatenate"/>
+    <functioncall functionName="copy"/>
+    <functioncall functionName="count"/>
+    <functioncall functionName="cp"/>
+    <functioncall functionName="d"/>
+    <functioncall functionName="delim"/>
+    <functioncall functionName="dst"/>
+    <functioncall functionName="end"/>
+    <functioncall functionName="endinit"/>
+    <functioncall functionName="fmt"/>
+    <functioncall functionName="for"/>
+    <functioncall functionName="found"/>
+    <functioncall functionName="free"/>
+    <functioncall functionName="from"/>
+    <functioncall functionName="fromlen"/>
+    <functioncall functionName="i"/>
+    <functioncall functionName="iconv"/>
+    <functioncall functionName="iconv_close"/>
+    <functioncall functionName="iconv_open"/>
+    <functioncall functionName="if"/>
+    <functioncall functionName="int"/>
+    <functioncall functionName="isdigit"/>
+    <functioncall functionName="isspace"/>
+    <functioncall functionName="l"/>
+    <functioncall functionName="last"/>
+    <functioncall functionName="len"/>
+    <functioncall functionName="length"/>
+    <functioncall functionName="log_line"/>
+    <functioncall functionName="long"/>
+    <functioncall functionName="malloc"/>
+    <functioncall functionName="memcpy"/>
+    <functioncall functionName="memmove"/>
+    <functioncall functionName="min"/>
+    <functioncall functionName="n"/>
+    <functioncall functionName="new_char"/>
+    <functioncall functionName="new_str"/>
+    <functioncall functionName="newlen"/>
+    <functioncall functionName="newword"/>
+    <functioncall functionName="number"/>
+    <functioncall functionName="oldlen"/>
+    <functioncall functionName="p"/>
+    <functioncall functionName="pointer"/>
+    <functioncall functionName="position"/>
+    <functioncall functionName="printf"/>
+    <functioncall functionName="psrc"/>
+    <functioncall functionName="pstr"/>
+    <functioncall functionName="ptrs"/>
+    <functioncall functionName="qstrsplit"/>
+    <functioncall functionName="quotes"/>
+    <functioncall functionName="r"/>
+    <functioncall functionName="realloc"/>
+    <functioncall functionName="replace"/>
+    <functioncall functionName="result"/>
+    <functioncall functionName="ret"/>
+    <functioncall functionName="return"/>
+    <functioncall functionName="s"/>
+    <functioncall functionName="search"/>
+    <functioncall functionName="search_length"/>
+    <functioncall functionName="size"/>
+    <functioncall functionName="sizeof"/>
+    <functioncall functionName="skip"/>
+    <functioncall functionName="slen"/>
+    <functioncall functionName="sloshed"/>
+    <functioncall functionName="source"/>
+    <functioncall functionName="source_length"/>
+    <functioncall functionName="space"/>
+    <functioncall functionName="src"/>
+    <functioncall functionName="start"/>
+    <functioncall functionName="startIndex"/>
+    <functioncall functionName="str"/>
+    <functioncall functionName="str1"/>
+    <functioncall functionName="str2"/>
+    <functioncall functionName="strcat"/>
+    <functioncall functionName="strchr"/>
+    <functioncall functionName="strcmp"/>
+    <functioncall functionName="strcopy"/>
+    <functioncall functionName="strcpy"/>
+    <functioncall functionName="strempty"/>
+    <functioncall functionName="strfind_count_offset"/>
+    <functioncall functionName="strfind_offset"/>
+    <functioncall functionName="strfree"/>
+    <functioncall functionName="strgen_empty"/>
+    <functioncall functionName="strings"/>
+    <functioncall functionName="strleft"/>
+    <functioncall functionName="strlen"/>
+    <functioncall functionName="strncasecmp"/>
+    <functioncall functionName="strreplace"/>
+    <functioncall functionName="strright"/>
+    <functioncall functionName="strset"/>
+    <functioncall functionName="strstr"/>
+    <functioncall functionName="strtod"/>
+    <functioncall functionName="strtrim_left"/>
+    <functioncall functionName="strtrim_right"/>
+    <functioncall functionName="subsplit"/>
+    <functioncall functionName="substr"/>
+    <functioncall functionName="temp"/>
+    <functioncall functionName="to"/>
+    <functioncall functionName="to_utf8"/>
+    <functioncall functionName="tolen"/>
+    <functioncall functionName="tolower"/>
+    <functioncall functionName="toupper"/>
+    <functioncall functionName="v"/>
+    <functioncall functionName="va_end"/>
+    <functioncall functionName="va_start"/>
+    <functioncall functionName="value"/>
+    <functioncall functionName="vnew"/>
+    <functioncall functionName="vsprintf"/>
+    <functioncall functionName="while"/>
+    <functioncall functionName="white"/>
+  </FileInfo>
+</analyzerinfo>

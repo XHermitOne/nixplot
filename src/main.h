@@ -1,6 +1,7 @@
 /**
 * Модуль главных структур программы и основных запускающих функций
 * @file
+* @version 0.0.0.1
 */
 #if !defined( __MAIN_H )
 #define __MAIN_H
@@ -14,7 +15,7 @@
 #include <cairo.h>
 #include <cairo-pdf.h>
 
-#include "ictypes.h"
+#include "ext_types.h"
 #include "tools.h"
 #include "graph.h"
 #include "version.h"
@@ -22,7 +23,7 @@
 /**
 * Режим отладки
 */
-extern BOOL DBG_MODE;
+extern BOOL DebugMode;
 
 /**
 * Функция запуска основного алгоритма
