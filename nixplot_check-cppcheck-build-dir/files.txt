@@ -1,8 +1,0 @@
-config.a1::/home/xhermit/dev/prj/work/nixplot/src/config.c
-graph.a1::/home/xhermit/dev/prj/work/nixplot/src/graph.c
-log.a1::/home/xhermit/dev/prj/work/nixplot/src/log.c
-main.a1::/home/xhermit/dev/prj/work/nixplot/src/main.c
-run.a1::/home/xhermit/dev/prj/work/nixplot/src/run.c
-strfunc.a1::/home/xhermit/dev/prj/work/nixplot/src/strfunc.c
-tools.a1::/home/xhermit/dev/prj/work/nixplot/src/tools.c
-version.a1::/home/xhermit/dev/prj/work/nixplot/src/version.c
