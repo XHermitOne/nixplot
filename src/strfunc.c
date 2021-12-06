@@ -263,7 +263,7 @@ char *strreplace(char *str, const char *from, const char *to, BOOL do_free)
 }
 
 
-char *strreplace_all(char *src, search_replace_t *replaces)
+char *strreplace_all(char *src, nix_search_replace_t *replaces)
 {
     char *ret = src;
     int i = 0;

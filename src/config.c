@@ -15,13 +15,13 @@ char CfgPath[] = ".nixplot";           /**< Папка конфигурацир�
 char CfgFileName[] = "nixplot.cfg";    /**< Имя файла конфигурации основных параметров*/
 static char FullCfgFileName[MAX_PATH];
 
-config_t config_strings[] =
+nix_config_t config_strings[] =
 {
     { "TEST",                     ""},
 };
 
 
-BOOL save_config(char *cfg_filename, config_t *strings, int count)
+BOOL save_config(char *cfg_filename, nix_config_t *strings, int count)
 {
     int i = 0;
     FILE *f;
@@ -45,7 +45,7 @@ BOOL save_config(char *cfg_filename, config_t *strings, int count)
 }
 
 
-BOOL load_config(const char *cfg_filename, config_t *strings, int count)
+BOOL load_config(const char *cfg_filename, nix_config_t *strings, int count)
 {
     int i = 0;
     int len = 0;

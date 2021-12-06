@@ -92,7 +92,7 @@ typedef struct
     char grid;
     char axis;
     char line;
-} graph_color_t;
+} nix_graph_color_t;
 
 
 /**
@@ -118,7 +118,7 @@ typedef struct
     unsigned dtype:     1;  /** */
 
     unsigned line:      2;  /** */
-} graph_status_t;
+} nix_graph_status_t;
 
 
 /**
@@ -128,25 +128,25 @@ typedef struct
 {
     double x;
     double y;
-} graph_point_t;
+} nix_graph_point_t;
 
 /**
 *   Данные графика
 */
 typedef struct 
 {
-    graph_status_t *status;
-    graph_color_t  *color;
+    nix_graph_status_t *status;
+    nix_graph_color_t  *color;
 
-    void (*get_point)(struct graph_data_t *graph_data, double*, double*, long);   /** Функция получения координат точки по ее индексу */
+    void (*get_point)(struct nix_graph_data_t *graph_data, double*, double*, long);   /** Функция получения координат точки по ее индексу */
 
     long   n_points;     /** Количество точек */
 
-    graph_point_t *points; /** Точки графика */
+    nix_graph_point_t *points; /** Точки графика */
 
     double x1, y1, x2, y2;      /** Диапазон данных графика (Сцена) */
     int    X1, Y1, X2, Y2;      /** Графическая граница области графика */
-} graph_data_t;
+} nix_graph_data_t;
 
 
 /**
@@ -157,31 +157,31 @@ typedef struct
     double dX;
     double dY;
     int    X1, Y1, X2, Y2;  /** Размеры самого графика */
-    graph_data_t *graph_data;
+    nix_graph_data_t *graph_data;
 
     cairo_surface_t *surface;
     cairo_t *cr;
 
-} graph_t;
+} nix_graph_t;
 
 // Цвета режима графического вывода
-extern graph_color_t  LGColor;
+extern nix_graph_color_t  LGColor;
 
 /**
 *   Функции обработки графика
 */
-void   get_point(graph_data_t *graph_data, double *X, double *Y, long count);
-int    draw(graph_t *graph, graph_data_t *graph_data, BOOL is_print_mode);
-void   check_graph(graph_t *graph);
-void   draw_grid(graph_t *graph);
-void   draw_axis(graph_t *graph);
-int    draw_graph(graph_t *graph);
-double step_x(graph_t *graph);
-double step_y(graph_t *graph);
-double step(graph_t *graph, double st, int a_type);
-long   most_left_point(graph_t *graph, double *x, double *y);
-void   out_grid_number(graph_t *graph, int x, int y, double number, int orient);
-int    split_graph(graph_t *graph, double *x1, double *y1, double *x2, double *y2);
+void   get_point(nix_graph_data_t *graph_data, double *X, double *Y, long count);
+int    draw(nix_graph_t *graph, nix_graph_data_t *graph_data, BOOL is_print_mode);
+void   check_graph(nix_graph_t *graph);
+void   draw_grid(nix_graph_t *graph);
+void   draw_axis(nix_graph_t *graph);
+int    draw_graph(nix_graph_t *graph);
+double step_x(nix_graph_t *graph);
+double step_y(nix_graph_t *graph);
+double step(nix_graph_t *graph, double st, int a_type);
+long   most_left_point(nix_graph_t *graph, double *x, double *y);
+void   out_grid_number(nix_graph_t *graph, int x, int y, double number, int orient);
+int    split_graph(nix_graph_t *graph, double *x1, double *y1, double *x2, double *y2);
 
 /**
 *   Функции общего назначения
@@ -193,14 +193,14 @@ int  cross_point(double *x1, double *y1, double *x2, double *y2, double x, int m
 /**
 *   Инициализация структуры графика
 */
-graph_t *init_graph(graph_t *graph, graph_data_t *graph_data, cairo_surface_t *surface, cairo_t *cr,
-                    unsigned int width, unsigned int height,
-                    double DX, double DY);
+nix_graph_t *init_graph(nix_graph_t *graph, nix_graph_data_t *graph_data, cairo_surface_t *surface, cairo_t *cr,
+                        unsigned int width, unsigned int height,
+                        double DX, double DY);
 
 /**
 *   Инициализация структуры данных графика
 */
-graph_data_t *init_graph_data(graph_data_t *graph_data, double x1, double y1, double x2, double y2);
+nix_graph_data_t *init_graph_data(nix_graph_data_t *graph_data, double x1, double y1, double x2, double y2);
 
 
 #endif /* __graph_t_H */

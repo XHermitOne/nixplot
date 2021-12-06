@@ -18,10 +18,10 @@ typedef struct
 {
     FILE *out;
     BOOL isNew;
-} log_t;
+} nix_log_t;
 
 
-log_t* log_open(char *log_name);
+nix_log_t* log_open(char *log_name);
 BOOL log_close();
 
 void log_line(char *fmt, ...);

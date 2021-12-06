@@ -7,25 +7,25 @@
 #include "graph.h"
 
 // Цвета режима графического вывода
-graph_color_t  LGColor = {CYAN, BLACK, DARKGRAY, DARKGRAY, DARKGRAY, YELLOW};
+nix_graph_color_t  LGColor = {CYAN, BLACK, DARKGRAY, DARKGRAY, DARKGRAY, YELLOW};
 // Цвета режима печати
-static graph_color_t  LPColor = {BLACK, WHITE, BLACK, BLACK, BLACK, BLACK};
+static nix_graph_color_t  LPColor = {BLACK, WHITE, BLACK, BLACK, BLACK, BLACK};
 
-static graph_status_t LGStatus = {AXIS_ON, AXIS_ON,
-                                  GRID_ON, GRID_ON,
-                                  NUMBER_ON, NUMBER_ON,
-                                  CLEAR,
-                                  GM_TIME, GM_OPTIMAL, GRID_ORIGIN, NOSEQ};
+static nix_graph_status_t LGStatus = {AXIS_ON, AXIS_ON,
+                                      GRID_ON, GRID_ON,
+                                      NUMBER_ON, NUMBER_ON,
+                                      CLEAR,
+                                      GM_TIME, GM_OPTIMAL, GRID_ORIGIN, NOSEQ};
 
-static graph_data_t   LGraph = {&LGStatus, &LGColor,
-                                NULL, 0, NULL,
-                                0, 0, 320, 120, 0, 0, 639, 479};
+static nix_graph_data_t   LGraph = {&LGStatus, &LGColor,
+                                    NULL, 0, NULL,
+                                    0, 0, 320, 120, 0, 0, 639, 479};
 
 
 /**
 *   Установить текущий цвет отрисовки
 */
-void set_cga_color(graph_t *graph, int color)
+void set_cga_color(nix_graph_t *graph, int color)
 {
     if (DebugMode) log_line("Set CGA color: %d", color);
 
@@ -67,7 +67,7 @@ void set_cga_color(graph_t *graph, int color)
 /**
 *   Установить текущий цвет отрисовки
 */
-void out_text_xy(graph_t *graph, int x, int y, char *text, int orient)
+void out_text_xy(nix_graph_t *graph, int x, int y, char *text, int orient)
 {
     cairo_text_extents_t te;
     cairo_text_extents(graph->cr, text, &te);
@@ -95,7 +95,7 @@ void out_text_xy(graph_t *graph, int x, int y, char *text, int orient)
 /**
 *   Установить точечный стиль отрисовки линий
 */
-void set_dot_line_style(graph_t *graph)
+void set_dot_line_style(nix_graph_t *graph)
 {
     double dashes[] = {1.0,  /* ink */
                        3.0,  /* skip */
@@ -111,7 +111,7 @@ void set_dot_line_style(graph_t *graph)
 /**
 *   Установить нормальный стиль отрисовки линий
 */
-void set_solid_line_style(graph_t *graph)
+void set_solid_line_style(nix_graph_t *graph)
 {
     double dashes[] = {1.0,  /* ink */
                        3.0,  /* skip */
@@ -125,7 +125,7 @@ void set_solid_line_style(graph_t *graph)
 /**
 *   Функция получения данных графика по умолчанию
 */
-void get_point(graph_data_t *graph_data, double *X, double *Y, long count)
+void get_point(nix_graph_data_t *graph_data, double *X, double *Y, long count)
 {
     if (!graph_data)
     {
@@ -156,7 +156,7 @@ void get_point(graph_data_t *graph_data, double *X, double *Y, long count)
 /**
 *   Функция полной отрисовки графика
 */
-int draw(graph_t *graph, graph_data_t *graph_data, BOOL is_print_mode)
+int draw(nix_graph_t *graph, nix_graph_data_t *graph_data, BOOL is_print_mode)
 {
     graph->graph_data = graph_data;
 
@@ -197,7 +197,7 @@ int draw(graph_t *graph, graph_data_t *graph_data, BOOL is_print_mode)
 /**
 *   Функция проверки всех данных графика
 */
-void check_graph(graph_t *graph)
+void check_graph(nix_graph_t *graph)
 {
     if (graph->graph_data->x1 == graph->graph_data->x2)
         graph->graph_data->x2 = graph->graph_data->x1 + 0.001;
@@ -305,7 +305,7 @@ void swap(void *src, void *dst, int size)
 /**
 *   Отрисовка области под надписи
 */
-static void draw_label_area(graph_t *graph)
+static void draw_label_area(nix_graph_t *graph)
 {
     // Отрисовка области под надписи
     set_cga_color(graph, graph->graph_data->color->ground);
@@ -323,7 +323,7 @@ static void draw_label_area(graph_t *graph)
 /**
 *   Область поля графика
 */
-static void draw_graph_area(graph_t *graph)
+static void draw_graph_area(nix_graph_t *graph)
 {
     // Область поля графика
     set_cga_color(graph, graph->graph_data->color->ground);
@@ -336,7 +336,7 @@ static void draw_graph_area(graph_t *graph)
 /**
 *   Бордер
 */
-static void draw_border(graph_t *graph)
+static void draw_border(nix_graph_t *graph)
 {
     // Бордер
     set_cga_color(graph, graph->graph_data->color->border);
@@ -353,7 +353,7 @@ static void draw_border(graph_t *graph)
 /**
 *   Отрисовка сетки
 */
-void draw_grid(graph_t *graph)
+void draw_grid(nix_graph_t *graph)
 {
     double  stx = 0.0;
     double  _stx = 0.0;
@@ -436,7 +436,7 @@ void draw_grid(graph_t *graph)
 }
 
 
-double step(graph_t *graph, double st, int a_type)
+double step(nix_graph_t *graph, double st, int a_type)
 {
     double  fl = 0.0;
     int     i = 0;
@@ -458,13 +458,13 @@ double step(graph_t *graph, double st, int a_type)
 }
 
 
-double step_x(graph_t *graph)
+double step_x(nix_graph_t *graph)
 {
     return step(graph, (graph->graph_data->x2 - graph->graph_data->x1) / ((graph->X2 - graph->X1) >> 5), graph->graph_data->status->x_type);
 }
 
 
-double step_y(graph_t *graph)
+double step_y(nix_graph_t *graph)
 {
     return step(graph, (graph->graph_data->y2 - graph->graph_data->y1) / ((graph->Y2 - graph->Y1) >> 5), graph->graph_data->status->y_type);
 }
@@ -473,7 +473,7 @@ double step_y(graph_t *graph)
 /**
 *   Отрисовка надписей сетки
 */
-void out_grid_number(graph_t *graph, int x, int y, double number, int orient)
+void out_grid_number(nix_graph_t *graph, int x, int y, double number, int orient)
 {
     double  mod_number = fabs(number);
     long    tmp = 0L;
@@ -550,7 +550,7 @@ void out_grid_number(graph_t *graph, int x, int y, double number, int orient)
 /**
 *   Отрисовка осей
 */
-void draw_axis(graph_t *graph)
+void draw_axis(nix_graph_t *graph)
 {
     int i = 0;
 
@@ -580,7 +580,7 @@ void draw_axis(graph_t *graph)
 /**
 *   Отрисовка самого графика
 */
-int draw_graph(graph_t *graph)
+int draw_graph(nix_graph_t *graph)
 {
     double  _y1 = 0.0;
     double  _x1 = 0.0;
@@ -697,7 +697,7 @@ int draw_graph(graph_t *graph)
 /**
 *   Обрезка линии
 */
-int split_graph(graph_t *graph, double *x1, double *y1, double *x2, double *y2)
+int split_graph(nix_graph_t *graph, double *x1, double *y1, double *x2, double *y2)
 {
  cross_point(y1, x1, y2, x2, graph->graph_data->y1, 0);
  cross_point(y1, x1, y2, x2, graph->graph_data->y2, 1);
@@ -749,9 +749,9 @@ int cross_point(double *x1, double *y1, double *x2, double *y2, double x, int mo
 /**
 *   Инициализация структуры графика
 */
-graph_t *init_graph(graph_t *graph, graph_data_t *graph_data, cairo_surface_t *surface, cairo_t *cr,
-                 unsigned int width, unsigned int height,
-                 double DX, double DY)
+nix_graph_t *init_graph(nix_graph_t *graph, nix_graph_data_t *graph_data, cairo_surface_t *surface, cairo_t *cr,
+                        unsigned int width, unsigned int height,
+                        double DX, double DY)
 {
     if (graph == NULL)
     {
@@ -778,7 +778,7 @@ graph_t *init_graph(graph_t *graph, graph_data_t *graph_data, cairo_surface_t *s
 /**
 *   Инициализация структуры данных графика
 */
-graph_data_t *init_graph_data(graph_data_t *graph_data, double x1, double y1, double x2, double y2)
+nix_graph_data_t *init_graph_data(nix_graph_data_t *graph_data, double x1, double y1, double x2, double y2)
 {
     if (graph_data == NULL)
     {

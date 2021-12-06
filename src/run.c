@@ -16,7 +16,7 @@ BOOL DebugMode = TRUE;
 *   Выполнить отрисовку графика в PNG файл
 *   png_filename - Полное имя PNG файла
 */
-BOOL draw_png(char *png_filename, graph_data_t *graph_data, int x_type, int y_type,
+BOOL draw_png(char *png_filename, nix_graph_data_t *graph_data, int x_type, int y_type,
               unsigned int width, unsigned int height,
               double scene_x1, double scene_y1, double scene_x2, double scene_y2,
               double dx, double dy)
@@ -45,7 +45,7 @@ BOOL draw_png(char *png_filename, graph_data_t *graph_data, int x_type, int y_ty
     if (dy <= 0)
         dy = 2;
 
-    graph_t graphic;
+    nix_graph_t graphic;
     init_graph(&graphic, graph_data, surface, cr, width, height, dx, dy);
 
     if (graph_data != NULL)
@@ -87,7 +87,7 @@ BOOL draw_png(char *png_filename, graph_data_t *graph_data, int x_type, int y_ty
 *   Выполнить отрисовку графика в PDF файл
 *   pdf_filename - Полное имя PDF файла
 */
-BOOL draw_pdf(char *pdf_filename, graph_data_t * graph_data, int x_type, int y_type,
+BOOL draw_pdf(char *pdf_filename, nix_graph_data_t * graph_data, int x_type, int y_type,
               unsigned int width, unsigned int height,
               double scene_x1, double scene_y1, double scene_x2, double scene_y2,
               double dx, double dy)
@@ -116,7 +116,7 @@ BOOL draw_pdf(char *pdf_filename, graph_data_t * graph_data, int x_type, int y_t
     if (dy <= 0)
         dy = 2;
 
-    graph_t graphic;
+    nix_graph_t graphic;
     init_graph(&graphic, graph_data, surface, cr, width, height, dx, dy);
 
     if (graph_data != NULL)
@@ -171,7 +171,7 @@ int get_axis_type(char *axis_type)
 *   Определить данные пера
 *   Данные в командной строке определяются как x1/y1,x2/y2,...
 */
-graph_data_t *get_pen_data(char *str_pen_data)
+nix_graph_data_t *get_pen_data(char *str_pen_data)
 {
     if (DebugMode) log_line("Points parse");
     if (str_pen_data == NULL)
@@ -195,9 +195,9 @@ graph_data_t *get_pen_data(char *str_pen_data)
     long max_time = 0;
     double max_data = 0.0;
 
-    graph_data_t *pen_data = (graph_data_t *) calloc(1, sizeof(graph_data_t));
+    nix_graph_data_t *pen_data = (nix_graph_data_t *) calloc(1, sizeof(nix_graph_data_t));
     init_graph_data(pen_data, prev_time, prev_data, i_time, y_data);
-    pen_data->points = (graph_point_t *) calloc(str_count, sizeof(graph_point_t));
+    pen_data->points = (nix_graph_point_t *) calloc(str_count, sizeof(nix_graph_point_t));
     pen_data->n_points = str_count;
 
     do
@@ -210,11 +210,11 @@ graph_data_t *get_pen_data(char *str_pen_data)
         i_time = time_to_long(point[0]);
         y_data = str2double(point[1]);
 
-        graph_point_t *point_data = (graph_point_t *) calloc(1, sizeof(graph_point_t));
+        nix_graph_point_t *point_data = (nix_graph_point_t *) calloc(1, sizeof(nix_graph_point_t));
         point_data->x = i_time;
         point_data->y = y_data;
 
-        memcpy(&pen_data->points[i], point_data, sizeof(graph_point_t));
+        memcpy(&pen_data->points[i], point_data, sizeof(nix_graph_point_t));
 
         if (DebugMode) log_line("\tPoint data: [%d : %f] - [%d : %f]", prev_time, prev_data, i_time, y_data);
         free(point_data);
@@ -361,16 +361,16 @@ int run(int argc, char *argv[])
     int x_type = GM_OPTIMAL;
     int y_type = GM_OPTIMAL;     // Тип оси X и Y
 
-    graph_data_t *pen_0 = NULL;   // Данные пера 1
-    graph_data_t *pen_1 = NULL;   // Данные пера 2
-    graph_data_t *pen_2 = NULL;   // Данные пера 3
-    graph_data_t *pen_3 = NULL;   // Данные пера 4
-    graph_data_t *pen_4 = NULL;   // Данные пера 5
-    graph_data_t *pen_5 = NULL;   // Данные пера 6
-    graph_data_t *pen_6 = NULL;   // Данные пера 7
-    graph_data_t *pen_7 = NULL;   // Данные пера 8
-    graph_data_t *pen_8 = NULL;   // Данные пера 9
-    graph_data_t *pen_9 = NULL;   // Данные пера 10
+    nix_graph_data_t *pen_0 = NULL;   // Данные пера 1
+    nix_graph_data_t *pen_1 = NULL;   // Данные пера 2
+    nix_graph_data_t *pen_2 = NULL;   // Данные пера 3
+    nix_graph_data_t *pen_3 = NULL;   // Данные пера 4
+    nix_graph_data_t *pen_4 = NULL;   // Данные пера 5
+    nix_graph_data_t *pen_5 = NULL;   // Данные пера 6
+    nix_graph_data_t *pen_6 = NULL;   // Данные пера 7
+    nix_graph_data_t *pen_7 = NULL;   // Данные пера 8
+    nix_graph_data_t *pen_8 = NULL;   // Данные пера 9
+    nix_graph_data_t *pen_9 = NULL;   // Данные пера 10
 
     unsigned int img_width = 0;
     unsigned int img_height = 0;

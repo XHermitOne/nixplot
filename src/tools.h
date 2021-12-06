@@ -100,7 +100,7 @@ BOOL is_samefile(const char *filename1, const char *filename2);
 /**
 *   Цвета
 */
-enum print_color_t {
+enum nix_print_color_t {
     NORMAL_COLOR_TEXT = 0,      // normal
     RED_COLOR_TEXT,             // red
     GREEN_COLOR_TEXT,           // green

@@ -36,10 +36,10 @@ typedef struct
 {
     char *search;
     char *replace;
-} search_replace_t;
+} nix_search_replace_t;
 
 char *strreplace(char *src, const char *from, const char *to, BOOL do_free);
-char *strreplace_all(char *src, search_replace_t *replaces);
+char *strreplace_all(char *src, nix_search_replace_t *replaces);
 
 char *concatenate(char *a1, char *a2);
 char *trim_space(char *str);

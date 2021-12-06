@@ -15,7 +15,7 @@
 #include "strfunc.h"
 #include "config.h"
 
-static log_t Log;
+static nix_log_t Log;
 
 char DefaultLogFileName[] = "/nixplot.log";     /**< Имя файла лога по умолчанию*/
 
@@ -41,7 +41,7 @@ char *get_current_datetime()
 *       LogName - Имя файла лога
 *           Если NULL, то берется имя по умолчанию
 */
-log_t* log_open(char *log_name)
+nix_log_t* log_open(char *log_name)
 {
     if (log_name == NULL)
         log_name = DefaultLogFileName;
